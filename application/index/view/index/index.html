@@ -1,0 +1,170 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>后台管理系统</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="_ASSETS_/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="_ASSETS_/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="_ASSETS_/css/main-min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="header">
+
+    <div class="dl-title">
+        <img src="\static\Images\logo.png" style="height:70px">
+    </div>
+
+    <div class="dl-log">欢迎您，<span class="dl-log-user">{$Think.session.family_name}</span><a href="{:URL('Index/loginout')}" title="退出系统" class="dl-log-quit">[退出]</a>
+    </div>
+</div>
+<div class="content">
+    <div class="dl-main-nav">
+        <div class="dl-inform"><div class="dl-inform-title"><s class="dl-inform-icon dl-up"></s></div></div>
+        <ul id="J_Nav"  class="nav-list ks-clear">
+            <li class="nav-item dl-selected"><div class="nav-item-inner nav-home">基本资料</div></li>
+            <!--<li class="nav-item dl-selected"><div class="nav-item-inner nav-order">业务管理</div></li>-->
+
+        </ul>
+    </div>
+    <ul id="J_NavContent" class="dl-tab-conten">
+
+    </ul>
+</div>
+<script type="text/javascript" src="_ASSETS_/js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="_ASSETS_/js/bui-min.js"></script>
+<script type="text/javascript" src="_ASSETS_/js/common/main-min.js"></script>
+<script type="text/javascript" src="_ASSETS_/js/config-min.js"></script>
+<script>
+    BUI.use('common/main',function(){
+        var config = [
+        	{
+        		id:'1',menu:[{
+        			text:'基本资料',items:[
+        			{php}if(in_array('company/index',$power)){{/php}
+        			{id:'12',text:'公司基本资料',href:'{:URL('Company/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('family/index',$power)){{/php}
+        			{id:'13',text:'员工基本资料',href:'{:URL('Family/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('data/index',$power)){{/php}
+        			{id:'14',text:'常用资料',href:'{:URL('Data/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('service/index',$power)){{/php}
+        			{id:'15',text:'项目资料',href:'{:URL('Service/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercardtype/index',$power)){{/php}
+        			{id:'17',text:'会员卡类型',href:'{:URL('MemberCardType/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('company/add',$power)){{/php}
+        			<!--{id:'16',text:'项目提成',href:'{:URL('MemberCard/index')}'},-->
+        			{php}}{/php}
+        			{php}if(in_array('index/loginlist',$power)){{/php}
+        			{id:'18',text:'登录账号管理',href:'{:URL('Index/loginlist')}'},
+        			{php}}{/php}
+        			{php}if(in_array('role/index',$power)){{/php}
+        			{id:'19',text:'角色管理',href:'{:URL('Role/index')}'},
+        			{php}}{/php}
+        			]
+        		},
+        		{
+        			text:'会员管理',items:[
+        			{php}if(in_array('membercard/index',$power)){{/php}
+        			{id:'21',text:'会员卡资料管理',href:'{:URL('MemberCard/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/opencard',$power)){{/php}
+        			{id:'22',text:'会员卡开卡',href:'{:URL('MemberCard/openCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/rechargecard',$power)){{/php}
+        			{id:'23',text:'会员卡充值',href:'{:URL('MemberCard/rechargeCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/transfercard',$power)){{/php}
+        			{id:'24',text:'会员卡转卡',href:'{:URL('MemberCard/transferCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/changecard',$power)){{/php}
+        			{id:'25',text:'会员卡换卡',href:'{:URL('MemberCard/changeCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/refundcard',$power)){{/php}
+        			{id:'26',text:'会员卡还款',href:'{:URL('MemberCard/refundCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/transplantcard',$power)){{/php}
+        			{id:'27',text:'创度会员移植',href:'{:URL('MemberCard/transplantCard')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/superedit',$power)){{/php}
+        			{id:'28',text:'管理员修改会员卡',href:'{:URL('MemberCard/superEdit')}'},
+        			{php}}{/php}
+        			]
+        		},
+        		{
+        			text:'收银管理',items:[
+        			{php}if(in_array('cashier/index',$power)){{/php}
+        			{id:'31',text:'收银',href:'{:URL('Cashier/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('cashier/todaychar',$power)){{/php}
+        			{id:'32',text:'当日日记小单',href:'{:URL('Cashier/todayChar')}'},
+        			{php}}{/php}
+        			{php}if(in_array('statistical/business_summary',$power)){{/php}
+        			{id:'33',text:'门店营业汇总',href:'{:URL('Statistical/business_summary_index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('spending/index',$power)){{/php}
+        			{id:'38',text:'门店支出',href:'{:URL('Spending/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('statistical/card_move',$power)){{/php}
+        			{id:'34',text:'会员卡异动统计表',href:'{:URL('Statistical/card_move')}'},
+        			{php}}{/php}
+        			{php}if(in_array('company/add',$power)){{/php}
+        			<!--{php}if($role==1){{/php}{id:'35',text:'收银补单',href:'{:URL('MemberCard/changeCard')}'},{php}}{/php}-->
+        			{php}}{/php}
+        			{php}if(in_array('statistical/index',$power)){{/php}
+        			{id:'36',text:'客户消费明细表',href:'{:URL('Statistical/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('cashier/business_documents',$power)){{/php}
+        			{id:'37',text:'业务单据修改',href:'{:URL('Cashier/business_documents')}'},
+        			{php}}{/php}
+        			{php}if(in_array('cashier/app_cashier_list',$power)){{/php}
+        			{id:'39',text:'APP订单管理',href:'{:URL('Cashier/app_cashier_list')}'},
+        			{php}}{/php}
+        			]
+        		},
+        		{
+        			text:'财务管理',items:[
+        			{php}if(in_array('statistical/business_results',$power)){{/php}
+        			{id:'41',text:'员工业绩统计表',href:'{:URL('Statistical/business_results')}'},
+        			{php}}{/php}
+        			{php}if(in_array('coupons/index',$power)){{/php}
+        			{id:'42',text:'抵用券管理',href:'{:URL('Coupons/index')}'},
+        			{php}}{/php}
+        			{php}if(in_array('membercard/batchopencard',$power)){{/php}
+        			{id:'43',text:'批量开卡',href:'{:URL('MemberCard/batchOpenCard')}'},
+        			{php}}{/php}
+        			]
+        		},
+        		],
+        	},
+        	//{
+        	//	id:'2',homePage : '9',menu:[{
+        	//		text:'业务管理',items:[
+        	//		{id:'9',text:'查询业务',href:'Node/index.html'}
+        	//		]
+        	//	}]
+        	//}
+        	];
+        new PageUtil.MainPage({
+            modulesConfig : config
+        });
+    });
+</script>
+<!--<script>
+    BUI.use('common/main',function(){
+        var config = [{id:'1',menu:[{text:'基本资料',items:[{id:'13',text:'员工基本资料',href:'{:URL('Family/index')}'},{id:'15',text:'项目资料',href:'{:URL('Service/index')}'}]}]}];
+        new PageUtil.MainPage({
+            modulesConfig : config
+        });
+    });
+</script>-->
+<div style="text-align:center;">
+</div>
+</body>
+</html>

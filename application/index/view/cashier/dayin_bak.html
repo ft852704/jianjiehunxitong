@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script language="javascript" src="_JS_/LodopFuncs.js"></script> 
+    <style type="text/css">
+    	*{ padding: 0; margin: 0; }
+        body{ background: #fff; font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif; color: #333; font-size: 16px; }
+        .system-message{ padding: 24px 48px; }
+        .system-message h1{ font-size: 100px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
+        .system-message .jump{ padding-top: 10px; }
+        .system-message .jump a{ color: #333; }
+        .system-message .success,.system-message .error{ line-height: 1.8em; font-size: 36px; }
+        .system-message .detail{ font-size: 12px; line-height: 20px; margin-top: 12px; display: none; }
+    </style>
+</head>
+<body>
+	<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>  
+       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed> 
+	</object>
+	<div class="system-message">
+        <?php switch ($code) {?>
+            <?php case 1:?>
+            <h1>:)</h1>
+            <p class="success"><?php echo(strip_tags($msg));?></p>
+            <?php break;?>
+            <?php case 0:?>
+            <h1>:(</h1>
+            <p class="error"><?php echo(strip_tags($msg));?></p>
+            <?php break;?>
+        <?php } ?>
+        <p class="detail"></p>
+        <p class="jump">
+            页面自动 <a id="href" href="<?php echo($url);?>">跳转</a> 等待时间： <b id="wait"><?php echo($wait);?></b>
+        </p>
+    </div>
+    <script type="text/javascript">
+        (function(){
+            var wait = document.getElementById('wait'),
+                href = document.getElementById('href').href;
+            var interval = setInterval(function(){
+                var time = --wait.innerHTML;
+                if(time <= 0) {
+                    location.href = href;
+                    clearInterval(interval);
+                };
+            }, 1000);
+        })();
+    </script>
+</body>
+</html>
+<script type="text/html" id="dv1">
+<table style="font-size:12px;width:80%">
+	    <tr>
+	        <th colspan="6">{$company['full_name']}</th>
+	    </tr>
+	    <tr>
+	        <td colspan='6'>消费单</td>
+	    </tr>
+	    <tr>
+	        <td colspan="3">NO.{$cashier.number}</td>
+	        <td colspan="3">{$cashier.time|date="Y/m/d H:i:s",###}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	        <td colspan='2'>项目/标准价</td>
+	        <td colspan='2'>服务人员</td>
+	        <td>数量/折扣</td>
+	        <td>金额</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    {volist name="cashiers_list" id="c" }
+	    <tr>
+	        <td colspan='2'>{$c.service_name}/{$c.service_price}</td>
+	        <td colspan='2'>{$c.fworker}{$c.fname}{$c.sworker}{$c.sname}</td>
+	        <td>{$c.count}/{$c.discount_value}</td>
+	        <td>￥{$c.discount}</td>
+	    </tr>
+	    {/volist}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	   		<th colspan="6">支付明细</th>
+	    </tr>
+	    {volist name="payway" id="p" }
+	    <tr>
+	    	<td colspan="3">{$p.name}：</td>
+	    	<td colspan="3">￥{$p.discount}</td>
+	    </tr>
+	    {/volist}
+	    <tr>
+	    	<td colspan="3">原价总计：</td>
+	    	<td colspan="3">￥{$yuanjia}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">实付总计：</td>
+	    	<td colspan="3">￥{$cashier['real_money']}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">节省总计：</td>
+	    	<td colspan="3">￥{$cashier['dis_money']}</td>
+	    </tr>
+	    {if condition="$is_sanke!=1"}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">贵宾卡号：</td>
+	    	<td colspan="3">{$member.card_no}（{$member.name}）</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">储值账户余额：</td>
+	    	<td colspan="3">￥{$wallet.cash}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">电子钱包余额：</td>
+	    	<td colspan="3">￥{$wallet.ewallet}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">老系统疗程余额：</td>
+	    	<td colspan="3">￥{$wallet.old_cash}</td>
+	    </tr>
+	    {/if}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">收银人员：</td>
+	    	<td colspan="3">{$Think.session.family_name}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<th colspan="3">顾客签名：</th>
+	    	<td colspan="3"></td>
+	    </tr>
+	     <tr>
+	    	<td style="height:50px" colspan='6'></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">公司电话：{$company.telephone}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">联系地址：{$company.address}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">服务一键预约</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6"><img src='\static\Images\222.png' style="width:100px;height:100px" /></td>
+	    </tr>
+    </table>
+</script>
+<script>
+//var LODOP=getLodop();
+//LODOP.PRINT_INIT("打印任务名");               //首先一个初始化语句
+//LODOP.SET_PRINT_PAGESIZE(3,450,200,0);  
+//LODOP.ADD_PRINT_TEXT(0,0,200,20,"文本内容SDF一");//然后多个ADD语句及SET语句 
+//LODOP.PRINT();                               //最后一个打印(或预览、维护、设计)语句
+	var LODOP; //声明为全局变量
+	//$("#print").click(function(){
+	//	myDesign1();  
+		//LODOP.PREVIEW();
+	//});  
+	myDesign1();
+	function  myDesign1(){   
+		//refreshData();                  
+		LODOP=getLodop();                       
+		LODOP.PRINT_INIT("");                     
+		//LODOP.ADD_PRINT_HTM(90,221,"50mm",245,"<!doctype html>"+document.getElementById("dv1").innerHTML);  //宽50mm                     
+		//设置打印项风格
+		LODOP.SET_PRINT_STYLE("FontSize",1);
+
+		//strStyleName：打印风格名，风格名称及其含义如下：
+		//“FontName”：设定纯文本打印项的字体名称。
+		//“FontSize”：设定纯文本打印项的字体大小。
+		//“FontColor”：设定纯文本打印项的字体颜色。
+		//“Bold”：设定纯文本打印项是否粗体。
+		//“Italic”：设定纯文本打印项是否斜体。
+		//“Underline”：设定纯文本打印项是否下滑线。
+		//“Alignment”：设定纯文本打印项的内容左右靠齐方式。
+		//“Angle”：设定纯文本打印项的旋转角度。
+		//“ItemType”：设定打印项的基本属性。
+		//“HOrient”：设定打印项在纸张内的水平位置锁定方式。
+		//“VOrient”：设定打印项在纸张内的垂直位置锁定方式。
+		//“PenWidth”：线条宽度。
+		//“PenStyle”：线条风格。
+		//“Stretch”：图片截取缩放模式。
+		//“PreviewOnly”:内容仅仅用来预览。
+		//“ReadOnly”:纯文本内容在打印维护时，是否禁止修改。
+
+		LODOP.SET_PRINT_STYLEA(0,"Horient",2);  
+		//LODOP.SET_PRINT_STYLE("Bold",1); 
+		//设置纸张大小
+		//SET_PRINT_PAGESIZE(intOrient, PageWidth,PageHeight,strPageName)
+		//intOrient：
+		//打印方向及纸张类型，数字型，
+		//1---纵(正)向打印，固定纸张；
+		//2---横向打印，固定纸张；
+		//3---纵(正)向打印，宽度固定，高度按打印内容的高度自适应；
+		//0(或其它)----打印方向由操作者自行选择或按打印机缺省设置；
+		//PageWidth：
+		//设定自定义纸张宽度，整数或字符型，整数时缺省长度单位为0.1毫米。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)，如“10mm”表示10毫米。
+		//纸张宽，单位为0.1mm譬如该参数值为45，则表示4.5mm,计量精度是0.1mm。
+		//PageHeight：
+		//固定纸张时设定纸张高；高度自适应时设定纸张底边的空白高。整数或字符型，整数时缺省长度单位为0.1毫米。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)，如“10mm”表示10毫米。
+		//高小于等于0时strPageName才起作用。
+		//strPageName：
+		//所选纸张类型名，字符型。不同打印机所支持的纸张可能不一样，这里的名称同操作系统内打印机属性中的纸张名称，支持操作系统内的自定义纸张。
+		LODOP.SET_PRINT_PAGESIZE(3,'6cm','2cm',""); 
+		 //增加超文本打印项(普通模式) 
+		 //功能：增加超文本打印项，设定该打印项在纸张内的位置和区域大小，实现超文本控制打印。
+		 //ADD_PRINT_HTM(Top,Left,Width,Height,strHtmlContent) 
+		 //Top：
+		//所增打印项在纸张内的上边距，整数或字符型，整数时缺省长度单位为px。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)、%(百分比)，如“10mm”表示10毫米。
+		//Left：
+		//所增打印项在纸张内的左边距，整数或字符型，整数时缺省长度单位为px。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)、%(百分比)，如“10mm”表示10毫米。
+		//Width：
+		//打印区域的宽度，整数或字符型，整数时缺省长度单位为px。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)、%(百分比)，如“10mm”表示10毫米。本参数可以用RightMargin关键字转义为打印区域相对于纸张的“右边距”。
+		//Height：
+		//打印区域的高度，整数或字符型，整数时缺省长度单位为px。字符型时可包含单位名：in(英寸)、cm(厘米)、mm(毫米)、pt(磅)、px(1/96英寸)、%(百分比)，如“10mm”表示10毫米，控件按这个值自动分页。本参数可以用BottomMargin关键字转义为打印区域相对于纸张的“下边距”。
+		//strHtmlContent：
+		//超文本代码内容，字符型，未限制长度。可以是一个完整的页面超文本代码，或者是一个代码段落，也可以是URL:web地址形式的URL地址。
+		LODOP.ADD_PRINT_HTM("12%", "0%", "100%", "100%", document.getElementById("dv1").innerHTML);
+		//LODOP.ADD_PRINT_BARCODE(0, 0,100, 100, 'QRCode', '123123');
+		LODOP.PRINT();
+	};
+</script>

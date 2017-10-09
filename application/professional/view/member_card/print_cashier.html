@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script language="javascript" src="_JS_/LodopFuncs.js"></script> 
+</head>
+<body>
+<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>  
+       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed> 
+	</object> 
+	<button id="print" style="color:red;width:100px;font-size:20px">打印小票</button>
+	<h1>以下为小票样式</h1>
+	<hr />
+	<table style="font-size:12px;width:80%">
+	    <tr>
+	        <td colspan="2">贵宾卡号：{$member.card_no}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">贵宾姓名：{$member.name}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">充值前剩余金额：{$before_recharge.last_balance}</td>
+	    </tr>
+	    <!--<tr>
+	        <td colspan="2">充值前欠款金额：0</td>
+	    </tr>-->
+	    <tr>
+	        <td colspan="2">充值应收金额：{$before_recharge.should_money}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">充值欠款金额：{$before_recharge.arrears_money}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">最新余额</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}余额：{if condition="$wallet_type==7"}{$wallet.cash}{/if}{if condition="$wallet_type==8"}{$wallet.ewallet}{/if}{if condition="$wallet_type==9"}{$wallet.old_cash}{/if}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}欠款：{if condition="$wallet_type==7"}{$wallet.cash_arrears}{/if}{if condition="$wallet_type==8"}0{/if}{if condition="$wallet_type==9"}{$wallet.old_cash_arrears}{/if}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">手工单号：{$cashier.number}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">单据日期：{$cashier.time|date="Y/m/d h:i:s",###}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">收银员：{$Think.session.family_name}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">公司地址：{$company.address}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">公司电话：{$company.telephone}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">客户签字：</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2"></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">扫码下载APP</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6"><img src='\static\Images\222.png' style="width:140px;height:140px;" /></td>
+	    </tr>
+    </table>
+</body>
+</html>
+<script type="text/html" id="dv1">
+<table style="font-size:12px;width:80%">
+	    <tr>
+	        <td colspan="2">贵宾卡号：{$member.card_no}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">贵宾姓名：{$member.name}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">充值前剩余金额：{$before_recharge.last_balance}</td>
+	    </tr>
+	    <!--<tr>
+	        <td colspan="2">充值前欠款金额：0</td>
+	    </tr>-->
+	    <tr>
+	        <td colspan="2">充值应收金额：{$before_recharge.should_money}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">充值欠款金额：{$before_recharge.arrears_money}</td>
+	    </tr>
+	    {volist name="cpw" id="c" }
+	    <tr>
+	        <td>{$c.pay_name}</td>
+	        <td>{$c.money}</td>
+	    </tr>
+	    {/volist}
+	    <tr>
+	        <td colspan="2">最新余额</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}余额：{if condition="$wallet_type==7"}{$wallet.cash}{/if}{if condition="$wallet_type==8"}{$wallet.ewallet}{/if}{if condition="$wallet_type==9"}{$wallet.old_cash}{/if}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}欠款：{if condition="$wallet_type==7"}{$wallet.cash_arrears}{/if}{if condition="$wallet_type==8"}0{/if}{if condition="$wallet_type==9"}{$wallet.old_cash_arrears}{/if}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">手工单号：{$cashier.number}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">单据日期：{$cashier.time|date="Y/m/d h:i:s",###} 收银</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">收银员：{$Think.session.family_name}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">公司地址：{$company.address}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">公司电话：{$company.telephone}</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2">客户签字：</td>
+	    </tr>
+	    <tr>
+	        <td colspan="2"></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">扫码下载APP</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6"><img src='\static\Images\222.png' style="width:140px;height:140px;" /></td>
+	    </tr>
+    </table>
+</script>
+<script>
+	$("#print").click(function(){
+		CreatePrintPage();
+	});
+		/**
+		* 样例函数,服务器确认订单后执行
+		*/
+	function CreatePrintPage(json) {
+		//json 创建模拟服务器响应的订单信息对象
+		var LODOP; //声明为全局变量
+		var hPos=10,//小票上边距
+		pageWidth=600,//小票宽度
+		rowHeight=15,//小票行距
+		//获取控件对象
+		LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+		//初始化 
+		LODOP.PRINT_INIT("鼎族怡华收银小票");
+		//账户
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"贵宾卡号:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$member.card_no}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"贵宾姓名:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'{$member.name}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"充值前剩余金额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$before_recharge.last_balance}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"充值应收金额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$before_recharge.should_money}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"充值欠款金额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$before_recharge.arrears_money}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		{volist name="cpw" id="c" }
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"{$c.pay_name}");
+		LODOP.ADD_PRINT_TEXT(hPos,80,pageWidth,rowHeight,'{$c.money}');
+		{/volist}
+		//最新余额
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"最新余额:");
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}余额：{if condition="$wallet_type==7"}{$wallet.cash}{/if}{if condition="$wallet_type==8"}{$wallet.ewallet}{/if}{if condition="$wallet_type==9"}{$wallet.old_cash}{/if}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{if condition="$wallet_type==7"}储值账户{/if}{if condition="$wallet_type==8"}电子钱包账户{/if}{if condition="$wallet_type==9"}老疗程账户{/if}欠款：{if condition="$wallet_type==7"}{$wallet.cash_arrears}{/if}{if condition="$wallet_type==8"}0{/if}{if condition="$wallet_type==9"}{$wallet.old_cash_arrears}{/if}');
+
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"手工单号:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$cashier.number}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"单据日期:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$cashier.time|date="Y/m/d h:i:s",###}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"收银员:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$Think.session.family_name}');
+
+		//公司基本资料
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'公司电话：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$company.telephone}');
+		hPos+=rowHeight;
+		//客户签名
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"客户签字:");
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+
+		var str1 = '{$company.address}'.substring(0,10);
+		var str2 = '{$company.address}'.substring(9);
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'公司地址：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,str1);
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,str2);
+
+
+		LODOP.SET_PRINT_PAGESIZE(3,pageWidth,45,"订单信息");
+		LODOP.PRINT();
+	};	
+</script>

@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>WEB打印小票样例</title>
+<!-- 控件跨浏览器调用类库-->
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script language="javascript" src="_JS_/LodopFuncs.js"></script> 
+<!-- 调用LODOP控件代码-->
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+  <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="install_lodop.exe"></embed>
+</object>
+</head>
+<div class="system-message">
+        <?php switch ($code) {?>
+            <?php case 1:?>
+            <h1>:)</h1>
+            <p class="success"><?php echo(strip_tags($msg));?></p>
+            <?php break;?>
+            <?php case 0:?>
+            <h1>:(</h1>
+            <p class="error"><?php echo(strip_tags($msg));?></p>
+            <?php break;?>
+        <?php } ?>
+        <p class="detail"></p>
+        <p class="jump">
+            页面自动 <a id="href" href="<?php echo($url);?>">跳转</a> 等待时间： <b id="wait"><?php echo($wait);?></b>
+        </p>
+    </div>
+    <script type="text/javascript">
+        (function(){
+            var wait = document.getElementById('wait'),
+                href = document.getElementById('href').href;
+            var interval = setInterval(function(){
+                var time = --wait.innerHTML;
+                if(time <= 0) {
+                    location.href = href;
+                    clearInterval(interval);
+                };
+            }, 1000);
+        })();
+    </script>
+<body>
+<script language="javascript" type="text/javascript"> 
+        CreatePrintPage();
+		/**
+		* 样例函数,服务器确认订单后执行
+		*/
+	function CreatePrintPage(json) {
+		//json 创建模拟服务器响应的订单信息对象
+		var json = {"title":"XXXXX订单信息", "name":"张三", "phone": "138123456789", "orderTime": "2012-10-11 15:30:15", 
+		"orderNo": "20122157481315", "shop":"XX连锁", "total":25.10,"totalCount":6,
+		"goodsList":[
+		{"name":"菜心(无公害食品)", "price":5.00, "count":2, "total":10.08}, 
+		{"name":"菜心(无公害食品)", "price":5.00, "count":2, "total":10.02}, 
+		{"name":"旺菜", "price":4.50, "count":1, "total":4.50},
+		{"name":"黄心番薯(有机食品)", "price":4.50, "count":1, "total":4.50}
+		]
+		}	
+		var LODOP; //声明为全局变量
+		var hPos=10,//小票上边距
+		pageWidth=600,//小票宽度
+		rowHeight=15,//小票行距
+		//获取控件对象
+		LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+		//初始化 
+		LODOP.PRINT_INIT("鼎族怡华收银小票");
+		//添加小票标题文本
+		LODOP.ADD_PRINT_TEXT(hPos,30,pageWidth,rowHeight,'{$company['full_name']}');
+		//上边距往下移
+		hPos+=rowHeight;
+		
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"消费单:");
+		hPos+=rowHeight; //电话不换行
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"NO.{$cashier.number}");
+		hPos+=rowHeight; 
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{$cashier.time|date="Y/m/d H:i:s",###}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"项目/价格");
+		LODOP.ADD_PRINT_TEXT(hPos,55,pageWidth,rowHeight,"服务人员");
+		LODOP.ADD_PRINT_TEXT(hPos,105,pageWidth,rowHeight,"数量/折扣");
+		LODOP.ADD_PRINT_TEXT(hPos,160,pageWidth,rowHeight,"金额");
+
+		{php}foreach($cashiers_list as $k=>$v){{/php}
+		hPos+=rowHeight; 
+			if('{php}echo $v['service_name'].'/'.$v['service_price']{/php}'.length<6){
+				LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{php}echo $v['service_name'].'/'.$v['service_price']{/php}');
+			}else {
+				//商品名字过长,其他字段需要换行
+				LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{php}echo $v['service_name'].'/'.$v['service_price']{/php}');
+				hPos+=rowHeight;
+			}
+			LODOP.ADD_PRINT_TEXT(hPos,40,pageWidth,rowHeight,'{php}echo $v['fworker'].$v['fname'].$v['sworker'].$v['sname']{/php}');
+			LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'{php}echo $v['count'].'/'.$v['discount_value']{/php}');
+			LODOP.ADD_PRINT_TEXT(hPos,145,pageWidth,rowHeight,'￥{php}echo $v['discount']{/php}');
+		{php}}{/php}
+		//消费情况
+		hPos+=rowHeight; //电话不换行
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,"支付明细");
+		{volist name="payway" id="p" }
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"{$p.name}:");
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,'￥{$p.discount}');
+	    {/volist}
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"原价总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'￥{$yuanjia}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"实付总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'￥{$cashier['real_money']}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"节省总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'￥{$cashier['dis_money']}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		//账户
+		{if condition="$is_sanke!=1"}
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"贵宾卡号:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$member.card_no}（{$member.name}）');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"储值账户余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.cash}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"电子钱包余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.ewallet}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"老系统疗程余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.old_cash}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		{/if}
+		//收银员
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"收银人员:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$Think.session.family_name}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		//客户签名
+		hPos+=5;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"客户签名:");
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+		//公司基本资料
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'公司电话：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$company.telephone}');
+		hPos+=rowHeight;
+		var str1 = '{$company.address}'.substring(0,10);
+		var str2 = '{$company.address}'.substring(9);
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'联系地址：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,str1);
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,str2);
+
+		LODOP.SET_PRINT_PAGESIZE(3,pageWidth,45,"订单信息");
+		LODOP.PRINT();
+	};	
+</script>
+</body>
+</html>

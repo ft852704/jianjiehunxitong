@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
+    <script type="text/javascript" src="_JS_/ckform.js"></script>
+    <script type="text/javascript" src="_JS_/common.js"></script>
+    <script type="text/javascript" src="_LAYDATE_/laydate.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .checkboxtd label{
+        	display: inline-block;;
+        }
+
+
+    </style>
+</head>
+<object id="MWRFATL" style="display:none" classid="CLSID:856964B5-F42F-447B-A37D-ED07E8973ED2"></object>
+<form action="" method="post">
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft"></td>
+        <td colspan="3">
+		{php}if(in_array('membercard/superedit',$power)){{/php}
+            <button type="submit" class="btn btn-primary" type="button">保存</button><b id="wait" style="display:none">10</b>&nbsp;&nbsp;
+		{php}}{/php}
+		<button type="reset" class="btn btn-primary" type="button">刷新</button>&nbsp;&nbsp;<button type="button" class="btn btn-success" id="backid">返回</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-primary" type="button" id="delete">删除</button>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">
+        会员卡卡号
+        </td>
+        <td><input type="text" name="card_no" required="required" id="card_no"/></td>
+        <td width="10%" class="tableleft">备注</td>
+        <td colspan=2>
+        	<textarea style="color:red;width:90%" name='remark'></textarea>
+        </td>
+        <td>
+            <label>发送消费短息&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="is_msn" value="1" /></label>
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft">手机号码</td>
+        <td><input type="text" name="mobile_phone" /></td>
+        <td width="10%" class="tableleft">会员姓名</td>
+        <td>
+        	<input type='text' name="name" required="required" />
+        </td>
+        <td class="tableleft">会员性别</td>
+        <td>
+        	<label><input type="radio" name="sex" data-sex=1 value="1" checked/>男</label>
+            <label><input type="radio" name="sex" data-sex=2 value="2"/>女</label>
+        </td>
+    </tr>
+    <tr>
+        <td class="tableleft">会员卡类型</td>
+        <td>
+        	<select name="card_type">
+        	{foreach name="ctlist" item='v' key='k'}
+            <option value="{$v.id}">{$v.new_name}</option>
+            {/foreach}
+            </select>
+        </td>
+    	<td class="tableleft">开卡日期</td>
+        <td><input type='text' name='start_time' id='start_time' value="{$time.stime}" /></td>
+        <td class="tableleft">有效期至</td>
+        <td><input type='text' name='end_time' id='end_time' value="{$time.etime}" /></td>
+    </tr>  
+    <tr>
+        <td width="10%" class="tableleft">身份证</td>
+        <td><input type='text' name="ID_NO" /></td>
+        <td class="tableleft">生日</td>
+        <td><input type='text' name="birthday" id='birthday' /></td>
+        <td class="tableleft">卡可消费地区</td>
+        <td>
+        	<select name="company_area">
+        	{foreach name="companylist" item='v' key='k'}
+            <option value="{$k}">{$v}</option>
+            {/foreach}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">账户</td>
+        <td>
+        	储值账户
+        </td>
+        <td class="tableleft">余额</td>
+        <td><input type='number' name="cash" value=0 /></td>
+        <td width="10%" class="tableleft">欠款金额</td>
+        <td><input type='number' name="cash_arrears" value=0 /></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">账户</td>
+        <td>
+        	电子钱包
+        </td>
+        <td class="tableleft">余额</td>
+        <td><input type='number' name="ewallet" value=0 /></td>
+        <td width="10%" class="tableleft">欠款金额</td>
+        <td><input type='number' name="ewallet_arrears" value=0 /></td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">账户</td>
+        <td>
+        	老疗程系统
+        </td>
+        <td class="tableleft">余额</td>
+        <td><input type='number' name="old_cash" value=0 /></td>
+        <td width="10%" class="tableleft">欠款金额</td>
+        <td><input type='number' name="old_cash_arrears" value=0 /></td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+    $(function () {  
+    	$("input").on('keypress',  //所有input标签回车无效，当然，可以根据需求自定义
+		function(e){
+			var key = window.event ? e.keyCode : e.which;
+			if(key.toString() == "13"){
+				e.preventDefault();
+			}
+		}
+	);
+    	//日历使用1
+	    laydate({
+	    	// //http://www.layui.com/doc/modules/laydate.html  官网  http://www.layui.com/laydate/
+	    	elem: '#birthday', //需显示日期的元素选择器
+		  	event: 'focus', //触发事件
+		  //format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+		  	format: 'YYYY-MM-DD', //日期格式
+		  //istime: false, //是否开启时间选择
+		  //isclear: true, //是否显示清空
+		  //istoday: true, //是否显示今天
+		  //issure: true, //是否显示确认
+		  //festival: true //是否显示节日
+		  //min: '1900-01-01 00:00:00', //最小日期
+		  max: laydate.now(), //最大日期
+		  //start: '2014-6-15 23:00:00',  //开始日期
+		 //fixed: false, //是否固定在可视区域
+		  //zIndex: 99999999, //css z-index
+		  //choose: function(dates){ //选择好日期的回调
+		 
+		 // }
+
+		});
+	    //日历使用2
+		var start = {
+		  elem: '#start_time',
+		  event: 'focus',
+		  format: 'YYYY/MM/DD',
+		  min: laydate.now(), //设定最小日期为当前日期
+		  max: '2099-06-16', //最大日期
+		  istime: false,
+		  istoday: true,
+		  choose: function(datas){
+		     end.min = datas; //开始日选好后，重置结束日的最小日期
+		     end.start = datas //将结束日的初始值设定为开始日
+		  }
+		};
+		var end = {
+		  elem: '#end_time',
+		  event: 'focus',
+		  format: 'YYYY/MM/DD',
+		  min: laydate.now(),
+		  max: '2099-06-16 23:59:59',
+		  istime: false,
+		  istoday: false,
+		  choose: function(datas){
+		    start.max = datas; //结束日选好后，重置开始日的最大日期
+		  }
+		};
+		laydate(start);
+		laydate(end);
+
+		//点击保存后10秒内不能再次点击
+		function resetCashier(){
+			var wait = document.getElementById('wait');
+			$('[type="submit"]').attr('disabled','1');
+			$("#wait").attr('display','block');
+	            var interval = setInterval(function(){
+	                var time = --wait.innerHTML;
+	                if(time <= 0) {
+	                    $('[type="submit"]').removeAttr('disabled');
+						$("#wait").attr('display','none');
+						$("#wait").html(10);
+	                    clearInterval(interval);
+	                };
+	            }, 1000);
+		}
+
+    	$("form").submit(function(e){
+    		var out = false;
+    		var total = 0;
+    		$("[data=money]").each(function(){
+			    if($(this).val()<=0){
+			    	alert('请输入支付金额!');
+			    	out = true;
+			    	return false;
+			    }
+			    total = total+parseInt($(this).val());
+			});
+    		if(out){
+    			return false;
+    		}
+    		resetCashier();
+    	});
+		$('#backid').click(function(){
+			window.history.back();
+		});
+		
+		$('#delete').click(function(){
+			if(confirm('删除后将不能找回，确定删除该卡号？')){
+				var card_no = $("[name=card_no]").val();
+				window.location.href="{:URL('member_card/superdelete')}?card_no="+card_no;
+			}
+		});
+		document.getElementById("card_no").focus(); 
+
+});
+    
+        $("[name=card_no]").change(function(){
+			var card_no = $("[name=card_no]").val();
+			if(card_no){
+				$.ajax({  
+		   		type: 'POST',  
+		   		dataType : "json",
+		   		async:true,//是否异步请求
+		   		url: "{:URL('member_card/memberInfoByCardno')}",//请求的action路径页面
+			   	data: {card_no:$("[name=card_no]").val()},  
+		   		error: function(){ //请求失败处理函数
+		       		alert('请求失败');  
+		   		},
+		   		success:function(data){ //请求成功后处理函数。
+		   			if(data.code==0){
+		   				alert('暂无该会员,请检查会员卡是否录入错误！');
+		   				return false;
+		   			}
+			   			$('[name=card_type]').val(data.card_type); 
+			   			$('[name=card_type]').find('option[value='+data.card_type+']').attr('selected',true);
+
+			   			$('[name=name]').val(data.name);
+			   			$('[name=mobile_phone]').val(data.mobile_phone);
+
+			   			$('[name=company_area]').val(data.company_area); 
+			   			$('[name=company_area]').find('option[value='+data.company_area+']').attr('selected',true);
+			   			$('[name=remark]').val(data.remark);
+			   			$('[name=birthday]').val(data.birthday);
+			   			$('[name=ID_NO]').val(data.ID_NO);
+
+			   			$('[name=cash]').val(data.cash); 
+			   			$('[name=cash_arrears]').val(data.cash_arrears); 
+			   			$('[name=ewallet]').val(data.ewallet); 
+			   			$('[name=old_cash]').val(data.old_cash); 
+			   			$('[name=old_cash_arrears]').val(data.old_cash_arrears);
+
+			   			if(data.sex==1){
+			   				$('[data-sex=1]').click();
+			   				$('[data-sex=1]').attr('checked',true);
+			   				$('[data-sex=2]').attr('checked',false);
+			   			}else if(data.sex==2){
+			   				$('[data-sex=2]').click();
+			   				$('[data-sex=2]').attr('checked',true);
+			   				$('[data-sex=1]').attr('checked',false);
+			   			}
+			   			if(data.is_msn==1){
+				   			if(!$('[name=is_msn]').attr('checked')){
+			   					$('[name=is_msn]').click();
+				   			}
+			   				$('[name=is_msn]').attr('checked',true);
+			   			}else{
+			   				if($('[name=is_msn]').attr('checked')){
+			   					$('[name=is_msn]').click();
+				   			}
+			   				$('[name=is_msn]').attr('checked',false);
+			   			}
+		   		}  
+			});
+
+			}
+		});
+</script>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
+    <script type="text/javascript" src="_JS_/ckform.js"></script>
+    <script type="text/javascript" src="_JS_/common.js"></script>
+    <script type="text/javascript" src="_LAYDATE_/laydate.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .checkboxtd label{
+        	display: inline-block;
+        }
+        *.cashier select{
+        	width:100px;
+        }
+
+    </style>
+</head>
+<form action="" method="post">
+<table class="table table-bordered table-hover definewidth m10">
+<input type="reset" id="reset" style="display:none" />
+<input type="hidden" name="id" value="{$cashier.id}"/>
+    <tr>
+        <td class="tableleft"></td>
+        <td colspan="3">
+            <button class="btn btn-primary" type="submit">保存</button>&nbsp;&nbsp;<button type="button" class="btn btn-success" id="backid">返回</button>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">会员卡号</td>
+        <td><input type="text" name="card_no" id="card_no" value="{$member_no}" readonly/></td>
+        <td class="tableleft">手机号码</td>
+		<td><input type="text" name="mobile_phone" disabled /></td>
+		<td class="tableleft">会员卡类型</td>
+        <td>
+        	<select name="card_type" disabled>
+        	{foreach name="ctlist" item='v' key='k'}
+            <option value="{$v.id}">{$v.name}</option>
+            {/foreach}
+            </select>
+        </td>
+    </tr>
+    <tr>
+    <td width="10%" class="tableleft">会员姓名</td>
+        <td>
+        	<input type='text' name="name" disabled />
+        </td>
+        <td width="10%" class="tableleft">开卡公司</td>
+        <td>
+        	<select name="company_id" disabled>
+        	{foreach name="companylist" item='v' key='k'}
+            <option value="{$k}">{$v}</option>
+            {/foreach}
+            </select>
+        </td>
+        <td class="tableleft">卡可消费地区</td>
+		<td>
+		<select name="company_area" disabled>
+		{foreach name="companylist" item='v' key='k'}
+		<option value="{$k}">{$v}</option>
+		{/foreach}
+		</select>
+
+		</td>
+    </tr>
+    
+<tr>
+<td class="tableleft"></td>
+    	<td><input style="width:20px;height:20px" type="checkbox" name="is_sanke" value="1"{php}if(!$member_no){echo 'checked';}{/php} disabled/>散客
+    	<br/>
+    	<br/>
+    	<br/>
+    	原订单金额：{$cashier.real_money}
+    	</td>
+
+<td class="tableleft"><p>备注</p>
+<button type="button" class="btn btn-default btn-xs" id="editremark">修改备注</button>
+</td>
+<td>
+<textarea data="remark" cols=50 rows=7 style="color:red"></textarea>
+</td>
+<td colspan=2>
+<table class="table">
+		<thead>
+   		<tr>
+       		<th style="width:10%">账户类型</th>
+       		<th style="width:10%">余额</th>
+       		<th style="width:10%">欠款额</th>
+   		</tr>
+		</thead>
+			<tr>
+				<td>储值账户</td>
+				<td data='cash'>0</td>
+				<td data='cash_arrears'>0</td>
+			</tr>
+			<tr>
+				<td>电子钱包</td>
+				<td data='ewallet'>0</td>
+				<td>0</td>
+			</tr>
+			<tr>
+				<td>老疗程系统</td>
+				<td data='old_cash'>0</td>
+				<td data='old_cash_arrears'>0</td>
+			</tr>
+	</table>
+</td>
+<tr>
+	<td colspan=6>
+		<table class="table" class='cashier'>
+				<thead>
+		   		<tr>
+		       		<th style="width:10%">项目名称</th>
+		   			<th style="width:5%">支付方式</th>
+		       		<th style="width:5%">标准价</th>
+		       		<th style="width:5%">折扣</th>
+		       		<th style="width:5%">数量</th>
+		       		<th style="width:5%">抵扣方式</th>
+		       		<th style="width:5%">抵扣码</th>
+		       		<th style="width:5%">抵扣金额</th>
+		       		<th style="width:5%">付款金额</th>
+		       		<th style="width:7%">工号一</th>
+		       		<th style="width:5%">工号二</th>
+		   		</tr>
+				</thead>
+				{foreach name="cashiers" item='v' key='k'}
+	            <tr>
+	            	<td>{$v.services_name}</td>
+	            	<td>{$v.pay_name}</td>
+	            	<td>{$v.standard_price}</td>
+	            	<td>{$v.discount_value}</td>
+	            	<td>{$v.count}</td>
+	            	<td>{$v.deductible_pay_name}</td>
+	            	<td>{$v.coupons_code}</td>
+	            	<td>{$v.deductible}</td>
+	            	<td>{$v.total}</td>
+	            	<td>{$v.fworker}</td>
+	            	<td>{$v.sworker}</td>
+	            </tr>
+	            {/foreach}
+		</table>
+	</td>
+</tr>
+</tr>
+	<tr>
+    	<td colspan=2>
+	    	<button type="button" class="btn btn-success" id="all_print">合并打印</button>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<button type="button" class="btn btn-success" id="addpayway">增加条目</button>
+	    	&nbsp;&nbsp;&nbsp;&nbsp;
+	    	<button type="button" class="btn btn-success" id="resettb">刷新条目</button>
+    	</td>
+        <td class="tableleft" style="color:blue;"></td>
+        <td></td>
+        <td></td>
+        <td><button type="button" class="btn btn-success" onclick="getTotal()">计算总价</button>总价：<span data='total'>0</span></td>
+    </tr>
+    <tr><td></td></tr>
+    <tr>
+    	<td colspan=6>
+    		<table class="table" class='cashier' id="payway">
+			<thead>
+	   		<tr>
+	       		<th style="width:10%">项目名称</th>
+	   			<th style="width:5%">项目编号</th>
+	       		<th style="width:5%">级别</th>
+	       		<th style="width:5%">时长</th>
+	       		<th style="width:5%">支付方式</th>
+	       		<th style="width:5%">标准价</th>
+	       		<th style="width:5%">折扣</th>
+	       		<th style="width:5%">数量</th>
+	       		<th style="width:5%">抵扣方式</th>
+	       		<th style="width:5%">抵扣码</th>
+	       		<th style="width:5%">抵扣金额</th>
+	       		<th style="width:5%">付款金额</th>
+	       		<th style="width:5%">类型</th>
+	       		<th style="width:7%">工号一</th>
+	       		<th style="width:5%">类型</th>
+	       		<th style="width:5%">工号二</th>
+	       		<th style="width:5%">操作</th>
+	   		</tr>
+			</thead>
+				<tr>
+					<input type="hidden" data="service_id" name="service_id[]" data='service_id' />
+			        <input type="hidden" data="services" name="services[]" data="services" />
+					<td data="service_name">
+					</td>
+					<td data='service'>
+			            <input type="text" name="service[]" style="width:70px" onchange="getStar(this)"/> 
+					</td>
+					<td data='star'>
+					</td>
+					<td data='time_long'></td>
+					<td data='paywaylist'>
+						<select name="paywaylist[]" onchange="getRate(this)" style="width:100px">
+			        	{foreach name="paywaylist1" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="price">-</td>
+					<td data="discount">1</td>
+					<td><input type="text" name="counts[]" value="1" data="counts"  style="width:50px" onchange="resetPrice(this,1)" /></td>
+					<td data="deductible_type">
+						<select name="deductible_type[]" style="width:100px" onchange="change_deductible_type(this)">
+			        	{foreach name="paywaylist2" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="coupons_code">
+					<input type="text" name="coupons_code[]" readonly value="" style="width:70px" onblur="resetPrice(this,1)" onchange="checkcode(this)"/>
+					<span data='code_price'></span>
+					</td>
+					<td data="deductible">
+					<input type="text" name="deductible[]" readonly value="0" style="width:70px" onblur="checkcodeprice(this)" onchange="resetPrice(this,1)"/>
+					<span data="deductible-alt" style="color:red"></span>
+					</td>
+					<td data="dis-price"><input type="text" name="dis-price[]" value="0" readonly style="width:70px"/></td>
+					<td>
+					<select name="stype1[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			        </select>
+					</td>
+					<td><input type="text" name="fworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td>
+					<select name="stype2[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td>
+						<input type="text" name="sworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td>
+					<button type="button" class="btn btn-default btn-xs" onclick="firstresetthis(this)">刷新</button>
+					</td>
+				</tr>
+			</table>
+    	</td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+$("input").on('keypress',  //所有input标签回车无效，当然，可以根据需求自定义
+		function(e){
+			var key = window.event ? e.keyCode : e.which;
+			if(key.toString() == "13"){
+				e.preventDefault();
+			}
+		}
+	);
+type = new Array();
+function getCT(){
+		var card_no = $("[name=card_no]").val();
+		if(cash_arrears&&card_no){
+			$.ajax({  
+					type: 'POST',  
+					dataType : "json",
+					async:false,//是否异步请求
+					url: "{:URL('Cashier/getCTbyRecharge_transfercard')}",//请求的action路径页面
+			   		data: {card_no:card_no},  
+					error: function(){ //请求失败处理函数
+			   			alert('请求失败');  
+					},
+					success:function(data){ //请求成功后处理函数。
+						type = data;
+					}  
+			});
+		}
+}
+$("form").submit(function(e){
+	var out = true;
+	$("[data=dis-price]").each(function(i){
+		if(parseFloat($(this).find('input').val())<0){
+			alert('付款金额不能小于0');
+			out = false;
+			return false;
+		}
+	});
+	if(!($("#payway").find("tbody tr").first().find('[data=service_id]').val()&&$("#payway").find("tbody tr").first().find('[data=services]').val())){
+		alert('请选择收银项目');
+		return false;
+	}
+	if($("[name=is_sanke]").prop('checked')){
+		$("[data=paywaylist]").each(function(){
+			if($(this).find("select").val()==7||$(this).find("select").val()==8||$(this).find("select").val()==9){
+				alert('请选择正确的散客付款方式');
+				out = false;
+				return false;
+			}
+		});
+	}
+	if(!out){
+		return false;
+	}
+	$("[data=paywaylist]").each(function(){
+		if($(this).find("select option:selected").val()==0){
+			if($(this).parent('tr').find('[data=services]').val()){
+				alert('项目：'+$(this).parent('tr').find('[data=service_name]').html()+'，未选择支付方式');
+				out = false;
+				return false;
+			}
+			return false;
+		}
+	});
+	if(!out){
+		return false;
+	}
+	if(!confirm('确认收银吗？')){
+		return false;
+	}else{
+		var cash_arrears = $("[data=cash_arrears]").html();
+		if(cash_arrears){
+			getCT();
+			if(type.status){
+				var msg = '如果强制买单，该卡会变更';
+				type = new Array();
+				if(!confirm(msg+'。确认收银吗？')){
+					return false;
+				}
+			}
+		}
+	}
+});
+
+//$('#card_no').trigger('blur');
+
+
+$("[name=card_no]").blur(function(){
+var card_no = $("[name=card_no]").val();
+if(card_no){
+	$.ajax({  
+		type: 'POST',  
+		dataType : "json",
+		async:true,//是否异步请求
+		url: "{:URL('member_card/memberInfoByCardno')}",//请求的action路径页面
+   		data: {card_no:$("[name=card_no]").val()},  
+		error: function(){ //请求失败处理函数
+   			alert('请求失败');  
+		},
+		success:function(data){ //请求成功后处理函数。
+			if(data.code==0){
+				alert('暂无该会员,请检查会员卡是否录入错误！');
+				return false;
+			}
+			$('[data=is_read]').val(0); 
+   			$('[name=card_type]').val(data.card_type); 
+			$('[name=card_type]').find('option[value='+data.card_type+']').attr('selected',true);
+			$('[name=name]').val(data.name);
+
+			$('[name=company_area]').val(data.company_area); 
+			$('[name=company_area]').find('option[value='+data.company_area+']').attr('selected',true);
+			$('[name=company_id]').val(data.company_id); 
+			$('[name=company_id]').find('option[value='+data.company_id+']').attr('selected',true);
+
+			$('[name=mobile_phone]').val(data.mobile_phone);
+
+			$('[data=cash]').html(data.cash); 
+			$('[data=cash_arrears]').html(data.cash_arrears); 
+			$('[data=ewallet]').html(data.ewallet); 
+			$('[data=old_cash]').html(data.old_cash); 
+			$('[data=old_cash_arrears]').html(data.old_cash_arrears); 
+   			$('textarea').text(data.remark);
+
+   			if(data.is_used){
+   				if(data.arrears_c==1){
+	   				alert('该卡欠款后已消费一次，如强制买单，会员卡折扣可能会更改！');
+	   			}
+   			}
+			//$('[name=wallet]').val(7); 
+			//$('[name=wallet]').find('option[value=7]').attr('selected',true);
+
+			//$('[name=cash_arrears]').val(data.cash_arrears);
+			//$('[name=cash]').val(data.cash);
+		}  
+});
+
+}
+});
+//更换抵扣方式的变化
+function change_deductible_type(obj){
+	var deductible_type = $(obj).val();
+	if(deductible_type==0){
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').attr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').val('');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').attr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('[data=code_price]').val('');
+	}else if(deductible_type==12){
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').attr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').val('');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').removeAttr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('[data=code_price]').val('');
+	}else{
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').removeAttr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').val('');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').removeAttr('readonly','readonly');
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+		$(obj).parent('td').parent('tr').find('[data=deductible]').find('[data=code_price]').val('');
+	}
+	resetPrice(obj,1);
+}
+//验证抵扣券
+	function checkcode(obj){
+		var code=$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').val();
+		var payway = $(obj).parent('td').parent('tr').find('[data=deductible_type]').find('select').val();
+		if(payway!=17||!code){
+			$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').next('span').html('');
+			return false;
+		}
+		var deductible = parseFloat($(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val());
+
+		$.ajax({
+			type: 'POST',
+			dataType : "json",
+			async:true,//是否异步请求
+			url: "{:URL('Cashier/checkcode')}?code="+code,//请求的action路径页面
+	   		data: {'code':code},
+			error: function(){ //请求失败处理函数
+	   			alert('请求失败');
+			},
+			success:function(data){ //请求成功后处理函数。
+				if(data.status==1){
+					$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').next('span').html(data.data.price);
+
+					if(data.data.price<deductible){
+						alert('超出抵用券最大金额，请重新输入抵扣金额');
+						$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+					}else{
+						$(obj).parent('td').parent('tr').find('[data=deductible-alt]').html('请输入抵扣金额');
+					}
+				}else{
+					alert(data.msg);
+				}
+			}
+		});
+	}
+	//验证抵扣金额
+	function checkcodeprice(obj){
+		var deductible = parseFloat($(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val());
+		var money = parseFloat($(obj).parent('td').parent('tr').find('[data=coupons_code]').find('[data=code_price]').html());
+		if(deductible){
+			if(deductible>money){
+				alert('超出抵用券最大金额，请重新输入抵扣金额');
+				$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+				resetPrice(obj,1);
+			}
+		}
+	}
+	//获取项目星级
+	function getStar(obj) {
+			var snum=$(obj).val();
+			if(!snum){
+				return false;
+			}
+			resetForm(obj);
+			$.ajax({  
+			type: 'POST',  
+			dataType : "json",
+			async:true,//是否异步请求
+			url: "{:URL('Cashier/getStar')}?snum="+snum,//请求的action路径页面
+	   		data: {'snum':snum},  
+			error: function(){ //请求失败处理函数
+	   			alert('请求失败');  
+			},
+			success:function(data){ //请求成功后处理函数。
+				if(data.sta==1){
+					var trs = '<select name="star[]" onchange="getTimeLong(this)" style="width:70px">';
+                    $.each(data.list, function(i, n) {
+	                    trs += '<option value="'+n.star+'">'+n.star_str+'</option>';
+	                });
+                    trs +='</select>';
+                    $(obj).parent('td').next('td').html(trs);
+                    $(obj).parent('td').parent('tr').find('[data=service_name]').html(data.sname);
+                    $(obj).parent('td').parent('tr').find('[data=service_id]').val(data.sid);
+                }else{
+                	$(obj).parent('td').parent('tr').find('[data=coupons_code]').find('input').next('span').html('');
+					alert('没有对应项目');
+				}
+			}  
+		});
+	}
+	//获取项目时长
+	function getTimeLong(obj) {
+			var stid=$(obj).val();
+			var sid = $(obj).parent('td').parent('tr').find('[data=service_id]').val();
+			if(sid==0||stid==0){
+				return false;
+			}
+			resetForm(obj);
+
+			$.ajax({  
+			type: 'POST',  
+			dataType : "json",
+			async:true,//是否异步请求
+			url: "{:URL('Cashier/getTimeLong')}?service_id="+sid+"&star="+stid,//请求的action路径页面
+	   		data: {'sid':sid},  
+			error: function(){ //请求失败处理函数
+	   			alert('请求失败');  
+			},
+			success:function(data){ //请求成功后处理函数。
+				if(data.sta==1){
+					var trs = '<select name="time_long[]" onchange="getPrice(this)" style="width:70px">';
+                    $.each(data.list, function(i, n) {
+	                    trs += '<option value="'+n.time_long+'">'+n.time_long+'</option>';
+	                });
+                    trs +='</select>';
+                    $(obj).parent('td').next('td').html(trs);
+                }else{
+					alert('没有对应项目');
+				}
+			}  
+		});
+	}
+	//获取项目时价格
+	function getPrice(obj) {
+			var time_long=$(obj).val();
+			var stid = $(obj).parent('td').prev('td').find('select').val();
+			var sid = $(obj).parent('td').parent('tr').find('[data=service_id]').val();
+			if(!sid||stid=='无'||time_long=='无'){
+				return false;
+			}
+			$.ajax({  
+			type: 'POST',  
+			dataType : "json",
+			async:true,//是否异步请求
+			url: "{:URL('Cashier/getPrice')}?service_id="+sid+"&star="+stid+"&time_long="+time_long,//请求的action路径页面
+	   		data: {'sid':sid},  
+			error: function(){ //请求失败处理函数
+	   			alert('请求失败');  
+			},
+			success:function(data){ //请求成功后处理函数。
+				if(data.sta==1){
+					var trs = '<select name="price[]" style="width:100px" onchange="resetPrice(this,0)" data="standard_price">';
+                    $.each(data.list, function(i, n) {
+	                    trs += '<option value="'+n+'">'+n+'</option>';
+	                });
+                    trs +='</select>';
+                    $(obj).parent('td').next('td').next('td').html(trs);
+                    $(obj).parent('td').parent('tr').find('[data=services]').val(data.services_id);
+                }else{
+					alert('没有对应项目');
+				}
+			}  
+		});
+	}
+	//获取折扣率计算折后价
+	function getRate(obj){
+		var card_no = $('[name=card_no').val();
+		var payway = $(obj).parent('td').parent('tr').find('[data=paywaylist]').find('select').val();
+		var is_sanke = $('[name=is_sanke]').val();
+		var services = $(obj).parent('td').parent('tr').find('[data=services]').val();
+		var price = $(obj).parent('td').parent('tr').find('[data=price]').find('select').val();
+		if(card_no||is_sanke){
+			if(!payway){
+				return false;
+			}
+			if(card_no&&services){
+				$.ajax({  
+					type: 'POST',  
+					dataType : "json",
+					async:true,//是否异步请求
+					url: "{:URL('Cashier/getRate')}?card_no="+card_no+"&payway="+payway+"&services="+services+"&price="+price,//请求的action路径页面
+			   		data: {'card_no':card_no},  
+					error: function(){ //请求失败处理函数
+			   			alert('请求失败');  
+					},
+					success:function(data){ //请求成功后处理函数。
+						if(data.sta==1){
+							if(!data.rate){
+								data.rate = 1;
+							}
+							$(obj).parent('td').parent('tr').find('[data=discount]').html(data.rate);
+							getDisPrice(obj,data.rate);
+		                }else{
+							alert(data.msg);
+						}
+					}  
+				});	
+			}else{
+				$(obj).parent('td').parent('tr').find('[data=discount]').html('1');
+				getDisPrice(obj,1);
+			}
+		}
+	}
+	//计算折后价
+	function resetPrice(obj,is_ddeductible){
+		if(!is_ddeductible){
+			getRate(obj);
+		}
+		var rate = $(obj).parent('td').parent('tr').find('[data=discount]').html();
+		getDisPrice(obj,rate);
+	}
+	//计算折后价（带折扣）
+	function getDisPrice(obj,rate){
+		var counts = $(obj).parent('td').parent('tr').find('[data=counts]').val();
+		var standard_price = $(obj).parent('td').parent('tr').find('[data=standard_price]').val();
+		var deductible_type = $(obj).parent('td').parent('tr').find('[data=deductible_type]').find('select').val();
+		if(deductible_type){
+			var deductible = $(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val();
+		}else{
+			var deductible = 0;
+		}
+		
+		if(counts&&standard_price&&rate){
+			//var dis_price = (parseFloat(rate)*parseFloat(counts)*parseFloat(standard_price)-parseFloat(deductible)).toFixed(2);
+			var dis_price = (parseFloat(rate)*(parseFloat(counts)*parseFloat(standard_price)-parseFloat(deductible))).toFixed(2);
+				dis_price = Math.round(dis_price);
+			if(dis_price<0){
+				alert('抵扣金额大于折后金额，请重新填写！');
+				dis_price = 0;
+				$(obj).parent('td').parent('tr').find('[data=deductible]').find('input').val(0);
+				getDisPrice(obj,rate);
+			}else{
+				$(obj).parent('td').parent('tr').find('[data=dis-price]').find('input').val(dis_price);
+			}
+		}
+	}
+	function checknum(obj){
+		var number = $(obj).val();
+		if(number){
+			$.ajax({  
+				type: 'POST',  
+				dataType : "json",
+				async:false,//是否异步请求
+				url: "{:URL('Cashier/familyisset')}",//请求的action路径页面
+		   		data: {'number':number},  
+				error: function(){ //请求失败处理函数
+		   			alert('请求失败');  
+				},
+				success:function(data){ //请求成功后处理函数。
+					if(data.status==1){
+						$(obj).next('span').html(data.name);
+	                }else if(data.status==2){
+						alert('该员工并非本店员工，请注意！');
+						$(obj).next('span').html(data.name);
+					}else{
+						alert('请确认员工编号录入正确或该员工处于启用状态！');
+					}
+				}
+			});
+		}
+	}
+	function resetForm(obj){
+		var doom = $(obj).parent('td').parent('tr');
+		var services = doom.find('[data=services]').val();
+		var service = doom.find('[data=service_id]').val();
+		if(services&&service){
+			doom.find('[data=services]').val('');
+			doom.find('[data=service_id]').val('');
+			doom.find('[data=time_long]').html('');
+			doom.find('[data=price]').html('');
+			doom.find('[data=dis-price]').find('input').val(0);
+		}else if(!services&&service){
+			doom.find('[data=time_long]').html('');
+			doom.find('[data=price]').html('');
+			doom.find('[data=dis-price]').find('input').val(0);
+		}
+	}
+	$("#addpayway").click(function(){
+		$("#payway").append($("#trstr").html());
+	});
+	function getTotal(){
+		var total = 0;
+		$("[data=dis-price]").each(function(i){
+			if(!$(this).find('input').val()){
+			    total+=0;
+			}else{
+				total+=parseFloat($(this).find('input').val());
+			}
+		});
+		$('[data=total]').html(total);
+	}
+	function remv(obj){
+    	$(obj).parent('td').parent('tr').remove();
+    }
+    $("#editremark").click(function(){
+		var card_no = $("[name=card_no]").val();
+		if(!card_no){
+			alert('请输入会员卡号');
+			return false;
+		}
+    	if(!confirm('确认修改备注吗？')){
+			return false;
+		}
+		var mark = $('[data=remark]').val();
+    	$.ajax({  
+				type: 'POST',  
+				dataType : "json",
+				async:true,//是否异步请求
+				url: "{:URL('MemberCard/editRemark')}",//请求的action路径页面
+		   		data: {'card_no':card_no,'remark':mark},
+				error: function(){ //请求失败处理函数
+		   			alert('请求失败');  
+				},
+				success:function(data){ //请求成功后处理函数。
+					if(data.status==1){
+						alert('修改成功');
+					}else{
+						alert('修改失败');
+					}
+				}
+			});
+    });
+    $(function(){ 
+    	var card_no = $("[name=card_no]").val();
+		if(card_no){
+			$.ajax({  
+				type: 'POST',  
+				dataType : "json",
+				async:true,//是否异步请求
+				url: "{:URL('member_card/memberInfoByCardno')}",//请求的action路径页面
+		   		data: {card_no:$("[name=card_no]").val()},  
+				error: function(){ //请求失败处理函数
+		   			alert('请求失败');  
+				},
+				success:function(data){ //请求成功后处理函数。
+					if(data.code==0){
+						alert('暂无该会员,请检查会员卡是否录入错误！');
+						return false;
+					}
+		   			$('[name=card_type]').val(data.card_type); 
+					$('[name=card_type]').find('option[value='+data.card_type+']').attr('selected',true);
+					$('[name=name]').val(data.name);
+
+					$('[name=company_area]').val(data.company_area); 
+					$('[name=company_area]').find('option[value='+data.company_area+']').attr('selected',true);
+					$('[name=company_id]').val(data.company_id); 
+					$('[name=company_id]').find('option[value='+data.company_id+']').attr('selected',true);
+
+					$('[name=mobile_phone]').val(data.mobile_phone);
+
+					$('[data=cash]').html(data.cash); 
+					$('[data=cash_arrears]').html(data.cash_arrears); 
+					$('[data=ewallet]').html(data.ewallet); 
+					$('[data=old_cash]').html(data.old_cash); 
+					$('[data=old_cash_arrears]').html(data.old_cash_arrears); 
+		   			$('textarea').text(data.remark);
+
+		   			if(data.arrears_c==1){
+		   				alert('该卡欠款后已消费一次，如强制买单，会员卡折扣可能会更改！');
+		   			}
+					//$('[name=wallet]').val(7); 
+					//$('[name=wallet]').find('option[value=7]').attr('selected',true);
+
+					//$('[name=cash_arrears]').val(data.cash_arrears);
+					//$('[name=cash]').val(data.cash);
+				}  
+		});
+
+		}
+		$("#all_print").click(function(){
+			window.location.href = "{:URL('Cashier/all_print')}";
+		});
+		//刷新所有条目
+		$("#resettb").click(function(){
+			$("#payway").html($("#firsttr").html());
+		});
+		
+    }); 
+    //刷新当前条目
+	function firstresetthis(obj){
+		$(obj).parent('td').parent('tr').html($("#firsttrreset").html());
+	}
+	function resetthis(obj){
+		$(obj).parent('td').parent('tr').html($("#thistr").html());
+	}
+</script>
+<script type="text/html" id="firsttr">
+<thead>
+	   		<tr>
+	       		<th style="width:10%">项目名称</th>
+	   			<th style="width:5%">项目编号</th>
+	       		<th style="width:5%">级别</th>
+	       		<th style="width:5%">时长</th>
+	       		<th style="width:5%">支付方式</th>
+	       		<th style="width:5%">标准价</th>
+	       		<th style="width:5%">折扣</th>
+	       		<th style="width:5%">数量</th>
+	       		<th style="width:5%">抵扣方式</th>
+	       		<th style="width:5%">抵扣码</th>
+	       		<th style="width:5%">抵扣金额</th>
+	       		<th style="width:5%">付款金额</th>
+	       		<th style="width:5%">类型</th>
+	       		<th style="width:7%">工号一</th>
+	       		<th style="width:5%">类型</th>
+	       		<th style="width:5%">工号二</th>
+	       		<th style="width:8%">操作</th>
+	   		</tr>
+			</thead>
+				<tr>
+					<input type="hidden" data="service_id" name="service_id[]" data='service_id' />
+			        <input type="hidden" data="services" name="services[]" data="services" />
+					<td data="service_name">
+					</td>
+					<td data='service'>
+			            <input type="text" name="service[]" style="width:70px" onchange="getStar(this)"/> 
+					</td>
+					<td data='star'>
+					</td>
+					<td data='time_long'></td>
+					<td data='paywaylist'>
+						<select name="paywaylist[]" onchange="getRate(this)" style="width:100px">
+			        	{foreach name="paywaylist1" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="price">-</td>
+					<td data="discount">1</td>
+					<td><input type="text" name="counts[]" value="1" data="counts"  style="width:50px" onchange="resetPrice(this,1)" /></td>
+					<td data="deductible_type">
+						<select name="deductible_type[]" style="width:100px" onchange="change_deductible_type(this)">
+			        	{foreach name="paywaylist2" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="coupons_code">
+					<input type="text" name="coupons_code[]" readonly value="" style="width:70px" onblur="resetPrice(this,1)" onchange="checkcode(this)"/>
+					<span data='code_price'></span>
+					</td>
+					<td data="deductible">
+					<input type="text" name="deductible[]" readonly value="0" style="width:70px" onblur="checkcodeprice(this)" onchange="resetPrice(this,1)"/>
+					<span data="deductible-alt" style="color:red"></span>
+					</td>
+					<td data="dis-price"><input type="text" name="dis-price[]" value="0" readonly style="width:70px"/></td>
+					<td>
+					<select name="stype1[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td><input type="text" name="fworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span></td>
+					<td>
+					<select name="stype2[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td>
+						<input type="text" name="sworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td><button type="button" class="btn btn-default btn-xs" onclick="resetthis(this)">刷新</button></td>
+				</tr>
+</script>
+<script type="text/html" id="firsttrreset">
+<input type="hidden" data="service_id" name="service_id[]" data='service_id' />
+			        <input type="hidden" data="services" name="services[]" data="services" />
+					<td data="service_name">
+					</td>
+					<td data='service'>
+			            <input type="text" name="service[]" style="width:70px" onchange="getStar(this)"/> 
+					</td>
+					<td data='star'>
+					</td>
+					<td data='time_long'></td>
+					<td data='paywaylist'>
+						<select name="paywaylist[]" onchange="getRate(this)" style="width:100px">
+			        	{foreach name="paywaylist1" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="price">-</td>
+					<td data="discount">1</td>
+					<td><input type="text" name="counts[]" value="1" data="counts"  style="width:50px" onchange="resetPrice(this,1)" /></td>
+					<td data="deductible_type">
+						<select name="deductible_type[]" style="width:100px" onchange="change_deductible_type(this)">
+			        	{foreach name="paywaylist2" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="coupons_code">
+					<input type="text" name="coupons_code[]" readonly value="" style="width:70px" onblur="resetPrice(this,1)" onchange="checkcode(this)"/>
+					<span data='code_price'></span>
+					</td>
+					<td data="deductible">
+					<input type="text" name="deductible[]" readonly value="0" style="width:70px" onblur="checkcodeprice(this)" onchange="resetPrice(this,1)"/>
+					<span data="deductible-alt" style="color:red"></span>
+					</td>
+					<td data="dis-price"><input type="text" name="dis-price[]" value="0" readonly style="width:70px"/></td>
+					<td>
+					<select name="stype1[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td><input type="text" name="fworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span></td>
+					<td>
+					<select name="stype2[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td>
+						<input type="text" name="sworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td><button type="button" class="btn btn-default btn-xs" onclick="firstresetthis(this)">刷新</button></td>
+</script>
+<script type="text/html" id="thistr">
+					<input type="hidden" data="service_id" name="service_id[]" data='service_id' />
+			        <input type="hidden" data="services" name="services[]" data="services" />
+					<td data="service_name">
+					</td>
+					<td data='service'>
+			            <input type="text" name="service[]" style="width:70px" onchange="getStar(this)"/> 
+					</td>
+					<td data='star'>
+					</td>
+					<td data='time_long'></td>
+					<td data='paywaylist'>
+						<select name="paywaylist[]" onchange="getRate(this)" style="width:100px">
+			        	{foreach name="paywaylist1" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="price">-</td>
+					<td data="discount">1</td>
+					<td><input type="text" name="counts[]" value="1" data="counts"  style="width:50px" onchange="resetPrice(this,1)" /></td>
+					<td data="deductible_type">
+						<select name="deductible_type[]" style="width:100px" onchange="change_deductible_type(this)">
+			        	{foreach name="paywaylist2" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="coupons_code">
+					<input type="text" name="coupons_code[]" readonly value="" style="width:70px" onblur="resetPrice(this,1)" onchange="checkcode(this)"/>
+					<span data='code_price'></span>
+					</td>
+					<td data="deductible">
+					<input type="text" name="deductible[]" readonly value="0" style="width:70px" onblur="checkcodeprice(this)" onchange="resetPrice(this,1)"/>
+					<span data="deductible-alt" style="color:red"></span>
+					</td>
+					<td data="dis-price"><input type="text" name="dis-price[]" value="0" readonly style="width:70px"/></td>
+					<td>
+					<select name="stype1[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td><input type="text" name="fworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span></td>
+					<td>
+					<select name="stype2[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td>
+						<input type="text" name="sworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td>
+					<button type="button" class="btn btn-default btn-xs" onclick="resetthis(this)">刷新</button>
+					<button type="button" class="btn btn-default btn-xs" onclick="remv(this)">删除</button>
+					</td>
+</script>
+<script type="text/html" id="trstr">
+<tr>
+					<input type="hidden" name="service_id[]" data='service_id' />
+			        <input type="hidden" name="services[]" data="services" />
+					<td data="service_name">
+					</td>
+					<td data='service'>
+			            <input type="text" name="service[]" style="width:70px" onchange="getStar(this)"/> 
+					</td>
+					<td data='star'>
+					</td>
+					<td data='time_long'></td>
+					<td data='paywaylist'>
+						<select name="paywaylist[]" onchange="getRate(this)" style="width:100px">
+			        	{foreach name="paywaylist1" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="price">-</td>
+					<td data="discount">1</td>
+					<td><input type="text" name="counts[]" value="1" data="counts"  style="width:50px" onchange="resetPrice(this,1)" /></td>
+					<td data="deductible_type">
+						<select name="deductible_type[]" style="width:100px" onchange="change_deductible_type(this)">
+			        	{foreach name="paywaylist2" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td data="coupons_code">
+					<input type="text" name="coupons_code[]" readonly value="" style="width:70px" onblur="resetPrice(this,1)" onchange="checkcode(this)"/>
+					<span data='code_price'></span>
+					</td>
+					<td data="deductible">
+					<input type="text" name="deductible[]" readonly value="0" style="width:70px" onblur="checkcodeprice(this)" onchange="resetPrice(this,1)"/>
+					<span data="deductible-alt" style="color:red"></span>
+					</td>
+					<td data="dis-price"><input type="text" name="dis-price[]" readonly value="0" style="width:70px"/></td>
+					<td>
+					<select name="stype1[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td><input type="text" name="fworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span></td>
+					<td>
+					<select name="stype2[]" onchange="" style="width:70px">
+			        	{foreach name="stype" item='v' key='k'}
+			            <option value="{$v.id}">{$v.name}</option>
+			            {/foreach}
+			            </select>
+					</td>
+					<td>
+						<input type="text" name="sworkrer[]" onblur="checknum(this)" style="width:100px"/>
+					<span></span>
+					</td>
+					<td><button type="button" class="btn btn-default btn-xs" onclick="resetthis(this)">刷新</button>
+						<button type="button" class="btn btn-default btn-xs" onclick="remv(this)">删除</button>
+					</td>
+				</tr>
+</script>

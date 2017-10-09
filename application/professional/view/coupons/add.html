@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
+    <script type="text/javascript" src="_JS_/ckform.js"></script>
+    <script type="text/javascript" src="_JS_/common.js"></script>
+    <script type="text/javascript" src="_LAYDATE_/laydate.js"></script>
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .checkboxtd label{
+        	display: inline-block;;
+        }
+
+
+    </style>
+</head>
+<object id="MWRFATL" style="display:none" classid="CLSID:856964B5-F42F-447B-A37D-ED07E8973ED2"></object>
+<form action="" method="post">
+<table class="table table-bordered table-hover definewidth m10">
+    <tr>
+        <td class="tableleft"></td>
+        <td colspan="3">
+            <button type="submit" class="btn btn-primary" type="button">保存</button>&nbsp;&nbsp;<button type="reset" class="btn btn-primary" type="button">刷新</button>&nbsp;&nbsp;<button type="button" class="btn btn-success" id="backid">返回</button>
+        </td>
+    </tr>
+    <tr>
+        <td width="10%" class="tableleft">优惠券名称</td>
+        <td><input type="text" name="name" id="name" required="required" /></td>
+        <td width="10%" class="tableleft">
+        金额
+        </td>
+        <td><input type="number" name="price" required="required"/></td>
+    </tr>
+    <tr>
+        <td class="tableleft">归属公司</td>
+        <td>
+        	<select name="company">
+        	<!--<option value="0">无</option>-->
+        	{foreach name="company_list" item='v' key='k'}
+            <option value="{$v.id}">{$v.full_name}</option>
+            {/foreach}
+            </select>
+        </td>
+        <td width="10%" class="tableleft">数量</td>
+        <td>
+        	<input type='text' name="count" required="required" />
+        </td>
+    </tr>
+    <tr>
+    	<td class="tableleft">开始日期</td>
+        <td><input type='text' name='start_time' id='start_time' value="{$time.stime}" /></td>
+        <td class="tableleft">结束日期</td>
+        <td><input type='text' name='end_time' id='end_time' value="{$time.etime}" /></td>
+    </tr>
+    <tr>
+        <td class="tableleft">抵用券类型</td>
+        <td>
+        	<select name="type">
+        	<!--<option value="0">无</option>-->
+            <option value="1">现金抵用券</option>
+            <!--<option value="2">项目抵用券</option>-->
+            </select>
+        </td>
+        <td width="10%" class="tableleft"></td>
+        <td>
+        	
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>
+<script>
+    $(function () {  
+	    //日历使用2
+		var start = {
+		  elem: '#start_time',
+		  event: 'focus',
+		  format: 'YYYY/MM/DD',
+		  min: laydate.now(), //设定最小日期为当前日期
+		  max: '2099-06-16', //最大日期
+    	  start: laydate.now(0, 'YYYY-MM-DD hh:mm:ss'),
+		  istime: false,
+		  istoday: true,
+		  choose: function(datas){
+		     end.min = datas; //开始日选好后，重置结束日的最小日期
+		     end.start = datas //将结束日的初始值设定为开始日
+		  }
+		};
+		var end = {
+		  elem: '#end_time',
+		  event: 'focus',
+		  format: 'YYYY/MM/DD',
+		  min: laydate.now(),
+		  max: '2099-06-16 23:59:59',
+		  istime: false,
+		  istoday: false,
+		  choose: function(datas){
+		    start.max = datas; //结束日选好后，重置开始日的最大日期
+		  }
+		};
+		laydate(start);
+		laydate(end);
+
+
+    	$("form").submit(function(e){
+    		if(!$("[name=start_time]").val()){
+    			alert('请选择开始日期');
+    		}
+		});
+
+		$('#backid').click(function(){
+				window.history.back();
+		 });
+	})
+</script>

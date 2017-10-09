@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script language="javascript" src="_JS_/LodopFuncs.js"></script> 
+    <style type="text/css">
+    	*{ padding: 0; margin: 0; }
+        body{ background: #fff; font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,sans-serif; color: #333; font-size: 16px; }
+        .system-message{ padding: 24px 48px; }
+        .system-message h1{ font-size: 100px; font-weight: normal; line-height: 120px; margin-bottom: 12px; }
+        .system-message .jump{ padding-top: 10px; }
+        .system-message .jump a{ color: #333; }
+        .system-message .success,.system-message .error{ line-height: 1.8em; font-size: 36px; }
+        .system-message .detail{ font-size: 12px; line-height: 20px; margin-top: 12px; display: none; }
+    </style>
+</head>
+<body>
+	<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>  
+       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed> 
+	</object> 
+	<button id="print" style="color:red;width:100px;font-size:20px">打印小票</button>
+	<h1>以下为小票样式</h1>
+	<hr />
+	<table style="font-size:12px;width:80%">
+	    <tr>
+	        <th colspan="6">{$company['full_name']}</th>
+	    </tr>
+	    <tr>
+	        <td colspan='6'>消费单</td>
+	    </tr>
+	    <tr>
+	        <td colspan="3">NO.{$cashier.number}</td>
+	        <td colspan="3">{$cashier.time|date="Y/m/d H:i:s",###}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	        <td colspan='2'>项目/标准价</td>
+	        <td colspan='2'>服务人员</td>
+	        <td>数量/折扣</td>
+	        <td>金额</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    {volist name="cashiers_list" id="c" }
+	    <tr>
+	        <td colspan='2'>{$c.service_name}/{$c.service_price}</td>
+	        <td colspan='2'>{$c.fworker}{$c.fname}{$c.sworker}{$c.sname}</td>
+	        <td>{$c.count}/{$c.discount_value}</td>
+	        <td>￥{$c.discount}</td>
+	    </tr>
+	    {/volist}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	   		<th colspan="6">支付明细</th>
+	    </tr>
+	    {volist name="payway" id="p" }
+	    <tr>
+	    	<td colspan="3">{$p.name}：</td>
+	    	<td colspan="3">￥{$p.discount}</td>
+	    </tr>
+	    {/volist}
+	    <tr>
+	    	<td colspan="3">原价总计：</td>
+	    	<td colspan="3">￥{$yuanjia}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">实付总计：</td>
+	    	<td colspan="3">￥{$cashier['real_money']}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">节省总计：</td>
+	    	<td colspan="3">￥{$cashier['dis_money']}</td>
+	    </tr>
+	    {if condition="$is_sanke!=1"}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">贵宾卡号：</td>
+	    	<td colspan="3">{$member.card_no}（{$member.name}）</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">储值账户余额：</td>
+	    	<td colspan="3">￥{$wallet.cash}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">电子钱包余额：</td>
+	    	<td colspan="3">￥{$wallet.ewallet}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">老系统疗程余额：</td>
+	    	<td colspan="3">￥{$wallet.old_cash}</td>
+	    </tr>
+	    {/if}
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3">收银人员：</td>
+	    	<td colspan="3">{$Think.session.family_name}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan='6'><hr/></td>
+	    </tr>
+	    <tr>
+	    	<th colspan="3">顾客签名：</th>
+	    	<td colspan="3"></td>
+	    </tr>
+	     <tr>
+	    	<td style="height:50px" colspan='6'></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">公司电话：{$company.telephone}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">联系地址：{$company.address}</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6">服务一键预约</td>
+	    </tr>
+	    <tr>
+	    	<td colspan="6"><img src='\static\Images\111.png' style="width:100px;height:100px" /></td>
+	    </tr>
+    </table>
+</body>
+</html>
+<script>
+//var LODOP=getLodop();
+//LODOP.PRINT_INIT("打印任务名");               //首先一个初始化语句
+//LODOP.SET_PRINT_PAGESIZE(3,450,200,0);  
+//LODOP.ADD_PRINT_TEXT(0,0,200,20,"文本内容SDF一");//然后多个ADD语句及SET语句 
+//LODOP.PRINT();                               //最后一个打印(或预览、维护、设计)语句
+	var LODOP; //声明为全局变量  
+	$("#print").click(function(){
+		CreatePrintPage();  
+		//LODOP.PREVIEW();
+	});  
+	function CreatePrintPage(json) {
+		//json 创建模拟服务器响应的订单信息对象
+		var json = {"title":"XXXXX订单信息", "name":"张三", "phone": "138123456789", "orderTime": "2012-10-11 15:30:15", 
+		"orderNo": "20122157481315", "shop":"XX连锁", "total":25.10,"totalCount":6,
+		"goodsList":[
+		{"name":"菜心(无公害食品)", "price":5.00, "count":2, "total":10.08}, 
+		{"name":"菜心(无公害食品)", "price":5.00, "count":2, "total":10.02}, 
+		{"name":"旺菜", "price":4.50, "count":1, "total":4.50},
+		{"name":"黄心番薯(有机食品)", "price":4.50, "count":1, "total":4.50}
+		]
+		}	
+		var hPos=10,//小票上边距
+		pageWidth=600,//小票宽度
+		rowHeight=15,//小票行距
+		//获取控件对象
+		LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+		//初始化 
+		LODOP.PRINT_INIT("鼎族怡华收银小票");
+		//添加小票标题文本
+		LODOP.ADD_PRINT_TEXT(hPos,30,pageWidth,rowHeight,'{$company['full_name']}');
+		//上边距往下移
+		hPos+=rowHeight;
+		
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"消费单:");
+		hPos+=rowHeight; //电话不换行
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"NO.{$cashier.number}");
+		hPos+=rowHeight; 
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{$cashier.time|date="Y/m/d H:i:s",###}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"项目/价格");
+		LODOP.ADD_PRINT_TEXT(hPos,55,pageWidth,rowHeight,"服务人员");
+		LODOP.ADD_PRINT_TEXT(hPos,105,pageWidth,rowHeight,"数量/折扣");
+		LODOP.ADD_PRINT_TEXT(hPos,160,pageWidth,rowHeight,"金额");
+
+		{php}foreach($cashiers_list as $k=>$v){{/php}
+		hPos+=rowHeight; 
+			if('{php}echo $v['service_name'].'/'.$v['service_price']{/php}'.length<6){
+				LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{php}echo $v['service_name'].'/'.$v['service_price']{/php}');
+			}else {
+				//商品名字过长,其他字段需要换行
+				LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'{php}echo $v['service_name'].'/'.$v['service_price']{/php}');
+				hPos+=rowHeight;
+			}
+			LODOP.ADD_PRINT_TEXT(hPos,40,pageWidth,rowHeight,'{php}echo $v['fworker'].$v['fname'].$v['sworker'].$v['sname']{/php}');
+			LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'{php}echo $v['count'].'/'.$v['discount_value']{/php}');
+			LODOP.ADD_PRINT_TEXT(hPos,145,pageWidth,rowHeight,'￥{php}echo $v['discount']{/php}');
+		{php}}{/php}
+		//消费情况
+		hPos+=rowHeight; //电话不换行
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,"支付明细");
+
+		{volist name="payway" id="p" }
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"{$p.name}:");
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,'￥{$p.discount}');
+	    {/volist}
+
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"原价总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,'￥{$yuanjia}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"实付总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,'￥{$cashier['real_money']}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"节省总计:");
+		LODOP.ADD_PRINT_TEXT(hPos,70,pageWidth,rowHeight,'￥{$cashier['dis_money']}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		//账户
+		{if condition="$is_sanke!=1"}
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"贵宾卡号:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$member.card_no}（{$member.name}）');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"储值账户余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.cash}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"电子钱包余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.ewallet}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"老系统疗程余额:");
+		LODOP.ADD_PRINT_TEXT(hPos,100,pageWidth,rowHeight,'￥{$wallet.old_cash}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		hPos+=5;
+		{/if}
+		//收银员
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"收银人员:");
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$Think.session.family_name}');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_LINE(hPos,2, hPos, pageWidth,2, 1);
+		//客户签名
+		hPos+=5;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,"客户签名:");
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'');
+		//公司基本资料
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'公司电话：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,'{$company.telephone}');
+		hPos+=rowHeight;
+		var str1 = '{$company.address}'.substring(0,10);
+		var str2 = '{$company.address}'.substring(9);
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,'联系地址：');
+		LODOP.ADD_PRINT_TEXT(hPos,60,pageWidth,rowHeight,str1);
+		hPos+=rowHeight;
+		LODOP.ADD_PRINT_TEXT(hPos,1,pageWidth,rowHeight,str2);
+
+		LODOP.SET_PRINT_PAGESIZE(3,pageWidth,45,"订单信息");
+		LODOP.PRINT();
+	};	
+</script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
+    <script type="text/javascript" src="_JS_/jquery.js"></script>
+    <script type="text/javascript" src="_JS_/jquery.sorted.js"></script>
+    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
+    <script type="text/javascript" src="_JS_/ckform.js"></script>
+    <script type="text/javascript" src="_JS_/common.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<form class="form-inline definewidth m20">
+{php}if(in_array('index/loginadd',$power)){{/php}
+    <button type="button" class="btn btn-success" id="addLogin">添加账号</button>
+{php}}{/php}
+</form>
+<table class="table table-bordered table-hover definewidth m10" >
+    <thead>
+    <tr>
+        <th style="width:10%">姓名</th>
+        <th style="width:15%">登录名</th>
+        <th style="width:10%">角色</th>
+        <th style="width:30%">所属门店</th>
+        <th style="width:10%">添加时间</th>
+        <th style="width:5%">状态</th>
+        <th style="width:10%">管理操作</th>
+    </tr>
+    </thead>
+    	{volist name="list" id="lf" }
+	     <tr{if condition="$lf.status===0"} style="color:red"{/if}>
+            <td>{$lf.name}</td>
+            <td>{$lf.username}</td>
+            <td>{$lf.role_name}</td>
+            <td>{$lf.full_name}</td>
+            <td>{$lf.time}</td>
+            <td>{if condition="$lf.status===0"}弃用{/if}{if condition="$lf.status===1"}启用{/if}</td>
+            <td>
+            	{php}if(in_array('index/loginedit',$power)){{/php}
+                  <a href="{:URL('index/loginedit',array('id'=>$lf.id))}">编辑</a>
+                {php}}{/php}
+				{php}if(in_array('index/loginedel',$power)){{/php}
+                  <a href="#none" onclick="del({$lf.id})">{if condition="$lf.status===0"}启用{/if}{if condition="$lf.status===1"}弃用{/if}</a>
+				{php}}{/php}
+				{php}if(in_array('index/binding_ace',$power)){{/php}
+                  <a href="{:URL('index/binding_ace',array('id'=>$lf.id))}">权限</a>
+				{php}}{/php}
+            </td>
+        </tr>
+        {/volist}
+ </table>
+
+<div class="inline pull-right page">
+	{$list->render()}
+</div> 
+</body>
+</html>
+<script>
+    $(function () {
+        
+		$('#addLogin').click(function(){
+
+				window.location.href="{:URL('Index/loginadd')}";
+		 });
+
+
+    });
+
+	function del(id)
+	{
+		
+		if(confirm("确定该操作吗？"))
+		{
+		
+			var url = "{:URL('Index/loginedel')}?id="+id;
+			
+			window.location.href=url;		
+		
+		}
+	
+	
+	
+	
+	}
+</script>
