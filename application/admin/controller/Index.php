@@ -80,13 +80,13 @@ class Index extends Base
 			$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
-    	$list = Admin::order('status DESC,id DESC')->paginate(15,false);
+    	$list = Admin::order('status DESC,id DESC')->paginate(3,false);
 
     	$this->assign('list',$list);
     	$data['start_time'] = '';
     	$data['end_time'] = '';
     	$this->assign('data',$data);
-    	return $this->fetch();	
+    	return $this->fetch();
     }
     //登录账号添加
     function admin_add(){
@@ -97,7 +97,7 @@ class Index extends Base
     	//登录名，密码，姓名，所属门店，角色
     	if(Request::instance()->post()){
 	    	$data = input();
-	    	$data['salt'] = '111';
+	    	$data['salt'] = rand(0,9).rand(0,9).rand(0,9);
 	    	$data['password'] = md5($data['password'].$data['salt']);
 	    	$data['time'] = time();
 	    	unset($data['password2']);
