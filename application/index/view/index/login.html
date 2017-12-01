@@ -1,65 +1,94 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js" lang="">
 <head>
-    <title>后台管理系统</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="_CSS_/bootstrap.css" />
-	<link rel="stylesheet" href="_CSS_/bootstrap-responsive.css" />
-	<link rel="stylesheet" href="_CSS_/style.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>登录</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script type="text/javascript" src="_JS_/jquery.js"></script>
-    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
-    <script type="text/javascript" src="_JS_/ckform.js"></script>
-    <script type="text/javascript" src="_JS_/common.js"></script>
-    <style type="text/css">
-        body {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #f5f5f5;
-        }
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
 
-        .form-signin {
-            max-width: 300px;
-            padding: 19px 29px 29px;
-            margin: 0 auto 20px;
-            background-color: #fff;
-            border: 1px solid #e5e5e5;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-        }
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
 
-        .form-signin .form-signin-heading,
-        .form-signin .checkbox {
-            margin-bottom: 10px;
-        }
-
-
-        .form-signin input[type="text"],
-        .form-signin input[type="password"] {
-            font-size: 16px;
-            height: auto;
-            margin-bottom: 15px;
-            padding: 7px 9px;
-        }
-
-    </style>  
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
 </head>
 <body>
-<div class="container">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 
-    <form class="form-signin" method="post" action="">
-        <h2 class="form-signin-heading">登录系统</h2>
-        <input type="text" name="username" class="input-block-level" placeholder="登录账号">
-        <input type="password" name="password" class="input-block-level" placeholder="密码">
-        <!--<input type="text" name="verify" class="input-medium" placeholder="验证码">-->
-       
-        <p><button class="btn btn-large btn-primary" type="submit">登录</button></p>
-    </form>
+  <!--[if lt IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
 
-</div>
+{include file="../application/index/view/common/header.html" /}
+
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="account-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <form class="ecommerce-sign-up-form" method='post' action="">
+            <h1>
+              手机号码登录
+            </h1>
+            <div class="form-group">
+              <label>手机号</label>
+              <input type="phone" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+              <label>密码</label>
+              <input type="password" class="form-control" name="password">
+            </div>
+            <!--<div class="checkbox">
+              <label>
+                <input type="checkbox"> 记住密码
+              </label>
+            </div>
+              -->
+            <div class="form-action">
+              <button type="submit" class="btn-shadow btn-shadow-dark">
+              <span style="color:#3e70ff">登录</span>
+              </button>
+            </div>
+            <div class="form-bottom">
+              <a href="#" class="btn-forgot-password">忘记密码?</a>
+              <!--还没有账户? <a href="j-sign-up.html">注册</a>-->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{include file="../application/index/view/common/footer.html" /}
+
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    // e.src='//www.google-analytics.com/analytics.js';
+    // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    // ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+  </script>
 </body>
 </html>

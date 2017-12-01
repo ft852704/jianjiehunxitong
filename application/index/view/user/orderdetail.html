@@ -1,0 +1,192 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>个人中心-订单详情</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+</head>
+<body>
+
+  {include file="../application/index/view/common/header.html" /}
+
+  <div class="account-page">
+    <div class="container">
+
+      <div class="account-wrapper">
+        {include file="../application/index/view/common/user_nav.html" /}
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="orders">
+            <div class="tab-header clearfix">
+              <h4 class="float-left">
+                <!-- Orders last 6 months -->
+              </h4>
+              <!-- <select class="custom-select float-right">
+                <option>Last 6 months</option>
+                <option>Last 3 months</option>
+                <option>All orders</option>
+              </select> -->
+            </div>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active">订单详情 {$order->order_no}</li>
+              <li class="breadcrumb-item active">创建时间 {$order->time|date="Y-m-d H:i:s",###}</li>
+              <li class="breadcrumb-item active">支付时间 
+              {php}if($order['pay_time']){
+              	echo date("Y-m-d H:i:s",$order['pay_time']);
+              }else{
+              	echo "待支付";
+              }{/php}
+              </li>
+              <li class="breadcrumb-item active">订单状态 <strong>{$order_state[$order.state]}</strong></li>
+            </ol>      
+            <div class="account-wrapper">
+              <div class="invoice-wrapper">
+                <div class="intro">
+                  您好，<strong>{$order.user_name}</strong>{$sex[$user.sex]} 
+                  <br />
+                  这是您的<strong>¥{$order->total}</strong> (RMB) 的{$order_type[$order.type]}订单详情。
+                </div>
+
+                <div class="payment-info">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span>支付编号</span>
+                      <strong>
+                      {php}if($order['pay_time']){
+		              	echo $order['pay_no'];
+		              }else{
+		              	echo "待支付";
+		              }{/php}
+                      <!-- <strong>2017-08-15, 16:35</strong> -->
+                      </strong>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                      <span>支付时间</span>
+                      <strong>
+                      {php}if($order['pay_time']){
+		              	echo date("Y-m-d H:i:s",$order['pay_time']);
+		              }else{
+		              	echo "待支付";
+		              }{/php}
+                      <!-- <strong>2017-08-15, 16:35</strong> -->
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payment-details">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <span>联系人</span>
+                      <strong>
+                        {$order.linkman_name}
+                      </strong>
+                      <p>
+                        {$order.linkman_phone} <br>
+                      </p>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                      <span>服务信息</span>
+                      <strong>
+                       婚礼酒店：{$order.hotel}
+                      </strong>
+                      <p>
+                        详细地址：{$order.address}<br>
+                        婚礼时间：{$order.service_time|date="Y-m-d",###}<br>
+                        宴会类型：{$banquet_type[$order.banquet_type]}<br>
+                        <a href="#none">
+                          {$order.user_mark}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="line-items">
+                  <div class="headers clearfix">
+                    <div class="row">
+                      <div class="col-4">服务人员</div>
+                      <div class="col-3">服务类型</div>
+                      <div class="col-5 text-right">金额</div>
+                    </div>
+                  </div>
+                  <div class="items">
+                    <div class="row item">
+                      <div class="col-4 desc">
+                        {$order.linkman_name}
+                      </div>
+                      <div class="col-3 qty">
+                        {$st.name}
+                      </div>
+                      <div class="col-5 amount text-right">
+                        ¥{$service.price}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="total text-right">
+                    <p class="extra-notes">
+                      <strong>友情提示</strong>
+                      简结婚的平台佣金为总订单金额的5%，总订单金额包含人员费和布置费。
+                      从平台预定婚宴用酒，免收平台佣金。
+                    </p>
+                    <div class="field">
+                      总计金额 <span>¥{$order.price}</span>
+                    </div>
+                    <div class="field">
+                      平台佣金 <span>¥{php}echo $order['commission']{/php}</span>
+                    </div>
+                    <div class="field grand-total">
+                      合计 <span>¥{$order->total}</span>
+                    </div>
+                  </div>
+
+                  <div class="print">
+                  {php}
+                  	if($order['state']==1){
+                   {/php}
+                    <a href="{:URL('user/pay_choose',['order_no'=>$order->order_no])}">
+                      去支付
+                      <!-- 返回 -->
+                    </a>
+                  {php}
+                  }
+                   {/php}
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {include file="../application/index/view/common/footer.html" /}
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    // e.src='//www.google-analytics.com/analytics.js';
+    // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    // ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+  </script>
+</body>
+</html>

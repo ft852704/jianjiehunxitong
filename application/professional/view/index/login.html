@@ -1,65 +1,54 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <title>后台管理系统</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="_CSS_/bootstrap.css" />
-	<link rel="stylesheet" href="_CSS_/bootstrap-responsive.css" />
-	<link rel="stylesheet" href="_CSS_/style.css" />
-
-    <script type="text/javascript" src="_JS_/jquery.js"></script>
-    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
-    <script type="text/javascript" src="_JS_/ckform.js"></script>
-    <script type="text/javascript" src="_JS_/common.js"></script>
-    <style type="text/css">
-        body {
-            padding-top: 40px;
-            padding-bottom: 40px;
-            background-color: #f5f5f5;
-        }
-
-        .form-signin {
-            max-width: 300px;
-            padding: 19px 29px 29px;
-            margin: 0 auto 20px;
-            background-color: #fff;
-            border: 1px solid #e5e5e5;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-        }
-
-        .form-signin .form-signin-heading,
-        .form-signin .checkbox {
-            margin-bottom: 10px;
-        }
-
-
-        .form-signin input[type="text"],
-        .form-signin input[type="password"] {
-            font-size: 16px;
-            height: auto;
-            margin-bottom: 15px;
-            padding: 7px 9px;
-        }
-
-    </style>  
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link href="_INDEX_/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="_ADMIN_/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+<link href="_ADMIN_/css/style.css" rel="stylesheet" type="text/css" />
+<link href="_LIB_/Hui-iconfont/1.0.8/iconfont.css" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>职业人后台登录</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
 </head>
 <body>
-<div class="container">
-
-    <form class="form-signin" method="post" action="">
-        <h2 class="form-signin-heading">登录系统</h2>
-        <input type="text" name="username" class="input-block-level" placeholder="登录账号">
-        <input type="password" name="password" class="input-block-level" placeholder="密码">
-        <!--<input type="text" name="verify" class="input-medium" placeholder="验证码">-->
-       
-        <p><button class="btn btn-large btn-primary" type="submit">登录</button></p>
+<input type="hidden" id="TenantId" name="TenantId" value="" />
+<div class="header" style="background: #426374 url(../images/logo1.png) no-repeat 0 center;"></div>
+<div class="loginWraper">
+  <div id="loginform" class="loginBox">
+    <form class="form form-horizontal" action="" method="post">
+      <div class="row cl">
+        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
+        <div class="formControls col-xs-8">
+          <input id="" name="user_name" type="text" placeholder="账户" class="input-text size-L">
+        </div>
+      </div>
+      <div class="row cl">
+        <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+        <div class="formControls col-xs-8">
+          <input id="" name="password" type="password" placeholder="密码" class="input-text size-L">
+        </div>
+      </div>
+      <div class="row cl">
+        <div class="formControls col-xs-8 col-xs-offset-3">
+          <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+        </div>
+      </div>
     </form>
-
+  </div>
 </div>
+<div class="footer">© 2017木师科技  & 蜀ICP备141407号</div>
 </body>
 </html>

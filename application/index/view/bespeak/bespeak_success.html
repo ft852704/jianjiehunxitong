@@ -1,0 +1,110 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>预约单</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+</head>
+<body>
+  
+  {include file="../application/index/view/common/header.html" /}
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div id="checkout">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <section>
+            <div id="checkout-order-done">
+              <header>
+                <i class="ion-ios-checkmark-outline"></i>
+                <h1>
+                  您的预约单已经提交成功!
+                </h1>
+              </header>
+              <p>
+                系统根据您的预约信息，已自动为您生成网站账户。您可以在个人中心查看您刚才提交的预约订单状态。请尽快修改登录密码。
+              </p>
+              <a href="{:URL('user/index')}">
+                前往个人中心
+              </a>
+            </div>
+          </section>
+        </div>
+        <div class="col-md-6">
+          <div id="checkout-cart-summary" class="clearfix float-right">
+            <h3>预约单</h3>
+            <div class="line-items">
+              <div class="item clearfix">
+                <div class="pic">
+                  <img src="{$professional.head}" class="img-responsive" style="border-radius: 50%; max-width: 65px;"/>
+                </div>
+                <div class="details">
+                <input type="hidden" name="professional_id" value="{$professional.id}" />
+                <input type="hidden" name="service_id" value="{$service.id}" />
+                  <span class="name">
+                    {$professional.name}
+                  </span>
+                  <span class="variant">
+                    {$pro_type[$professional.type]}
+                  </span>
+                </div>
+                <div class="price float-right">
+                  ¥{$service.price}
+                </div>
+              </div>
+            </div>
+            <div class="price-details">
+              <div class="detail clearfix">
+                <p>人数</p>
+                <span>1</span>
+              </div>
+              <div class="detail clearfix">
+                <p>费用</p>
+                <span>¥{$service.price}</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  {include file="../application/index/view/common/footer.html" /}
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    // e.src='//www.google-analytics.com/analytics.js';
+    // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    // ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+  </script>
+</body>
+</html>

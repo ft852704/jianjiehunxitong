@@ -1,0 +1,106 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>订单支付</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+    <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+  <script src="_PINGPP_/dist/pingpp.js"></script>
+</head>
+<body>
+  {include file="../application/index/view/common/header.html" /}
+
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="account-page">
+    <div class="container">
+
+      <div class="account-wrapper">
+
+
+
+  <div id="checkout">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <section>
+            <h1>选择支付方式</h1>
+
+			<div class="field field--with-radio">
+                <input type="radio" id="zhifubao" name="payment-method" value="alipay_pc_direct" checked="true">
+                <label for="paypal-method">
+                  支付宝
+                </label>
+             </div>
+
+            <div class="text-center">
+              <a href="#none" onclick="wap_pay()" class="checkout-btn-next-step">
+                确认支付
+                <i class="ion-chevron-right"></i>
+              </a>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  {include file="../application/index/view/common/footer.html" /}
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    var YOUR_URL = 'http://admin.jianjiehun.com/index/index/test';
+    function wap_pay() {
+    	var channel = $("[name=payment-method]").val();
+        if(YOUR_URL.length == 0 || !YOUR_URL.startsWith('http')){
+            alert("请填写正确的URL");
+            return;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", YOUR_URL, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({
+            channel: channel,
+            order_no: "{$data.order_no}"
+        }));
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+            	var str = xhr.responseText;
+
+                console.log(xhr.responseText);
+                pingpp.createPayment(xhr.responseText, function(result, err) {
+                    console.log(result);
+                    console.log(err.msg);
+                    console.log(err.extra);
+                });
+            }
+        }
+    }
+</script>
+</body>
+</html>

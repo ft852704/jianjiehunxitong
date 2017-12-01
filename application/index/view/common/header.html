@@ -1,0 +1,95 @@
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" role="navigation">
+    <div class="container no-override">
+      <a class="navbar-brand" href="#">
+        <img src="_RECEPTION_/images/logo-alt-w.png" class="d-none d-lg-inline mr-2 w-25" />
+        简结婚
+      </a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item active dropdown">
+            <a href="{:URL('index/index')}" class="nav-link dropdown-toggle">
+              首页
+              <!-- <i class="ion-chevron-down"></i> -->
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="{:URL('marry_case/index')}" class="nav-link dropdown-toggle">
+              婚礼案例
+              <!-- <i class="ion-chevron-down"></i> -->
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+              婚礼团队
+              <i class="ion-chevron-down"></i>
+            </a>
+            <div class="dropdown-menu" role="menu">
+              <a class="dropdown-item" href="{:URL('professional/index',['type'=>1])}">策划师</a>
+              <a class="dropdown-item" href="{:URL('professional/index',['type'=>4])}">主持人</a>
+              <a class="dropdown-item" href="{:URL('professional/index',['type'=>5])}">摄影师</a>
+              <a class="dropdown-item" href="{:URL('professional/index',['type'=>3])}">摄像师</a>
+              <a class="dropdown-item" href="{:URL('professional/index',['type'=>2])}">化妆师</a>
+            </div>
+          </li>
+          {php}
+          $uid = session('user_id');
+          if($uid){
+          {/php}
+          <li class="nav-item dropdown">
+            <a href="{:URL('user/index')}" class="nav-link dropdown-toggle">
+              个人中心
+              <!-- <i class="ion-chevron-down"></i> -->
+            </a>
+          </li>
+          {php}
+          }
+          {/php}
+          <!--<li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+              APP
+              <i class="ion-chevron-down"></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown dropdown-extend">
+            <a href="j-blog.html" class="nav-link dropdown-toggle">
+              婚礼故事
+              <i class="ion-chevron-down"></i>
+            </a>
+          </li>-->
+          <!--<li class="nav-item">
+            <a class="nav-link nav-link--rounded" href="{:URL('user/index')}">个人中心</a>
+          </li>-->
+          {php}
+          if($uid){
+          {/php}
+          <li class="nav-item">
+            <a class="nav-link nav-link--rounded" href="{:URL('index/loginout')}">退出</a>
+          </li>
+          {php}
+          }else{
+          {/php}
+          <li class="nav-item">
+            <a class="nav-link nav-link--rounded" href="{:URL('index/login')}">登录</a>
+          </li>
+          {php}
+          }
+          {/php}
+          <!--<li class="nav-item">
+            <a class="nav-link" href="j-sign-up.html">注册</a>
+          </li>-->
+        </ul>
+      </div>
+    </div>
+  </nav>

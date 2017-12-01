@@ -14,47 +14,39 @@ class Base extends Controller
 		Session::set('company_id',1);
 		//Session::get('name');
 	}*/
-	public $msn = [
-		 //短信验证码配置
-	    'SMS_ACCOUNT'=>'N6420980',
-	    'SMS_PWD'=>'1IblExO9zw64d9',
-	    'SMS_SIGN'=>'【鼎族怡华】',
+	//ping++参数
+	protected $Ping = [
+		'TestApiKey' => 'sk_test_DuPKa1OC8ibHLe9in5vHS4OC',
+		'ApiKey' => 'sk_live_L4aH00ef58CG0uTKO40aT8G4',
+		'AppID' => 'app_b5K8qDuHijPSDeTO',
 	];
-
-	public $ic_key = 'dingzuyihua';
-
-	public $app_url = 'api.dingzu.vip';
+	//职业人类型（1，策划师，2化妆师，3摄像师，4主持人,5摄影师）
+    public $pro_type = [
+    	1 => '策划师',
+    	2 => '化妆师',
+    	3 => '摄像师',
+    	4 => '主持人',
+    	5 => '摄影师',
+    ];
+    //订单状态（0未审核，1，未付款，2已付款,3已完成，4已退款）
+    public $order_state = [
+    	'未审核',
+    	'未付款',
+    	'已付款',
+    	'已完成',
+    	'已退款',
+    ];
+    //预约状态（1，未审核，2，已审核，3已完成，4，已生成订单，5，未见面）
+    public $bespeak_state = [
+    	1 => '预约中',
+    	2 => '预约成功',
+    	3 => '见面成功',
+    	4 => '已生成订单',
+    	5 => '未见面',
+    ];
 
 	public function _initialize()
     {
-    	$request = request();
-		//session存在时，不需要验证的权限
-		$not_check = array('index/login','index/lost_password');
-		//当前操作的请求 模块名/方法名
-		if(in_array($request->module().'/'.$request->action(), $not_check)){
-			return true;
-		}
-		
-        //Session::set('family_id',1);
-        //Session::set('family_name','何宇瀚');
-		//Session::set('company_id',1);
-		//Session::set('login_id',1);
-		if(!Session::get('login_id')){
-			$this->success('请登录', 'Index/login');
-		}else{
-			//检查账号权限
-			if(!$this->is_power()){
-				if($request->action()=='edit_business_documents'){
-
-				}else{
-					$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');
-				}
-			}
-			$role = Session::get('role');
-			$this->assign('role',$role);
-			$family_name = Session::get('family_name');
-			$this->assign('family_name',$family_name);
-		}
     }
     //获取公司下的所有门店
     //@ $company_id 公司ID

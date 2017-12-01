@@ -1,0 +1,436 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>婚礼人主页</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <style type="text/css">
+    
+.blog-post-footer {
+  background: #f7f7f7;
+  border-top: solid 1px #ddd;
+  clear: both; }
+  .blog-post-footer .inner {
+    padding: 0 40px 40px;
+    display: block; }
+  .blog-post-footer .list-title::after {
+    border-color: #f7f7f7 transparent transparent; }
+.blogs-comments-area {
+  padding-top: 20px; }
+
+.blogs-comment-list ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0; }
+.blogs-comment-list > li {
+  border-bottom: solid 1px #ddd;
+  margin: 0 0 25px; }
+  .blogs-comment-list > li > ul {
+    padding: 0 0 0 120px; }
+    .blogs-comment-list > li > ul li {
+      border-bottom: solid 1px #ddd;
+      margin: 0 0 25px; }
+.blogs-comment-list li:last-child {
+  border-bottom: 0; }
+
+.blogs-comment-wrapper {
+  display: table;
+  margin: 0;
+  width: 100%; }
+
+.blogs-comment-avatar {
+  display: table-cell;
+  text-align: inherit;
+  vertical-align: top;
+  width: 90px; }
+  .blogs-comment-avatar img {
+    border: solid 1px #ddd;
+    border-radius: 50%;
+    padding: 0;
+    width: 70px; }
+
+.blogs-comment-details {
+  display: table-cell;
+  padding: 0 0 0 30px;
+  position: relative;
+  vertical-align: top; }
+
+.blogs-comment-description {
+  margin-bottom: 20px; }
+
+.blogs-comment-name {
+  color: #4a4a4a;
+  font-weight: 600;
+  margin: 0 0 15px; }
+
+.blogs-comment-date {
+  color: #aaaaaa;
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0 0 0 8px; }
+
+.blogs-comment-reply {
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+.list-title {
+  border-bottom: solid 1px #ddd;
+  display: block;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  position: relative;
+  text-transform: uppercase;
+  color: #222;
+  font-size: 18px;  
+}
+
+
+
+  </style>
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <!--[if lt IE 8]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  {include file="../application/index/view/common/header.html" /}
+
+
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="career-post-header">
+
+
+    <section class="container" style="padding-top:100px ">
+      <div class="row">
+        <div class="col-12">
+          <div class="author" style="text-align: center;">
+            <img src="{$professional.head}" style="border-radius: 50%; max-width: 85px;" />
+          </div>     
+          <h1>
+            {$professional.name}
+          </h1>
+          <div class="rating" style="color: wheat;text-align: center;">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+          </div>
+          <p style="font-size: 14px;font-weight:normal;color: #dadada">
+            {$professional.introduction}
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+
+
+  <div class="store-product-details">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="{$furl}" class="popup-thumb main-pic" style="background-image:url('{$furl}');" data-zoom-image="{$furl}">
+          </a>
+          <div class="thumbs" style="width:98%;">
+          {foreach name="pro_pic" item='v' key='k'}
+            <a href="{$v.url}" class="popup-thumb thumb" style="background-image:url('{$v.url}');">
+              <div class="mask">
+                <i class="fa fa-search"></i>
+              </div>
+            </a>
+          {/foreach}
+          </div>
+        </div>
+        <div class="col-md-6 info">
+          <form action="{:URL('bespeak/start_bespeak',['id'=>$professional.id])}" method="get">
+          	<input type="hidden" name="sid" value="{$service[0]['sid']}"/>
+            <div class="variants">
+              <div class="variant" role="tablist">
+                <label class="label-variant-colors">
+                  服务类型: 
+                </label>
+                {foreach name="service" item='v' key='k'}
+                <button class="btn btn-outline-info{if condition="$k eq 0"} active{/if}" href="#description_{$v.sid}" role="tab" data-sid={$v.sid} data-toggle="tab">{$v.name}<br>¥{$v.price}</button>
+                {/foreach}
+              </div>
+              <div class="description" style="margin-bottom: 0px;    margin-top: 10px;">
+                <div class="tab-content" style="padding-top: 0px">
+                  {foreach name="service" item='v' key='k'}
+                  	<div>
+                	服务说明：
+                	</div>
+                  <div role="tabpanel" class="tab-pane{if condition="$k eq 0"} active{/if}"id="description_{$v.sid}">
+                    	<pre>
+                        {$v.content}
+                        </pre>
+                  </div>
+                {/foreach}               
+                  <!--<div role="tabpanel" class="tab-pane" id="details">
+                <table class="table wishlist-table table-responsive">
+                  <thead>
+                    <tr>
+                      <th>婚礼时间</th>
+                      <th>服务类型</th>
+                      <th>下单时间</th>
+                      <th>新人</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        2017-8-8-午宴
+                      </td>
+                      <td>
+                        婚礼策划统筹
+                      </td>
+                      <td>
+                        2017-3-3 16:20:20
+                      </td>
+                      <td>
+                        ***0668
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                  </div>-->
+                </div>
+              </div>  
+              <div class="variant">
+                <label>服务区域: </label>
+                <select class="spacial-select">
+                  <option>成都</option>
+                </select>
+              </div>
+              <div class="variant">
+                <label>服务档期: </label>
+                <input type="number" min="1" max="99" value="1" class="form-control input-qty" />
+              </div>
+            </div>
+
+            <div class="add-to-cart">
+              
+              <button type="submit" class="btn-shadow btn-shadow-dark">
+                <i class="ion-plus"></i> <span style="color:#3e70ff">预约见面</span>
+              </button>
+
+            </div>
+          </form>          
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="other-products">
+    <div class="container">
+      <h3>真实婚礼案例</h3>
+
+      <div class="row">
+        {foreach name="marry_case" item='v' key='k'}
+        <div class="col-md-3 store-product">
+          <a href="{:URL('marry_case/detail',['id'=>$v.id])}">
+            <img src="{$v.head}" style="width:237px;height:164px" class="img-fluid">
+            <span class="info">
+              <span class="name">
+                {$v.title} <span class="vendor">- {$v.hotel}</span>
+              </span>
+              <span class="price">
+                ¥{$v.cost}
+              </span>
+            </span>
+          </a>
+          <div class="rating">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-half-o"></i>
+            <i class="fa fa-star-o"></i>
+          </div>
+        </div>
+        {/foreach}
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="other-products" style="background-color: #f7f7f7">
+    <div class="container">
+    <div class="blog-post-footer" style="border-top: 0;">
+
+
+        <div style="clear: both"></div>
+
+
+        <div class="inner ">
+
+            <div class="blogs-comments-area">
+                <h4 class="list-title">评论
+                </h4>
+
+                <div class="blogs-comment-respond" id="respond">
+                    <ul class="blogs-comment-list" style="list-style: none">
+
+                        <li>
+                            <div class="blogs-comment-wrapper">
+                                <div class="blogs-comment-avatar">
+                                    <figure>
+                                        <img alt="avatar" src="images/speakers/1.jpg">
+                                    </figure>
+                                </div>
+                                <div class="blogs-comment-details">
+                                    <div class="blogs-comment-name">
+                                        <a href="#">张秀秀</a>
+                                        <span class="blogs-comment-date">2 days ago</span>
+                                    </div>
+                                    <div class="blogs-comment-description">
+                                        <p>婚礼我很满意</p>
+                                    </div>
+                                    <div class="blogs-comment-reply"><a
+                                            href="#">回复</a></div>
+                                </div>
+                            </div>
+
+
+                        </li>
+                        <li>
+                            <div class="blogs-comment-wrapper">
+                                <div class="blogs-comment-avatar">
+                                    <figure>
+                                        <img alt="avatar" src="images/speakers/2.jpg">
+                                    </figure>
+                                </div>
+                                <div class="blogs-comment-details">
+                                    <div class="blogs-comment-name">
+                                        <a href="#">赵大大</a>
+                                        <span class="blogs-comment-date">2 days ago</span>
+                                    </div>
+                                    <div class="blogs-comment-description">
+                                        <p>
+                                            歆媛真的很棒，很用心。办婚礼一定要找她啊，没错的。
+
+                                        </p>
+                                    </div>
+                                    <div class="blogs-comment-reply"><a
+                                            href="#">回复</a></div>
+                                </div>
+                            </div>
+
+                            <ul>
+
+                                <li>
+                                    <div class="blogs-comment-wrapper">
+                                        <div class="blogs-comment-avatar">
+                                            <figure>
+                                                <img alt="avatar" src="images/speakers/3.jpg">
+                                            </figure>
+                                        </div>
+                                        <div class="blogs-comment-details">
+                                            <div class="blogs-comment-name">
+                                                <a href="#">歆媛</a>
+                                                <span class="blogs-comment-date">15 November 2015</span>
+                                            </div>
+                                            <div class="blogs-comment-description">
+                                                <p> 感谢信任。祝你们百年好合</p>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <div class="blogs-comment-wrapper">
+                                <div class="blogs-comment-avatar">
+                                    <figure>
+                                        <img alt="avatar" src="images/speakers/5.jpg">
+                                    </figure>
+                                </div>
+                                <div class="blogs-comment-details">
+                                    <div class="blogs-comment-name">
+                                        <a href="#">王好好</a>
+                                        <span class="blogs-comment-date">20 November 2015</span>
+                                    </div>
+                                    <div class="blogs-comment-description">
+                                        <p>我是一个低调的人，但是婚礼真的忍不住拿出来炫耀，圆了自己的公主梦</p>
+                                    </div>
+                                    <div class="blogs-comment-reply"><a
+                                            href="#">回复</a></div>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+
+
+                    <h4 class="blogs-comment-reply-title list-title" style="color: #222;font-size: 18px;">发表评论</h4>
+
+                    <form class="blogs-comment-form" id="blogs-commentform"
+                          method="post" action="">
+
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="请在此处留言评论"
+                                      name="blogs-comment"></textarea></div>
+
+                        <button type="submit" class="btn-success btn btn-lg"> 发布
+                        </button>
+
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+  </div>-->
+
+
+
+  {include file="../application/index/view/common/footer.html" /}
+
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+   $('.variant button').click(function(){
+   		$('.variant button').each(function(){
+   			$(this).attr('class','btn btn-outline-info');
+   		});
+   		$('[name=sid]').val($(this).attr('data-sid'));
+   });
+  </script>
+</body>
+</html>

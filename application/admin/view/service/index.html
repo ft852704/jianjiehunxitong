@@ -1,120 +1,210 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE HTML>
 <html>
 <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="_CSS_/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
-    <script type="text/javascript" src="_JS_/jquery.js"></script>
-    <script type="text/javascript" src="_JS_/bootstrap.js"></script>
-    <script type="text/javascript" src="_JS_/ckform.js"></script>
-    <script type="text/javascript" src="_JS_/common.js"></script>
-
-    <style type="text/css">
-        body {
-            padding-bottom: 40px;
-        }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
-
-        @media (max-width: 980px) {
-            /* Enable use of floated navbar text */
-            .navbar-text.pull-right {
-                float: none;
-                padding-left: 5px;
-                padding-right: 5px;
-            }
-        }
-
-
-    </style>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="_INDEX_/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="_LIB_/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>服务模板列表</title>
 </head>
 <body>
-<form class="form-inline definewidth m20" action="" method="get">
-	<select name="company">
-			{foreach name="companylist" item='v' key='k'}
-            <option value="{$v.id}">{$v.full_name}</option>
-            {/foreach}
-    </select>
-    <input type="text" name="company_name" class="abc input-default" placeholder="请输入门店名" value="{$search.company_name}">
-    <select name="search_type">
-            <option value="1" {if condition="$search.search_type eq 1 "} selected{/if}>项目名字</option>
-            <option value="2" {if condition="$search.search_type eq 2 "} selected{/if}>项目编号</option>
-    </select>
-    <input type="text" name="search" id="rolename"class="abc input-default" placeholder="" value="{$search.search}">&nbsp;&nbsp;  
-    <button type="submit" class="btn btn-primary">查询</button>&nbsp;&nbsp;
-    {php}if(in_array('service/add',$power)){{/php}
-    <button type="button" class="btn btn-success" id="addnew">新增父项目</button>
-    {php}}{/php}
-</form>
-<table class="table table-bordered table-hover definewidth m10" >
-    <thead>
-    <tr>
-        <th style="width:10%">项目编号</th>
-        <th style="width:15%">项目名称</th>
-        <th style="width:10%">项目类型</th>
-        <th style="width:10%">服务类型</th>
-        <th style="width:10%">服务人数</th>
-        <th style="width:20%">所属门店</th>
-        <th style="width:5%">排序</th>
-        <th style="width:5%">状态</th>
-        <th style="width:10%">管理操作</th>
-    </tr>
-    </thead>
-    	{volist name="list" id="service" }
-	     <tr{if condition="$service.status===0"} style="color:red"{/if}>
-            <td>{$service.number}</td>
-            <td>{$service.name}</td>
-            <td>{$service.type_name}</td>
-            <td>{$service.technician_str}</td>
-            <td>{$service.count}</td>
-            <td>{$service.company_name}</td>
-            <td>{$service.sort}</td>
-            <td>{if condition="$service.status===0"}弃用{/if}{if condition="$service.status===1"}启用{/if}</td>
-            <td>
-            	  <a href="{:URL('service/childlist',array('parent_id'=>$service.id))}">查看子项</a>
-            	  {php}if(in_array('service/edit',$power)){{/php}
-                  <a href="{:URL('service/edit',array('id'=>$service.id))}">编辑</a>
-                  {php}}{/php}
-                  {php}if(in_array('service/del',$power)){{/php}
-                  <a href="#none" onclick="del({$service.id})">{if condition="$service.status===0"}启用{/if}{if condition="$service.status===1"}弃用{/if}</a>
-                  {php}}{/php}
-            </td>
-            {/volist}
-        </tr></table>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务模板管理 <span class="c-gray en">&gt;</span> 服务模板列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="text-c"> 日期范围：
+		<input type="text" id='start_time' value="{$data['start_time']}" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" id='end_time' value="{$data['end_time']}" class="input-text Wdate" style="width:120px;">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" id="" name="">
+		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜服务模板</button>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','{:URL('service_template/add')}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加服务模板</a></span> <span class="r">共有数据：<strong>54</strong> 条</span> </div>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr>
+				<th scope="col" colspan="9">服务模板列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox" name="" value=""></th>
+				<th width="40">ID</th>
+				<th width="150">名称</th>
+				<th width="130">类型</th>
+				<th width="330">内容</th>
+				<th width="100">指导价</th>
+				<th width="100">状态</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach name="list" item='v' key='k'}
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$v.id}" name=""></td>
+				<td>{$v.id}</td>
+				<td>{$v.name}</td>
+				<td>{$v.type}</td>
+				<td>{$v.content|mb_substr=###,0,20,'utf-8'}</td>
+				<td>{$v.guiding_price}</td>
+				<td class="td-status">
+				{if condition="$v.status===0"}<span class="label label-default radius">已禁用</span>{/if}{if condition="$v.status===1"}<span class="label label-success radius">已启用</span>{/if}
+				</td>
 
-<div class="inline pull-right page">
+				<td class="td-manage">
+				{if condition="$v.status===1"}
+				<a style="text-decoration:none" onClick="admin_stop(this,'{$v.id}')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> {/if}
+				{if condition="$v.status===0"}
+				<a style="text-decoration:none" onClick="admin_start(this,'{$v.id}')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>
+				{/if}
+
+				<a title="编辑" href="javascript:;" onclick="admin_edit('服务模板编辑','{:URL('service_template/edit')}?id={$v.id}','1','800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <!--<a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>--></td>
+			</tr>
+			{/foreach}
+		</tbody>
+	</table>
+	<div class="inline pull-right page">
 	{$list->render()}
-         </div> 
+    </div> 
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="_LIB_/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="_LIB_/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="_INDEX_/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="_ADMIN_/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="_LIB_/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
+<script type="text/javascript" src="_LIB_/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="_LIB_/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+/*
+	参数解释：
+	title	标题
+	url		请求的url
+	id		需要操作的数据id
+	w		弹出层宽度（缺省调默认值）
+	h		弹出层高度（缺省调默认值）
+*/
+/*管理员-增加*/
+function admin_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*管理员-删除*/
+function admin_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+/*管理员-编辑*/
+function admin_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*管理员-停用*/
+function admin_stop(obj,id){
+	layer.confirm('确认要停用吗？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		$.ajax({
+			type: 'POST',
+			url: '{:URL('service_template/del')}',
+			data: {id:id},
+			dataType: 'json',
+			success: function(data){
+				if(data.sta==1){
+					$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,'+id+')" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+					$(obj).remove();
+					layer.msg('已弃用!',{icon: 5,time:1000});
+				}else{
+					layer.msg('弃用失败!',{icon: 5,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+	});
+}
+
+/*管理员-启用*/
+function admin_start(obj,id){
+	layer.confirm('确认要启用吗？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		$.ajax({
+			type: 'POST',
+			url: '{:URL('service_template/del')}',
+			data: {id:id},
+			dataType: 'json',
+			success: function(data){
+				if(data.sta==1){
+					$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,'+id+')" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用!', {icon: 6,time:1000});
+				}else{
+					layer.msg('起用失败!',{icon: 5,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+	});
+}
+//日历使用2
+		var start = {
+		  elem: '#start_time',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		  max: laydate.now(), //最大日期
+		  istoday: true,
+		  choose: function(datas){
+		     end.min = datas; //开始日选好后，重置结束日的最小日期
+		     end.start = datas //将结束日的初始值设定为开始日
+		  }
+		};
+		var end = {
+		  elem: '#end_time',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		  max: laydate.now(),
+		  istoday: true,
+		  choose: function(datas){
+		    start.max = datas; //结束日选好后，重置开始日的最大日期
+		  }
+		};
+		laydate(start);
+		laydate(end);
+</script>
 </body>
 </html>
-<script>
-    $(function () {
-        
-		$('#addnew').click(function(){
-
-				window.location.href="{:URL('Service/add')}";
-		 });
-
-
-    });
-
-	function del(id)
-	{
-		
-		if(confirm("确定该操作吗？"))
-		{
-		
-			var url = "{:URL('Service/del')}?id="+id;
-			
-			window.location.href=url;		
-		
-		}
-	
-	
-	
-	
-	}
-</script>

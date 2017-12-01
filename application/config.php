@@ -52,6 +52,8 @@ return [
     'class_suffix'           => false,
     // 控制器类后缀
     'controller_suffix'      => false,
+    //缓存控制
+    'TMPL_CACHE_ON' => false,
 
     // +----------------------------------------------------------------------
     // | 模块设置
@@ -141,6 +143,8 @@ return [
         '_INDEX_'=>'/index/',
         '_LIB_'=>'/lib/',
         '_LAYDATE_'=>'/laydate/',
+        '_RECEPTION_'=>'/reception/',
+        '_PINGPP_' => '/pingpp/',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
@@ -244,7 +248,7 @@ return [
         // 数据库类型
         'type'        => 'mysql',
         // 服务器地址
-        'hostname'    => '211.149.242.156',
+        'hostname'    => '',
         // 数据库名
         //'database'    => 'dzyp',
         'database'    => 'dzyp_test',

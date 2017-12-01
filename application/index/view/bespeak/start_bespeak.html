@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>预约单</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+</head>
+<body>
+  
+  {include file="../application/index/view/common/header.html" /}
+
+
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div id="checkout">
+  <form method="post" action="" id="form-bespeak" onsubmit="return check()">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <section>
+            <h1>联系人</h1>
+
+            <div class="field-group">
+              <div class="field">
+                <label for="field-name">姓名</label>
+                <input id="name" type="text" name="name" class="form-control required" placeholder="您的姓名" />
+              </div>
+              <div class="field field--with-dropdown clearfix">
+                <label for="field-country">身份</label>
+                <select id="field-country" name="sex">
+                  <option value="1">新郎</option>
+                  <option value="2">新娘</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="field-phone">手机号码</label>
+                <input id="mobile" type="text" name="mobile" class="form-control" placeholder="手机号码" />
+              </div>
+              <!--
+              <div class="field">
+                <label for="field-email">验证码</label>
+                <input id="field-email" type="email" class="form-control" placeholder="填入手机验证码" />
+              </div> 
+              <div class="field" style="padding: 10px 150px">
+                <button class="btn btn-sm btn-primary">获取验证码</button>
+              </div>    
+              -->         
+            </div>
+
+            <h2>
+              服务信息
+            </h2>
+
+            <div class="field-group">
+              <div class="field">
+                <label for="field-name">酒店名称</label>
+                <input id="field-name" type="text" name="hotel" class="form-control" placeholder="酒店名称" />
+              </div>
+              <div class="field field--with-dropdown clearfix">
+                <label for="field-country">所在地区</label>
+                <select id="field-country" name="area">
+                  <option value="成都">成都</option>
+                </select>
+              </div>                                       
+              <div class="field">
+                <label for="field-address">详细地址</label>
+                <input id="field-address" type="text" name="address" class="form-control" placeholder="详情地址" />
+              </div>
+              <div class="field">
+                <label for="field-city">婚礼时间</label>
+                <input id="time" type="text" class="form-control" name="marry_date" placeholder="2017-8-8" />
+              </div>
+              <div class="field">
+                <label for="field-city">约谈时间</label>
+                <input id="bespeak_date" type="text" class="form-control" name="bespeak_date" placeholder="2017-8-8" />
+              </div>
+              <div class="field field--with-dropdown clearfix">
+                <label for="field-country">宴会类型</label>
+                <select id="field-country" name="banquet_type">
+                  <option value="1">午宴</option>
+                  <option value="2">晚宴</option>
+                </select>
+              </div>   
+              <div class="field">
+                <label for="field-phone">其他喜好</label>
+                <input id="field-phone" type="text" name="user_mark" class="form-control" placeholder="说几句自己对婚礼的喜好吧" />
+              </div>
+            </div>
+
+            <div class="text-right">
+              <!--<a href="j-booking-sucess.html" class="checkout-btn-next-step">
+                确认预约
+                <i class="ion-chevron-right"></i>
+              </a>-->
+              <input type="submit" value="确认预约 >" class="checkout-btn-next-step" />
+            </div>
+          </section>
+        </div>
+        <div class="col-md-6">
+          <div id="checkout-cart-summary" class="clearfix float-right">
+            <h3>预约单</h3>
+            <div class="line-items">
+              <div class="item clearfix">
+                <div class="pic">
+                  <img src="{$professional.head}" class="img-responsive" style="border-radius: 50%; max-width: 65px;"/>
+                </div>
+                <div class="details">
+                <input type="hidden" name="professional_id" value="{$professional.id}" />
+                <input type="hidden" name="service_id" value="{$service.id}" />
+                  <span class="name">
+                    {$professional.name}
+                  </span>
+                  <span class="variant">
+                    {$pro_type[$professional.type]}
+                  </span>
+                </div>
+                <div class="price float-right">
+                  ¥{$service.price}
+                </div>
+              </div>
+            </div>
+            <div class="price-details">
+              <div class="detail clearfix">
+                <p>人数</p>
+                <span>1</span>
+              </div>
+              <div class="detail clearfix">
+                <p>费用</p>
+                <span>¥{$service.price}</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+
+
+  {include file="../application/index/view/common/footer.html" /}
+	<script type="text/javascript" src="_LIB_/layer/2.4/layer.js"></script>
+	<script type="text/javascript" src="_INDEX_/js/H-ui.min.js"></script> 
+	<script type="text/javascript" src="_ADMIN_/js/H-ui.admin.js"></script>
+	<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/jquery.validate.js"></script> 
+	<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/validate-methods.js"></script> 
+	<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    function check(){
+        if(!$("#name").val()){
+        	alert('请输入您的姓名');
+        	return false;
+        }
+        if(!$("#mobile").val()){
+        	alert('请输入您的手机号码');
+        	return false;
+        }
+    }
+    //日历使用2
+		var time = {
+		  elem: '#time',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		  min: laydate.now(), //最小日期
+		  istoday: true,
+		  choose: function(datas){
+		  }
+		};
+		laydate(time);
+
+		var bespeak_date = {
+		  elem: '#bespeak_date',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+		  istime: true, //是否开启时间选择
+		  min: laydate.now(), //最小日期
+		  istoday: true,
+		  choose: function(datas){
+		  }
+		};
+		laydate(bespeak_date);
+  </script>
+</body>
+</html>

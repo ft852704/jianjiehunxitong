@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="_INDEX_/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="_LIB_/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="_ADMIN_/css/style.css" />
+<link href="_LIB_/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>编辑布置费订单 - 订单管理</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+		<input type="hidden" name="id" value="{$order.id}"/>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人ID:</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder="" id="user_id" name="user_id" value="{$order.user_id}">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人姓名:</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder="" disabled id="user_name" name="user_name" value="{$order.user_name}">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人电话:</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" placeholder="" disabled value="{$order.user_phone}" id="user_phone" name="user_phone" value="">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人ID：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.linkman_id}" id="linkman_id" name="linkman_id">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人姓名：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" disabled value="{$order.linkman_name}" id="linkman_name" name="linkman_name">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人电话：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" disabled value="{$order.linkman_phone}" id="linkman_phone" name="linkman_phone">
+		</div>
+	</div>
+	
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>布置费：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.total}" placeholder="" id="total" name="total">
+		</div>
+	</div>
+	<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>文件：</label>
+			<div id="picker" class="webuploader-container"><div class="webuploader-pick">选择文件</div><div id="rt_rt_1bsrtr58f139p176g1h3mkgc1v5p1" style="position: absolute; top: 0px; left: 0px; width: 88px; height: 34px; overflow: hidden; bottom: auto; right: auto;"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"><input type="file" capture="camera" name="file" class="webuploader-element-invisible" multiple="multiple" id="upload"></label></div></div>
+        	<input type="button" value="开始上传" onclick="uploadhead()" class="btn btn-default"/>
+        	<span class="c-red">请上传txt或xls文件</span>
+	</div>
+	<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"></label>
+			<div class="formControls col-xs-1 col-sm-5">
+				<input type='text' readonly name="enclosure" value="{$order.enclosure}" id="enclosure" class="input-text valid">
+			</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">订单状态：</label>
+		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" size="1" name='state'>
+				{foreach name="order_state" item='v' key='k'}
+	            <option value="{$k}"{if condition="$k eq $order.state"}selected{/if}>{$v}</option>
+	            {/foreach}
+			</select>
+			</span> </div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务时间：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.service_time|date='Y-m-d',###}" placeholder="" id="service_time" name="service_time">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">宴会类型：</label>
+		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="banquet_type" size="1">
+	            <option value="1">午宴</option>
+	            <option value="2">晚宴</option>
+			</select>
+			</span> </div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>酒店：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.hotel}" placeholder="" id="hotel" name="hotel">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>详细地址：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.address}" placeholder="" id="address" name="address">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>顾问：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.activer_name}" placeholder="" id="activer_name" name="activer_name">
+		</div>
+	</div>
+	<!--<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>顾问手机号：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="" placeholder="" id="active_name" name="active_name">
+		</div>
+	</div>-->
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" autocomplete="off" value="" placeholder="" id="user_mark" name="user_mark">
+		</div>
+	</div>
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;生成布置费订单&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+<script type="text/javascript" src="_LIB_/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="_LIB_/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="_INDEX_/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="_ADMIN_/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript" src="_LIB_/ajaxfileupload.js"></script> 
+<script type="text/javascript" src="_LIB_/jquery-migrate-1.2.1.min.js"></script>  
+	<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
+<script type="text/javascript">
+//日历使用2
+		var time = {
+		  elem: '#service_time',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		  //min: laydate.now(), //最大日期
+		  istoday: true,
+		  choose: function(datas){
+		  }
+		};
+		laydate(time);
+function uploadhead(){
+		var url = '';
+		$.ajaxFileUpload({
+	      url : '{:URL('/admin/picture/uploadfile')}',//后台请求地址
+	      type: 'post',//请求方式 当要提交自定义参数时，这个参数要设置成post
+	      secureuri : false,//是否启用安全提交，默认为false。
+	      fileElementId : 'upload',// 需要上传的文件域的ID，即<input type="file">的ID。
+	      dataType : 'JSON',//服务器返回的数据类型。可以为xml,script,json,html。如果不填写，jQuery会自动判断。如果json返回的带pre,这里修改为json即可解决。
+	      //data:{name:'logan'},//一同上传的数据
+	      success: function (data, status) { 
+	           //
+	           data = JSON.parse(data);
+	           if(data.status==0){
+	           		alert(data.msg);
+	           }else{
+	           		$("#enclosure").val(data.url);
+	           }
+	      },  
+	      error: function (data, status, e) { 
+	           console.log(data);
+	           alert(data.url);
+	      		alert(e);
+	      }  
+	    });
+	}
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-add").validate({
+		rules:{
+			professional_id:{
+				number:true,
+			},
+			user_id:{
+				number:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$.ajax({  
+				type: 'POST',  
+				dataType : "json",
+				async:true,//是否异步请求
+				url: "{:URL('order/arrangement_edit')}",//请求的action路径页面
+				data: $('form').serialize(),  
+				error: function(){ //请求失败处理函数
+					layer.msg('请求失败',{icon:1,time:1000});
+				},
+				success:function(data){ //请求成功后处理函数。
+					layer.msg(data.msg,{icon:1,time:1000});
+				}  
+			});
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			setTimeout(function(){parent.layer.close(index);},2000);
+		}
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

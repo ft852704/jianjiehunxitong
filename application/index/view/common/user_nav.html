@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="nav-item">
+            <a class="nav-link{if condition="$action=='bespeak'"} active{/if}" href="{:URL('user/bespeak')}" role="tab">我的预约</a>
+          </li>
+          <li role="presentation" class="nav-item">
+            <a class="nav-link{if condition="$action=='order'"} active{/if}" href="{:URL('user/order')}" role="tab">我的订单</a>
+          </li>
+          <li role="presentation" class="nav-item">
+            <a class="nav-link{if condition="$action=='index'"} active{/if}" href="{:URL('user/index')}" role="tab">个人中心</a>
+          </li>
+          <!--
+          <li role="presentation" class="nav-item">
+            <a class="nav-link" href="j-account-message.html" role="tab">我的消息</a>
+          </li>
+          <li role="presentation" class="nav-item">
+            <a class="nav-link" href="j-account-contract.html" role="tab">合同管理</a>
+          </li>         
+          -->           
+        </ul>

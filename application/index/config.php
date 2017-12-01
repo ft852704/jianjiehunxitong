@@ -10,4 +10,8 @@ return [
 	//    'layout_on'     =>  true,
 	//    'layout_name'   =>  'layout',
 	//]
+	'paginate'               => [
+	    'type'     => 'bootstrap1',
+	    'var_page' => 'page',
+	],
 ];

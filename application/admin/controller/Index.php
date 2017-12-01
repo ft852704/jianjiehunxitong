@@ -15,10 +15,6 @@ class Index extends Base
     		1 => '管理员',
     		2 => '收银员',
     	];
-	public function _initialize()
-    {
-        
-    }
 	//框架
     public function index()
     {
@@ -70,6 +66,7 @@ class Index extends Base
     //退出登录
     function loginout(){
     	Session::delete('id');
+    	session_destroy();
     	$this->success('请登录', 'Index/login');
     }
     //登录账号列表

@@ -1,0 +1,111 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>个人中心-我的资料</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+  <link rel="shortcut icon" href="_RECEPTION_/images/favicon.ico">
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/scss/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/theme.css" />
+  <link rel="stylesheet" type="text/css" href="_RECEPTION_/dist/ecommerce.min.css" />
+
+  <!-- javascript -->
+  <script src="_RECEPTION_/js/jquery.min.js"></script>
+  <script src="_RECEPTION_/js/popper.min.js"></script>
+  <script src="_RECEPTION_/dist/theme.min.js"></script>
+	<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
+</head>
+<body>
+  {include file="../application/index/view/common/header.html" /}
+
+  <div class="store-filters">
+    <div class="container clearfix">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
+        <li class="breadcrumb-item active">Handbags</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="account-page">
+    <div class="container">
+
+      <div class="account-wrapper">
+          {include file="../application/index/view/common/user_nav.html" /}
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="profile">
+            <div class="row profile-form">
+              <div class="col-md-3">
+                <img src="_RECEPTION_/images/uifaces/10.jpg" class="avatar" />
+                <a href="#" class="btn-upload-avatar">
+                  {$user.real_name}（{$sex[$user.sex]}）
+                </a>
+              </div>
+              <div class="col-md-8">
+                <form method="post" action="">
+                	<input type="hidden" name="id" value="{$user.id}"/>
+                  <div class="form-group">
+                    <label>手机号</label>
+                    <input type="text" name="mobile" value="{$user.mobile}" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>婚期</label>
+                    <input type="text" name="marry_date" value="{$user.marry_date|date='Y-m-d',###}" id="marry_date" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>酒店</label>
+                    <input type="text" name="hotel" value="{$user.hotel}" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>地址</label>
+                    <input type="text" name="address" value="{$user.address}" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label>密码</label>
+                    <input type="text" name="password" class="form-control">
+                  </div>
+                  <div class="form-group">
+                  <!--<label>重复密码</label>
+                    <input type="text" id="repassword" class="form-control">
+                  </div>-->
+                  <button type="submit" class="btn-shadow btn-shadow-dark">保存</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    {include file="../application/index/view/common/footer.html" /}
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    // (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+    // function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    // e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    // e.src='//www.google-analytics.com/analytics.js';
+    // r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    // ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+    var marry_date = {
+		  elem: '#marry_date',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  istime: true, //是否开启时间选择
+		  min: laydate.now(),
+		  istoday: true,
+		};
+		laydate(marry_date);
+  </script>
+</body>
+</html>
