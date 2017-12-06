@@ -187,10 +187,10 @@
               </div>
               <div class="description" style="margin-bottom: 0px;    margin-top: 10px;">
                 <div class="tab-content" style="padding-top: 0px">
-                  {foreach name="service" item='v' key='k'}
-                  	<div>
+                	<div>
                 	服务说明：
                 	</div>
+                  {foreach name="service" item='v' key='k'}
                   <div role="tabpanel" class="tab-pane{if condition="$k eq 0"} active{/if}"id="description_{$v.sid}">
                     	<pre>
                         {$v.content}

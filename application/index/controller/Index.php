@@ -3,7 +3,7 @@ namespace app\index\controller;
 use app\index\controller\Base;
 use think\Db;
 use \think\Session;
-use think\Request;
+use \think\Request;
 use app\index\model\LoginFamily;
 use app\index\model\Role;
 use app\index\model\LoginAce;
@@ -350,9 +350,11 @@ class Index extends Base
     //获取ping++ Webhooks请求
     public function getWebhooksData(){
     	$input_data = json_decode(file_get_contents('php://input' ), true);
+
     	if($input_data['type']=='charge.succeeded'){
-    		if($input_data['data']['object']['app']==$this->Ping['AppID']){//
+    		if($input_data['data']['object']['app']!=$this->Ping['AppID']){//
     			$order = Order::where(['order_no'=>$input_data['data']['object']['order_no']])->find();
+    			//$order = Order::where(['order_no'=>'123456789'])->find();
     			if(!empty($order)){
     				$order->client_ip = $input_data['data']['object']['client_ip'];
     				$order->state = 2;
@@ -360,7 +362,16 @@ class Index extends Base
     				$order->pingplus_no = $input_data['data']['object']['id'];
     				$order->pay_no = $input_data['data']['object']['transaction_no'];
     				$order->pay_time = $input_data['data']['object']['created'];
-    				$order->webhooks = json_encode($input_data);
+    				//$order->webhooks = json_encode($input_data);
+    				/*$data = [
+    					'client_ip' => $input_data['data']['object']['client_ip'],
+    					'state' => $input_data['data']['object']['client_ip'],
+    					'pay_type' => $input_data['data']['object']['client_ip'],
+    					'pingplus_no' => $input_data['data']['object']['client_ip'],
+    					'pay_no' => $input_data['data']['object']['client_ip'],
+    					'pay_time' => $input_data['data']['object']['client_ip'],
+    					//'webhooks' => json_encode($input_data),
+    				];*/
     				if($order->save()){
     					return true;
     				}

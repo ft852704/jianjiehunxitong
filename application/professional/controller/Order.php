@@ -39,7 +39,9 @@ class Order extends Base
     	$data['start_time'] = '';
     	$data['end_time'] = '';
     	$this->assign('data',$data);
-    	$this->assign('professional_type',Session::get('professional_type'));
+    	$this->assign('role',$this->role);
+    	$this->assign('professional_type',$this->professional_type);
+    	$this->assign('order_state',$this->order_state);
     	return $this->fetch();
     }
     //布置费订单添加
@@ -122,14 +124,8 @@ class Order extends Base
 		$this->assign('user',$user);
 
 		
-		//预约状态  状态（1，未审核，2，已审核，3已完成，4，已生成订单）
-		$state = [
-			1 => '未审核',
-			2 => '已审核',
-			3 => '已完成',
-			4 => '已生成订单',
-		];
-		$this->assign('state',$state);
+    	$this->assign('role',$this->role);
+		$this->assign('state',$this->order_state);
 
     	return $this->fetch('/order/professional_order_edit');	
     }
@@ -148,6 +144,8 @@ class Order extends Base
 	    	}
     	}else{
     		$this->assign('order',$order);
+    		$this->assign('role',$this->role);
+			$this->assign('state',$this->order_state);
     		return $this->fetch('/order/arrangement_edit');
     	}
     }

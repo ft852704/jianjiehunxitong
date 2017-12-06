@@ -89,7 +89,7 @@ class User extends Base
 
     	$this->assign('sex',[0=>'',1=>'先生',2=>'女士']);
     	$this->assign('order_type',[1=>'人员费',2=>'布置费']);
-    	$this->assign('banquet_type',[1=>'午宴',2=>'晚宴']);
+    	$this->assign('banquet_type',[0=>'不确定',1=>'午宴',2=>'晚宴']);
     	$this->assign('order_state',$this->order_state);
 
     	return $this->fetch();

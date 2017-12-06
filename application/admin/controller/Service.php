@@ -4,9 +4,10 @@ use app\admin\controller\Base;
 use think\Db;
 use \think\Session;
 use think\Request;
-use app\admin\model\ServiceTemplate as ServiceTemplateModel;
+use app\admin\model\ServiceTemplate;
+use app\admin\model\Service as ServiceModel;
 
-class ServiceTemplate extends Base
+class Service extends Base
 {
 	//职业人类型（1，策划师，2化妆师，3摄像师，4主持人,5摄影师）
 	public $professional = [
@@ -123,6 +124,16 @@ class ServiceTemplate extends Base
     		echo json_encode(['sta'=>0,'msg'=>'非法操作']);
 	    	exit;
     	}
+    }
+    public function getService(){
+    	$data = input();
+    	$service = ServiceModel::alias('s')->field('s.id,st.name')->join('service_template st','s.template_id=st.id','left')->where(['s.professional_id'=>$data['professional_id']])->select();
+    	$list = [];
+    	foreach ($service as $k => $v) {
+    		$list[$v['id']] = $v['name'];
+    	}
+    	echo json_encode($list);
+    	exit;
     }
     //图片上传  职业人头像处理
     /**

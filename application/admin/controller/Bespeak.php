@@ -43,6 +43,7 @@ class Bespeak extends Base
     }
     //预约单添加
     function add(){
+    	exit;
     	//检查账号权限
 		/*if(!$this->is_power()){
 			$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');

@@ -65,10 +65,10 @@
 				<td>{$v.order_no}</td>
 				<td>{$v.user_name}</td>
 				<td>{$v.linkman_name}</td>
-				<td>{$v.type}</td>
+				<td>{$professional_type[$v.type]}</td>
 				<td>{$v.total}</td>
 				<td>{$v.activer_name}</td>
-				<td>{$v.state}</td>
+				<td>{$order_state[$v.state]}</td>
 				<td>{$v.time|date="Y-m-d H:i:s",###}</td>
 				<td class="td-status">
 				{if condition="$v.status===0"}<span class="label label-default radius">已禁用</span>{/if}{if condition="$v.status===1"}<span class="label label-success radius">已启用</span>{/if}

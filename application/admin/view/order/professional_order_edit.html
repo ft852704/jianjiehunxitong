@@ -77,15 +77,15 @@
 		</div>
 	</div>
 	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务ID：</label>
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" value="{$order.service_id}" id="service_id" name="service_id">
-		</div>
-	</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务名称：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" disabled value="{$service.name}" id="" name="">
+			<span class="select-box" style="width:150px;">
+			<select class="select valid" size="1" aria-invalid="false" name="service_id" id="service_id">
+				{foreach name="service" item='v' key='k'}
+	            <option value="{$k}"{if condition="$k eq $order.service_id"}selected{/if}>{$v}</option>
+	            {/foreach}
+	        </select>
+			</span>
 		</div>
 	</div>
 	<div class="row cl">
@@ -113,7 +113,7 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>人员费总计：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" placeholder="" id="price" name="price" value="{$order.price}">
+			<input type="text" class="input-text" autocomplete="off" placeholder="" id="total" name="total" value="{$order.total}">
 		</div>
 	</div>
 	<div class="row cl">
@@ -171,6 +171,34 @@
 <script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/messages_zh.js"></script> 
 	<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
 <script type="text/javascript">
+$("#linkman_id").change(function(){
+	var professional_id = $(this).val();
+	$.ajax({
+                cache: true,
+                type: "POST",
+                url:'{:URL('service/getService')}?professional_id='+professional_id,
+                data:$('#yourformid').serialize(),// 你的formid
+                async: false,
+                dataType:'json',
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(data) {
+                	var htm = '';
+
+                	if(data){
+                		$.each(data, function(i, value) {
+						   //this;   //this指向当前属性的值
+						   //name;   //name表示Object当前属性的名称
+						   //value;   //value表示Object当前属性的值
+						   htm = htm+'<option value="'+i+'">'+value+'</option>';
+						});
+                	}
+                    $("#service_id").html(htm);
+                }
+            });
+});
+ 			
 //日历使用2
 	
 		var time = {

@@ -35,6 +35,11 @@ class Base extends Controller
     	1 => '男',
     	2 => '女',
     ];
+    public $role = [
+    	'保密',
+    	'新郎',
+    	'新娘',
+    ];
     //订单状态（0未审核，1，未付款，2已付款,3已完成，4已退款）
     public $order_state = [
     	'未审核',

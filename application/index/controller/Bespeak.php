@@ -50,10 +50,10 @@ class Bespeak extends Base
 	    		if(empty($user)){
 	    			$duser = [
 	    			'name' => $data['mobile'],
-	    			'nick' => $data['name'],
+	    			'nick' => $data['real_name'],
 	    			'sex' => $data['sex'],
 	    			'mobile' => $data['mobile'],
-	    			'real_name' => $data['name'],
+	    			'real_name' => $data['real_name'],
 	    			'hotel' => $data['hotel'],
 	    			'area' => $data['area'],
 	    			'address' => $data['address'],
@@ -106,6 +106,21 @@ class Bespeak extends Base
     	$service = Service::get($data['sid']);
     	$this->assign('service',$service);
     	$this->assign('pro_type',$this->pro_type);
+    	//已登录需要用户基础数据
+    	if(Session::get('user_id')){
+    		$user = User::get(Session::get('user_id'));
+    	}else{
+    		$user = [
+    			'name' => '',
+    			'hotel' => '',
+    			'address' => '',
+    			'marry_date' => time(),
+    			'mobile' => '',
+    			'sex' => 1,
+    			'real_name' => '',
+    		];
+    	}
+    	$this->assign('user',$user);
     	return $this->fetch();
     }
     //预约成功提醒页面

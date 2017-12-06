@@ -133,7 +133,20 @@
 <script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/messages_zh.js"></script> 
 <script type="text/javascript" src="_LIB_/ajaxfileupload.js"></script> 
 <script type="text/javascript" src="_LIB_/jquery-migrate-1.2.1.min.js"></script> 
+	<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
 <script type="text/javascript">
+//日历使用2
+		var time = {
+		  elem: '#service_time',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		  min: laydate.now(), //最小日期
+		  istoday: true,
+		  choose: function(datas){
+		  }
+		};
+		laydate(time);
 function uploadhead(){
 		var url = '';
 		$.ajaxFileUpload({

@@ -24,9 +24,12 @@ class Order extends Base
     {
     	$data = input();
     	$where = [];
-    	if(isset($data['name'])&&$data['name']){
+    	if(isset($data['type'])&&$data['type']){
     		//$where = ['name'=>['like'=>'%'.$data['name'].'%']];
-    		$where =  array('name'=>array('like','%'.$data['name'].'%'));
+    		//$where =  array('name'=>array('like','%'.$data['name'].'%'));
+    		$where = [
+    			'type' => $data['type'],
+    		];
     	}
     	
     	//检查账号权限
@@ -147,7 +150,7 @@ class Order extends Base
 	    	$data = input('post.');
 	    	$user = User::get($data['user_id']);
 	    	$pro = Professional::get($data['linkman_id']);
-	    	$service = User::get($data['service_id']);
+	    	$service = Service::get($data['service_id']);
 	    	if(empty($user)){
 	    		$this->error('新人不存在，请查询新人id');
 	    	}
@@ -158,14 +161,14 @@ class Order extends Base
 	    		$this->error('服务不存在，请查询服务id');
 	    	}
 
-			$commission = round($data['price']*$this->tax,2);
+			//$commission = round($data['price']*$this->tax,2);
 
 	    	$data['user_name'] = $user['name'];
 	    	$data['user_phone'] = $user['mobile'];
 	    	$data['linkman_name'] = $pro['name'];
 	    	$data['linkman_phone'] = $pro['mobile'];
-	    	$data['total'] = $commission+$data['price'];
-	    	$data['commission'] = $commission;
+	    	//$data['total'] = $commission+$data['price'];
+	    	//$data['commission'] = $commission;
 
 	    	$order = OrderModel::get($data['id']);
 	    	$data['service_time'] = strtotime($data['service_time']);
@@ -189,9 +192,7 @@ class Order extends Base
 		$user = User::get($order['user_id']);
 		$this->assign('user',$user);
 		//服务
-		$service = Service::get($order['service_id']);
-		$service_template = ServiceTemplate::get($service['template_id']);
-		$service['name'] = $service_template['name'];
+		$service = $this->getService($order['linkman_id']);
 		$this->assign('service',$service);
 		
 		$this->assign('state',$this->order_state);
@@ -201,6 +202,15 @@ class Order extends Base
 		$this->assign('order_state',$this->order_state);
 
     	return $this->fetch('/order/professional_order_edit');
+    }
+    public function getService($id){
+    	$data['professional_id'] = $id;
+    	$service = Service::alias('s')->field('s.id,st.name')->join('service_template st','s.template_id=st.id','left')->where(['s.professional_id'=>$data['professional_id']])->select();
+    	$list = [];
+    	foreach ($service as $k => $v) {
+    		$list[$v['id']] = $v['name'];
+    	}
+    	return $list;
     }
     //订单弃用
     function del(){
@@ -238,6 +248,7 @@ class Order extends Base
 			$service = Service::get($bespeak['service_id']);
 			$service_template = ServiceTemplate::get($service['template_id']);
 			$bespeak['service_name'] = $service_template['name'];
+			$bespeak['price'] = $service['price'];
 
 			$this->assign('bespeak',$bespeak);
 			
@@ -265,6 +276,7 @@ class Order extends Base
 				'activer_name' => $data['activer_name'],
 				'activer_id' => $bespeak['activer_id'],
 				//'marry_date' => ,
+				'price' => $data['price'],
 				'time' => time(),
 				'bespeak_id' => $data['id'],
 				'service_id' => $bespeak['service_id'],
@@ -273,7 +285,7 @@ class Order extends Base
 			];
 			$order = new OrderModel;
 			if($order->save($orderdata)){
-				$bespeak->state = 3;
+				$bespeak->state = 4;
 				$bespeak->save();
 				echo json_encode(['sta'=>1,'msg'=>'生成成功']);
 	    		exit;
