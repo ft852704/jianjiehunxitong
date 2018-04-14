@@ -91,15 +91,15 @@ class Bespeak extends Base
     	if(Request::instance()->post()){
 	    	$data = input('post.');
 	    	$bespeak = BespeakModel::get($data['id']);
-	    	$user = User::get($data['user_id']);
-	    	$pro = Professional::get($data['professional_id']);
+	    	$user = User::where(['mobile'=>$data['user_mobile']])->find();
+	    	$pro = Professional::where(['mobile'=>$data['professional_mobile']])->find();
 	    	$data['marry_date'] = strtotime($data['marry_date']);
 	    	$data['bespeak_date'] = strtotime($data['bespeak_date']);
 	    	if(empty($user)){
-	    		$this->error('新人不存在，请查询新人id');
+	    		$this->error('新人不存在，请查询新人手机号');
 	    	}
 	    	if(empty($pro)){
-	    		$this->error('职业人不存在，请查询职业人id');
+	    		$this->error('职业人不存在，请查询职业人手机号');
 	    	}
 	    	$data['professional_name'] = $pro['name'];
 	    	$data['professional_mobile'] = $pro['mobile'];

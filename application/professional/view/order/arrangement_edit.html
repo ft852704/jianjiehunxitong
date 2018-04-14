@@ -30,27 +30,27 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人姓名:</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder="" id="adminName" name="user_name" value="{$order.user_name}">
+			<input type="text" class="input-text" placeholder="" disabled id="adminName" name="user_name" value="{$order.user_name}">
 			<input type="hidden" name="id" value="{$order.id}" />
 		</div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人手机号：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplezfte="off" value="{$order.user_phone}" id="mobile" name="user_phone">
+			<input type="text" class="input-text" autocomplezfte="off" value="{$order.user_phone}" id="mobile" disabled name="user_phone">
 		</div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" value="{$order.linkman_name}" id="linkman_name" >
+			<input type="text" class="input-text" disabled autocomplete="off" value="{$order.linkman_name}" id="linkman_name" >
 		</div>
 	</div>
 	
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>布置费：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" value="{$order.total}" placeholder="" id="total" name="total">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.price}" placeholder="" id="price" name="price">
 		</div>
 	</div>
 	<div class="row cl">
@@ -67,7 +67,7 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务时间：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" value="{$order.service_time}" placeholder="" id="service_time" name="service_time">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.service_time|date='Y-m-d',###}" placeholder="" id="service_time" name="service_time">
 		</div>
 	</div>
 	<div class="row cl">

@@ -67,9 +67,15 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" placeholder="@" name="email" id="email">
+				<input type="text" class="input-text" name="remark" id="remark">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">微信号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
@@ -104,8 +110,26 @@
 	            <option value="{$k}">{$v}</option>
 	            {/foreach}
 			</select>
-			</span> </div>
+			</span> 
+		</div>
 	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">价值：</label>
+		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="state" size="1">
+				{foreach name="state" item='v' key='k'}
+	            <option value="{$k}">{$v}</option>
+	            {/foreach}
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">顾问：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="adviser" name="adviser">
+			</div>
+		</div>
 		<!--
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">头像：</label>
@@ -168,19 +192,10 @@ $(function(){
 				required:true,
 			},
 			mobile:{
-				required:true,
-				isMobile:true,
+				//required:true,
+				//isMobile:true,
 			},
 			password:{
-				required:true,
-			},
-			address:{
-				required:true,
-			},
-			hotel:{
-				required:true,
-			},
-			marry_date:{
 				required:true,
 			},
 		},
@@ -199,11 +214,13 @@ $(function(){
 				},
 				success:function(data){ //请求成功后处理函数。
 					layer.msg(data.msg,{icon:1,time:1000});
+					if(data.sta==1){
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.$('.btn-refresh').click();
+						setTimeout(function(){parent.layer.close(index);},2000);
+					}
 				}  
 			});
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.$('.btn-refresh').click();
-			setTimeout(function(){parent.layer.close(index);},2000);
 		}
 	});
 });

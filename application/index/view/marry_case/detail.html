@@ -35,7 +35,7 @@
   <div class="customer-story-header">
     <div class="container">
       <h3>{$marry_case.title}</h3>
-      <h5>¥{$marry_case.cost} <button class="btn btn-sm btn-outline-secondary" style="font-size: 10px;display:none">报价明细</button></h5>
+      <h5><!--¥{$marry_case.cost} --><button class="btn btn-sm btn-outline-secondary" style="font-size: 10px;display:none">报价明细</button></h5>
       <p style="max-height:84px;overflow:hidden">
         {$marry_case.description}
       </p><a href="#none" data="hide">全文</a>
@@ -48,7 +48,7 @@
         <div class="col-md-8">
           <div class="customer-story-body" style="text-align:center">
           {foreach name="mc_pic" item='v' key='k'}
-            <img src="{$v.url}" class="img-fluid" style="margin: 10px 0;width:683px;">
+            <img src="{$v.url}" class="img-fluid" style="margin: 3px 0;width:683px;">
           {/foreach}
           </div>
         </div>
@@ -73,7 +73,7 @@
                 策划师
               </div>
               <p>
-                {$professional.name}
+                {$professional.nick}
               </p>
             </div>
             <div class="block">

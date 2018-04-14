@@ -48,6 +48,8 @@ class Base extends Controller
     	'已完成',
     	'已退款',
     ];
+    //平台佣金率
+    public $pepole_tax = 0.05;
 	public function _initialize()
     {
     	$request = request();

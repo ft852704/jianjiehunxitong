@@ -26,24 +26,65 @@
 <div class="page-container">
 	<form action="" method="post">
 	<div class="text-c">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称" id="" name="name">
+		状态
+		<span class="select-box" style="width:150px;">
+			<select class="select" name="state" size=1>
+				{foreach name="state" item='v' key='k'}
+	            <option value="{$k}"{if condition="$k eq $data.state"}selected{/if}>{$v}</option>
+	            {/foreach}
+			</select>
+		</span>
+
+		渠道
+		<span class="select-box" style="width:150px;">
+			<select class="select" name="from" size="1">
+				{foreach name="from" item='v' key='k'}
+	            <option value="{$k}"{if condition="$k eq $data.from"}selected{/if}>{$v}</option>
+	            {/foreach}
+			</select>
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		手机号/微信
+		<span class="select-box" style="width:150px;">
+			<select class="select" name="stype" size="1">
+	            <option value="1"{if condition="1 eq $data.stype"}selected{/if}>手机号</option>
+	            <option value="2"{if condition="2 eq $data.stype"}selected{/if}>微信</option>
+			</select>
+		</span>
+		<input type="text" class="input-text" style="width:250px" placeholder="输入手机号或微信" id="" name="name" value="{$data.name}">
+	</div>
+	<div class="text-c"> 录入时间范围：
+		<input type="text" id='time1' name='time1' value="{$data['time1']}" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" id='time2' name='time2' value="{$data['time2']}" class="input-text Wdate" style="width:120px;">
+		婚期范围：
+		<input type="text" id='marry_date1' name="marry_date1" value="{$data['marry_date1']}" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" id='marry_date2' name="marry_date2" value="{$data['marry_date2']}" class="input-text Wdate" style="width:120px;">
+
 		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
 	</div>
 	</form>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="member_add('添加用户','{:URL('user/user_add')}','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span> <span class="r">共有数据：<strong>88</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a href="javascript:;" onclick="member_add('添加用户','{:URL('user/user_add')}','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a></span> <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
-				<th width="80">ID</th>
-				<th width="100">用户名</th>
-				<th width="40">性别</th>
+				<th width="100">渠道</th>
+				<!--<th width="130">加入时间</th>-->
+				<th width="100">真实姓名</th>
+				<th width="100">微信</th>
 				<th width="90">手机</th>
-				<th width="150">邮箱</th>
-				<th width="">地址</th>
-				<th width="130">加入时间</th>
+				<th width="150">婚期</th>
+				<th width="100">酒店</th>
+				<!--
 				<th width="70">状态</th>
+				-->
+				<th width="70">状态</th>
+				<th width="250">备注</th>
+				<th width="50">顾问</th>
+				<th width="100">注册时间</th>
 				<th width="100">操作</th>
 			</tr>
 		</thead>
@@ -51,17 +92,28 @@
 			{foreach name="list" item='v' key='k'}
 			<tr class="text-c">
 				<td><input type="checkbox" value="{$v.id}" name=""></td>
-				<td>{$v.id}</td>
-				<td><u style="cursor:pointer" class="text-primary">{$v.name}</u></td>
-				<td>{$v.sex}</td>
-				<td>{$v.mobile}</td>
+				<td>{$from[$v.from]}</td>
+				<!--<td>{$v.time|date="Y-m-d",###}</td>-->
+				<td><u style="cursor:pointer" class="text-primary">{$v.real_name}</u></td>
 				<td>{$v.email}</td>
-				<td class="text-l">{$v.address}</td>
-				<td>{$v.time|date="Y-m-d H:i:s",###}</td>
+				<td>{$v.mobile}</td>
+				<td>{$v.marry_date|date="Y-m-d",###}</td>
+				<td class="text-l">{$v.hotel}</td>
+				<!--
 				<td class="td-status">
 					{if condition="$v.status===0"}<span class="label label-default radius">已禁用</span>{/if}{if condition="$v.status===1"}<span class="label label-success radius">已启用</span>{/if}
 				</td>
+				-->
+				<td>{$state[$v.state]}</td>
+				<td>
+					{foreach name="v.remark" item='va' key='ke'}
+					{$va}<hr/>
+					{/foreach}
+				</td>
+				<td>{$v.adviser}</td>
+				<td>{$v.time|date="Y-m-d H:i",###}</td>
 				<td class="td-manage">
+				<!--
 				{if condition="$v.status===0"}
 				<a style="text-decoration:none" onclick="member_start(this,{$v.id})" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>
 				</a>
@@ -73,6 +125,7 @@
 				{/if}
 
 				</a> 
+				-->
 				<a title="编辑" href="javascript:;" onclick="member_edit('编辑','{:URL('user/user_edit')}?id={$v.id}','4','','510')" class="ml-5" style="text-decoration:none">
 				<i class="Hui-iconfont">&#xe6df;</i>
 				</a>
@@ -99,6 +152,7 @@
 <script type="text/javascript" src="_ADMIN_/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="_LAYDATE_/laydate.js"></script> 
 <script type="text/javascript" src="_LIB_/datatables/1.10.0/jquery.dataTables.min.js"></script> 
 <script type="text/javascript" src="_LIB_/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
@@ -178,6 +232,36 @@ function member_del(obj,id){
 		});		
 	});
 }
+//日历使用2
+		var time1 = {
+		  elem: '#time1',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		};
+		var time2 = {
+		  elem: '#time2',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		};
+		laydate(time1);
+		laydate(time2);
+
+		var marry_date1 = {
+		  elem: '#marry_date1',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		};
+		var marry_date2 = {
+		  elem: '#marry_date2',
+		  event: 'focus',
+		  format: 'YYYY-MM-DD', //日期格式
+		  //istime: true, //是否开启时间选择
+		};
+		laydate(marry_date1);
+		laydate(marry_date2);
 </script> 
 </body>
 </html>

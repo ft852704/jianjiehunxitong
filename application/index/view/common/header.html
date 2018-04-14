@@ -31,18 +31,25 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+            <a href="{:URL('professional/index',['type'=>1])}" class="nav-link dropdown-toggle">
               婚礼团队
+              <!-- <i class="ion-chevron-down"></i> -->
+            </a>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+              四大金刚
               <i class="ion-chevron-down"></i>
             </a>
             <div class="dropdown-menu" role="menu">
-              <a class="dropdown-item" href="{:URL('professional/index',['type'=>1])}">策划师</a>
-              <a class="dropdown-item" href="{:URL('professional/index',['type'=>4])}">主持人</a>
-              <a class="dropdown-item" href="{:URL('professional/index',['type'=>5])}">摄影师</a>
-              <a class="dropdown-item" href="{:URL('professional/index',['type'=>3])}">摄像师</a>
-              <a class="dropdown-item" href="{:URL('professional/index',['type'=>2])}">化妆师</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>1])}">工作室</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>1])}">婚礼团队</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>4])}">主持人</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>5])}">摄影师</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>3])}">摄像师</a>
+              <a class="dropdown-item" href="{//:URL('professional/index',['type'=>2])}">化妆师</a>
             </div>
-          </li>
+          </li> --> 
           {php}
           $uid = session('user_id');
           if($uid){
@@ -82,6 +89,9 @@
           {/php}
           <li class="nav-item">
             <a class="nav-link nav-link--rounded" href="{:URL('index/login')}">登录</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{:URL('index/register')}">注册</a>
           </li>
           {php}
           }

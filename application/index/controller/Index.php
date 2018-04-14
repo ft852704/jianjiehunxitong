@@ -4,6 +4,7 @@ use app\index\controller\Base;
 use think\Db;
 use \think\Session;
 use \think\Request;
+use think\Log;
 use app\index\model\LoginFamily;
 use app\index\model\Role;
 use app\index\model\LoginAce;
@@ -18,7 +19,6 @@ use app\index\model\UserLoginLog;
 use app\index\model\Order;
 use app\index\model\Service;
 use app\index\model\ServiceTemplate;
-
 
 class Index extends Base
 {
@@ -61,13 +61,13 @@ class Index extends Base
 		switch ($channel) {
 		case 'alipay_pc_direct':
 		$extra = array(
-		'success_url' => 'http://admin.jianjiehun.com/index/user/order_sucess' ,//支付成功的回调地址。
+		'success_url' => 'http://'.$this->turl.'/index/user/order_sucess' ,//支付成功的回调地址。
 		);
 		break;
 		case 'alipay_wap':
 		$extra = array(
-		'success_url' => 'http://admin.jianjiehun.com/test.php' ,//支付成功的回调地址。
-		'cancel_url' => 'http://admin.jianjiehun.com/test.php'//支付取消的回调地址， app_pay 为 true 时，该字段无效。
+		'success_url' => 'http://'.$this->turl.'/test.php' ,//支付成功的回调地址。
+		'cancel_url' => 'http://'.$this->turl.'/test.php'//支付取消的回调地址， app_pay 为 true 时，该字段无效。
 		);
 		break;
 		case 'upmp_wap':
@@ -104,7 +104,7 @@ class Index extends Base
 		'terminal_type' => 1,
 		'terminal_id'=> 'your terminal_id',
 		'user_ua'=> 'your user_ua',
-		'result_url'=> 'http://admin.jianjiehun.com/test.php'
+		'result_url'=> 'http://'.$this->turl.'/test.php'
 		);
 		break;
 		case 'jdpay_wap':
@@ -136,11 +136,116 @@ class Index extends Base
 			header( 'Status: ' . $e->getHttpStatus());
 			echo($e->getHttpBody());
 		}
+    }
+    //u盘租赁支付调用
+    public function utest(){
+    	//https://www.pingxx.com/api?language=PHP#支付渠道-extra-参数说明
+    	//提交过来的参数中需要有
+    	$input_data = json_decode(file_get_contents('php://input' ), true);
+		if (empty($input_data[ 'channel'])||empty($input_data[ 'order_no'])) {
+			echo 'channel or order_no is empty';
+			exit();
+		}
+		$order = Db::table('u_disk_list')->find($input_data[ 'order_no']);
+		if(empty($order)){
+			echo '';exit;
+		}
 
+		//$channel = strtolower($input_data['channel'].'alipay' );//支付方式
+		$channel = $input_data[ 'channel'];//支付方式
 
+		$amount = ($order['price']*100); //支付金额
+		$orderno = $order['id']; //订单号
+		$client_ip= $this->get_client_ip();//$_SERVER['SERVER_ADDR']; //客户端ip
+		$subject='U盘租赁'; //商品名称
+		$body='该服务最终解释权归简结婚所有'; //商品描述信息
 
+		//$extra 在使用某些渠道的时候，需要填入相应的参数，其它渠道则是 array() .具体见以下代码或者官网中的文档。其他渠道时可以传空值也可以不传。
+		$extra = array();
+		switch ($channel) {
+		case 'alipay_pc_direct':
+		$extra = array(
+		'success_url' => 'http://'.$this->turl.'/index/user/order_sucess' ,//支付成功的回调地址。
+		);
+		break;
+		case 'alipay_wap':
+		$extra = array(
+		'success_url' => 'http://'.$this->turl.'/admin/usb/buy_sucess' ,//支付成功的回调地址。
+		'cancel_url' => 'http://'.$this->turl.'/admin/usb/rented_u_disk'//支付取消的回调地址， app_pay 为 true 时，该字段无效。
+		);
+		break;
+		case 'upmp_wap':
+		$extra = array(
+		'result_url' => 'http://www.yourdomain.com/result?code='
+		);
+		break;
+		case 'bfb_wap':
+		$extra = array(
+		'result_url' => 'http://www.yourdomain.com/result?code=' ,
+		'bfb_login' => true
+		);
+		break;
+		case 'upacp_wap':
+		$extra = array(
+		'result_url' => 'http://www.yourdomain.com/result'
+		);
+		break;
+		case 'wx_pub':
+		$extra = array(
+			'open_id' => session::get('openid'),
+		);
+		break;
+		case 'wx_wap':
+		$extra = array(
+		'result_url' => 'http://'.$this->turl.'/admin/usb/buy_sucess',
+		);
+		break;
+		case 'wx_pub_qr':
+		$extra = array(
+		'product_id' => 'Productid'
+		);
+		break;
+		case 'yeepay_wap':
+		$extra = array(
+		'product_category' => '1',
+		'identity_id'=> 'your identity_id',
+		'identity_type' => 1,
+		'terminal_type' => 1,
+		'terminal_id'=> 'your terminal_id',
+		'user_ua'=> 'your user_ua',
+		'result_url'=> 'http://'.$this->turl.'/test.php'
+		);
+		break;
+		case 'jdpay_wap':
+		$extra = array(
+		'success_url' => 'http://www.yourdomain.com',
+		'fail_url'=> 'http://www.yourdomain.com',
+		'token' => 'dsafadsfasdfadsjuyhfnhujkijunhaf'
+		);
+		break;
 
-
+		}
+		\Pingpp\Pingpp::setApiKey($this->Ping['ApiKey']);
+		try {
+			$ch = \Pingpp\Charge:: create(
+			array(
+				'order_no' => $orderno, //订单编号
+				'amount' => $amount,//订单金额  单位  分
+				'app' => array ('id' => $this->Ping['AppID']),//支付使用的  app 对象的  id ，expandable 可展开，查看 如何获取App ID 。https://help.pingxx.com/article/198599/
+				'channel' => $channel,//支付渠道  alipay	支付宝 APP 支付  alipay_wap	支付宝手机网页支付   wx_wap	微信 H5 支付   wx	微信 APP 支付
+				'currency' => 'cny',//货币代码  cny 人民币
+				'client_ip' => $client_ip,//客户端请求ip
+				'subject' => $subject,//商品标题，该参数最长为 32 个 Unicode 字符。银联全渠道（ upacp / upacp_wap ）限制在 32 个字节；支付宝部分渠道不支持特殊字符。  https://help.pingxx.com/article/1059334/
+				'body' => $body,//商品描述信息，该参数最长为 128 个 Unicode 字符。 yeepay_wap 对于该参数长度限制为 100 个 Unicode 字符；支付宝部分渠道不支持特殊字符。
+				'extra' => $extra //特定渠道发起交易时需要的额外参数，以及部分渠道支付成功返回的额外参数，详细参考 支付渠道 extra 参数说明 。
+			)
+		);
+			echo $ch;
+		} catch (\Pingpp\Error\base $e) {
+			header( 'Status: ' . $e->getHttpStatus());
+			//Db::table('u_disk_list')->insert(['webhooks'=>$e->getHttpBody()]);
+			echo($e->getHttpBody());
+		}
     }
 	//主页
     public function index()
@@ -148,7 +253,7 @@ class Index extends Base
     	$professional = Professional::where(['status'=>1])->limit(8)->order('id DESC')->select();
     	$this->assign('professional',$professional);
 
-    	$marrycase = MarryCase::where(['status'=>1])->limit(9)->order('id DESC')->select();
+    	$marrycase = MarryCase::where(['status'=>1])->limit(9)->order('sort DESC,id DESC')->select();
     	$this->assign('marrycase',$marrycase);
 
     	return $this->fetch();
@@ -176,6 +281,36 @@ class Index extends Base
     	}else{
     		return $this->fetch();	
     	}
+    }
+    //注册
+    public function register(){
+    	if(Request::instance()->post()){
+    		$data = input();
+    		$user = User::where(['name'=>$data['mobile']])->find();
+    		if(!empty($user)){
+    			$this->error('该手机号已注册过，请用其他手机号注册或直接登录！','Index/login');
+    		}
+    		$user = new User;
+    		$duser = [
+    			'name' => $data['mobile'],
+    			'mobile' => $data['mobile'],
+    			'nick' => $data['mobile'],
+    			'real_name' => $data['mobile'],
+    			'password' => md5($data['password']),
+    			'time' => time(),
+    		];
+	    	$re = $user->save($duser);
+	    	if(!$re){
+				$this->error('预约失败');
+	    	}
+	    	$user = User::where(['name'=>$data['mobile']])->find();
+    		Session::set('user_id',$user['id']);
+    		Session::set('user_nick',$user['nick']);
+    		Session::set('real_name',$user['real_name']);
+			UserLoginLog::insert(['user_id'=>$user['id'],'ip'=>$_SERVER["REMOTE_ADDR"],'time'=>time()]);
+			$this->success('注册成功', 'Index/index');
+    	}
+    	return $this->fetch();
     }
     //退出登录
     function loginout(){
@@ -352,9 +487,15 @@ class Index extends Base
     	$input_data = json_decode(file_get_contents('php://input' ), true);
 
     	if($input_data['type']=='charge.succeeded'){
-    		if($input_data['data']['object']['app']!=$this->Ping['AppID']){//
+    		if($input_data['data']['object']['app']==$this->Ping['AppID']){//
+    			//U盘租赁业务
+    			if(strlen($input_data['data']['object']['order_no'])!=16){
+    				$this->Upan($input_data);
+    				return true;
+    			}
     			$order = Order::where(['order_no'=>$input_data['data']['object']['order_no']])->find();
     			//$order = Order::where(['order_no'=>'123456789'])->find();
+    			//Log::write('会员卡：'.json_encode($member).'  卡类型被更改为：'.$data['card_type']);
     			if(!empty($order)){
     				$order->client_ip = $input_data['data']['object']['client_ip'];
     				$order->state = 2;
@@ -362,7 +503,7 @@ class Index extends Base
     				$order->pingplus_no = $input_data['data']['object']['id'];
     				$order->pay_no = $input_data['data']['object']['transaction_no'];
     				$order->pay_time = $input_data['data']['object']['created'];
-    				//$order->webhooks = json_encode($input_data);
+    				$order->webhooks = json_encode($input_data);
     				/*$data = [
     					'client_ip' => $input_data['data']['object']['client_ip'],
     					'state' => $input_data['data']['object']['client_ip'],
@@ -384,4 +525,40 @@ class Index extends Base
     	}
 
     }
+    //U盘租赁
+    protected function Upan($input_data){
+    	$order = Db::table('u_disk_list')->find($input_data['data']['object']['order_no']);
+    	if(empty($order)){
+    		return false;
+    	}else{
+    		if($order['state']>0){
+    			return false;
+    		}
+    		$data['state'] = 1;
+    		$data['pay_type'] = 1;
+    		$data['pingplus_no'] = $input_data['data']['object']['id'];
+    		$data['pay_no'] = $input_data['data']['object']['transaction_no'];
+    		$data['pay_time'] = $input_data['data']['object']['created'];
+    		$data['webhooks'] = json_encode($input_data);
+    		$re = Db::table('u_disk_list')->where(['id'=>$input_data['data']['object']['order_no']])->update($data);
+    		if($re){
+    			return true;
+    		}else{
+    			return false;
+    		}
+    	}
+    }
+    //微信h5支付获取客户端ip
+    public function get_client_ip() {
+    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+        $ip = getenv('HTTP_CLIENT_IP');
+    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+        $ip = getenv('HTTP_X_FORWARDED_FOR');
+    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+        $ip = getenv('REMOTE_ADDR');
+    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
+}
 }

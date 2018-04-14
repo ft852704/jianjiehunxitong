@@ -24,22 +24,9 @@
 <body>
   {include file="../application/index/view/common/header.html" /}
 
-  <div class="store-filters">
-    <div class="container clearfix">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Collection for Women</a></li>
-        <li class="breadcrumb-item active">Handbags</li>
-      </ol>
-    </div>
+  <div class="store-filters" style="margin-top: 120px;">
+
   </div>
-
-  <div class="account-page">
-    <div class="container">
-
-      <div class="account-wrapper">
-
-
 
   <div id="checkout">
     <div class="container">
@@ -73,7 +60,7 @@
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   <script>
-    var YOUR_URL = 'http://admin.jianjiehun.com/index/index/test';
+    var YOUR_URL = 'http://{php}echo $_SERVER['HTTP_HOST'];{/php}{:URL('index/test')}';
     function wap_pay() {
     	var channel = $("[name=payment-method]").val();
         if(YOUR_URL.length == 0 || !YOUR_URL.startsWith('http')){

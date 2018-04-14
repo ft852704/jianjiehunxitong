@@ -23,13 +23,12 @@ class MarryCase extends Base
     		//$where = ['name'=>['like'=>'%'.$data['name'].'%']];
     		$where =  array('name'=>array('like','%'.$data['name'].'%'));
     	}
-    	
     	//检查账号权限
 		/*if(!$this->is_power()){
 			$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
-    	$list = MarryCaseModel::where($where)->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
+    	$list = MarryCaseModel::where($where)->order('sort DESC,status DESC,time DESC')->paginate(15,false,array('query'=>$data));
 
     	$this->assign('list',$list);
     	$data['start_time'] = '';
@@ -84,7 +83,7 @@ class MarryCase extends Base
 	    	unset($data['id']);
 	    	if($marry_case->save($data)){
 	    		if(!empty($pic)){
-	    			MarryCasePic::destroy(['marry_id'=>$data['id']]);
+	    			MarryCasePic::destroy(['marry_id'=>$marry_case['id']]);
 	    			foreach ($pic as $k => $v) {
 	    				MarryCasePic::insert(['marry_id'=>$marry_case['id'],'url'=>$v,'time'=>time(),'sort'=>$k]);
 	    			}

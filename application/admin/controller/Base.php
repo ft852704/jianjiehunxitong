@@ -20,6 +20,16 @@ class Base extends Controller
 	    'SMS_PWD'=>'1IblExO9zw64d9',
 	    'SMS_SIGN'=>'【鼎族怡华】',
 	];
+	//民政局地区
+	public $area = [
+		'青羊区',
+		'武侯区',
+		'金牛区',
+		'锦江区',
+		'高新区',
+		'华阳区',
+		'龙泉驿'
+	];
 	//职业人类型（1，策划师，2化妆师，3摄像师，4主持人,5摄影师）
 	public $professional_type = [
 		1 => '策划师',
@@ -43,6 +53,7 @@ class Base extends Controller
     	'已支付',
     	'已完成',
     	'已退款',
+    	'未通过',
     ];
     //订单类型
     public $order_type = [
@@ -56,7 +67,15 @@ class Base extends Controller
     ];
     //用户渠道
     public $from = [
-    	1 => '自来',
+    	1 => '网站自主预约',
+    	2 => '朋友推荐',
+    	3 => '职业人推荐',
+    	4 => '酒店合作',
+    	5 => '民政局',
+    	6 => '合作商',
+    	7 => '其他',
+    	8 => '微博',
+    	'all' => '全部',
     ];
 
 
@@ -68,7 +87,7 @@ class Base extends Controller
     {
     	$request = request();
 		//session存在时，不需要验证的权限
-		$not_check = array('admin/Index/login','admin/Index/lost_password');
+		$not_check = array('admin/Index/login','admin/Index/lost_password','admin/Usb/rented_u_disk','admin/Usb/buy_sucess');
 		//当前操作的请求 模块名/方法名
 		if(in_array($request->module().'/'.$request->controller().'/'.$request->action(), $not_check)){
 			return true;

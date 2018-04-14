@@ -137,14 +137,16 @@
             <img src="{$professional.head}" style="border-radius: 50%; max-width: 85px;" />
           </div>     
           <h1>
-            {$professional.name}
+            {$professional.nick}
           </h1>
           <div class="rating" style="color: wheat;text-align: center;">
+          <!--
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
             <i class="fa fa-star-half-o"></i>
+            -->
           </div>
           <p style="font-size: 14px;font-weight:normal;color: #dadada">
             {$professional.introduction}
@@ -268,17 +270,10 @@
                 {$v.title} <span class="vendor">- {$v.hotel}</span>
               </span>
               <span class="price">
-                ¥{$v.cost}
+                <!--¥{$v.cost}-->
               </span>
             </span>
           </a>
-          <div class="rating">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star-half-o"></i>
-            <i class="fa fa-star-o"></i>
-          </div>
         </div>
         {/foreach}
       </div>

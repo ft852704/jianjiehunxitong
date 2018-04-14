@@ -69,7 +69,7 @@ class Professional extends Base
     		$furl = '';
     	}
     	//个人案例
-    	$marry_case = MarryCase::where(['professional_id'=>$data['id'],'status'=>1])->order('status DESC,id DESC')->limit(4)->select();
+    	$marry_case = MarryCase::where(['professional_id'=>$data['id'],'status'=>1])->order('status DESC,id DESC')->limit(40)->select();
     	$this->assign('marry_case',$marry_case);
     	$this->assign('data',$data);
     	$this->assign('furl',$furl);

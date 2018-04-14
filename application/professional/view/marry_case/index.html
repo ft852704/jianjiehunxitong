@@ -111,7 +111,7 @@ function member_stop(obj,id){
 	layer.confirm('确认要停用吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: '{:URL('professional/del')}',
+			url: '{:URL('marry_case/del')}',
 			data: {id:id},
 			dataType: 'json',
 			success: function(data){
@@ -132,7 +132,7 @@ function member_start(obj,id){
 	layer.confirm('确认要启用吗？',function(index){
 		$.ajax({
 			type: 'POST',
-			url: '{:URL('professional/del')}',
+			url: '{:URL('marry_case/del')}',
 			data: {id:id},
 			dataType: 'json',
 			success: function(data){

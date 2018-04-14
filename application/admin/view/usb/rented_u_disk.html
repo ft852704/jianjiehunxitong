@@ -1,0 +1,190 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>简结婚</title>
+
+  <!-- Set render engine for 360 browser -->
+  <meta name="renderer" content="webkit">
+
+  <!-- No Baidu Siteapp-->
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" sizes="192x192" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="assets/i/app-icon72x72@2x.png">
+  <meta name="msapplication-TileColor" content="#0e90d2">
+
+  <link rel="stylesheet" href="_ASSETS_/css/amazeui.min.css">
+  <link rel="stylesheet" href="_ASSETS_/css/app.css">
+
+  <script src="_PINGPP_/dist/pingpp.js"></script>
+</head>
+<body onload="load()">
+  <header data-am-widget="header"
+          class="am-header am-header-default">
+      <div class="am-header-left am-header-nav">
+          <a href="#left-link" class="">
+                <!-- <i class="am-header-icon am-icon-home"></i> -->
+          </a>
+      </div>
+
+      <h1 class="am-header-title">
+          <a href="#title-link" class="">
+            租结婚U盘
+          </a>
+      </h1>
+
+      <div class="am-header-right am-header-nav">
+          <a href="#right-link" class="">
+                <!-- <i class="am-header-icon am-icon-bars"></i> -->
+          </a>
+      </div>
+  </header>
+<form class="am-form">
+  <fieldset>
+    <div class="am-form-group">
+      <label for="doc-ipt-phone-1">姓名</label>
+      <input type="text" class="" name="name" id="doc-ipt-phone-1" placeholder="输入姓名">
+    </div>
+    <div class="am-form-group">
+      <label for="doc-ipt-phone-1">手机号</label>
+      <input type="text" class="" name="mobile_phone" id="doc-ipt-phone-1" placeholder="输入手机号">
+    </div>
+      <label for="doc-select-1">租赁地点</label>
+      <select id="doc-select-1" name="area">
+        <option value="">请选择租赁地点</option>
+        <option value="婚博会">婚博会</option>
+      </select>
+      <span class="am-form-caret"></span>
+    </div>
+    <p><button type="button" id="submit" class="am-btn am-btn-primary">提交</button></p>
+    <p>租用说明</p>
+    <p>
+    	U盘租用说明：0元免费租用U盘，保证不收取佣金，只收取合理的押金，退U盘的时候退押金；
+    </p>
+    <p>
+		退还地址：春熙路街道时代广场A座806a（IFS金融国际中心对面）；
+	</p>
+	<p>
+		退还时间：周一至周五10:00-18:00；
+	</p>
+	<p>
+		退还要求：a.保证U盘完好无损；b.凭短信中的凭证码退还押金；
+    </p>
+  </fieldset>
+</form>
+  <footer data-am-widget="footer"
+          class="am-footer am-footer-default"
+           data-am-footer="{  }">
+    <div class="am-footer-miscs ">
+
+          <p>由 <a href="http://www.jianjiehun.com/" title="简结婚"
+                                                target="_blank" class="">简结婚</a>
+            提供技术支持</p>
+        <p>CopyRight©2017  MUSHI Inc.</p>
+    </div>
+  </footer>
+  
+<!--在这里编写你的代码-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script type="text/javascript" src="_LIB_/jquery/1.9.1/jquery.min.js"></script> 
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="assets/js/amazeui.ie8polyfill.min.js"></script>
+<![endif]-->
+<script src="_ASSETS_/js/amazeui.min.js"></script>
+<script>
+function load(){
+	if("{$openid}"==''||"{$openid}"==null)
+	window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbc51b257e7c1b8b3&redirect_uri=http://www.jianjiehun.com/admin/usb/rented_u_disk.html&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+}
+
+	$("#submit").click(function(){
+		if($("#submit").attr('disabled')){
+			alert('您的抵用码还未使用，请联系您的商家去使用！');
+			return false;
+		}
+		if(!$("[name=name]").val()){
+			alert('请填写姓名');
+			return false;
+		}
+		if(!$("[name=area]").val()){
+			alert('请选择租赁地点');
+			return false;
+		}
+		if(!$("[name=mobile_phone]").val()){
+			alert('请填写手机号');
+			return false;
+		}
+
+	    if(!(/^1\d{10}$/.test($("[name=mobile_phone]").val()))){ 
+	        alert("手机号码有误，请重填");  
+	        return false; 
+	    } 
+
+		$.ajax({
+			type: 'POST',
+			url: '{:URL('usb/rented_u_disk')}',
+			data: $("form").serialize(),
+			dataType: 'json',
+			success: function(data){
+				if(data.sta){
+					wap_pay(data.params.id);
+				}else{
+					alert(data.msg);
+				}
+			},
+			error:function(data) {
+				alert('获取失败');
+			},
+		});	
+	});
+
+	var YOUR_URL = 'http://{php}echo $_SERVER['HTTP_HOST'];{/php}{:URL('index/index/utest')}';
+    function wap_pay(order_id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", YOUR_URL, true);
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(JSON.stringify({
+            channel: 'wx_pub',
+            //channel: 'wx_wap',
+            //channel: 'alipay_wap',
+            order_no: order_id,
+        }));
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+            	var str = xhr.responseText;
+
+                console.log(xhr.responseText);
+                pingpp.createPayment(xhr.responseText, function(result, err) {
+                    console.log(result);
+                    console.log(err.msg);
+                    console.log(err.extra);
+                });
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

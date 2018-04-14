@@ -34,7 +34,7 @@
 		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜订单</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
-	{if condition="$professional_type eq 1"}
+	{if condition="$Think.session.professional_type eq 1"}
 	<span class="l"> <a href="javascript:;" onclick="admin_add('添加布置费订单','{:URL('order/arrangement_add')}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加布置费订单</a></span> 
 	{/if}
 
@@ -63,7 +63,7 @@
 			<tr class="text-c">
 				<td><input type="checkbox" value="{$v.id}" name=""></td>
 				<td>{$v.order_no}</td>
-				<td>{$v.user_name}</td>
+				<td>{$v.client_ip}</td>
 				<td>{$v.linkman_name}</td>
 				<td>{$professional_type[$v.type]}</td>
 				<td>{$v.total}</td>

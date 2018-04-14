@@ -5,6 +5,7 @@ use think\Db;
 use \think\Session;
 use think\Request;
 use app\professional\model\Bespeak as BespeakModel;
+use app\professional\model\User;
 
 class Bespeak extends Base
 {
@@ -31,7 +32,10 @@ class Bespeak extends Base
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
     	$list = BespeakModel::where($where)->order('id DESC')->paginate(15,false,array('query'=>$data));
-
+    	foreach ($list as $k => $v) {
+    		$user = User::get($v['user_id']);
+    		$list[$k]['activer_id'] = $user['real_name'];
+    	}
     	$this->assign('list',$list);
     	$data['start_time'] = '';
     	$data['end_time'] = '';

@@ -76,7 +76,7 @@
               <h2 class="title">婚礼人</h2>
               <div class="filter">
                 <a class="trigger collapsed" data-toggle="collapse" href="#clothing">
-                  策划师
+                  婚礼团队
                 </a>
                 <div class="submenu collapse in" id="clothing">
                   <div class="submenu-wrapper">
@@ -84,7 +84,7 @@
                   </div>
                 </div>
               </div>
-              <div class="filter">
+              <!--<div class="filter">
                 <a class="trigger collapsed" data-toggle="collapse" href="#shoes">
                   主持人
                 </a>
@@ -123,10 +123,10 @@
                     <a href="{:URL('professional/index',['type'=>2])}">新娘全程跟妆</a>
                   </div>
                 </div>
-              </div>              
+              </div>  -->            
             </div>
             <div class="sidebar-rating-filters">
-              <h2 class="title">婚礼人评分</h2>
+              <!--<h2 class="title">婚礼人评分</h2>
               <a href="#">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
@@ -162,7 +162,7 @@
                 <i class="fa fa-star-o"></i>
                 <span>or more</span>
                 (12)
-              </a>
+              </a>-->
             </div>
           </div>
         </div>
@@ -171,12 +171,12 @@
           <div class="row">
             <div class="col-12 list-product">
               <a href="{:URL('professional/detail',['id'=>$v.id])}" class="image">
-                <span class="flag">新上线</span>
-                <img src="{$v.head}" class="img-fluid">
+                <!-- <span class="flag">新上线</span> -->
+                <img src="{$v.head}" class="img-fluid" style="width:200px;height:200px">
               </a>
               <div class="info">
                 <a href="{:URL('professional/detail',['id'=>$v.id])}" class="name">
-                  {$v.name} 
+                  {$v.nick} 
                   <span class="vendor">- 
                   {$pro_type[$v.type]}
                   </span>
@@ -184,6 +184,7 @@
                 <div class="price">
                   ¥{$v.price}
                 </div>
+                <!--
                 <div class="rating">
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star"></i>
@@ -191,6 +192,7 @@
                   <i class="fa fa-star"></i>
                   <i class="fa fa-star-o"></i>
                 </div>
+                -->
                 <div class="description">
                 {$v.introduction}
                 </div>

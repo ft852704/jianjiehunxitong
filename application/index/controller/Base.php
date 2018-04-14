@@ -22,7 +22,8 @@ class Base extends Controller
 	];
 	//职业人类型（1，策划师，2化妆师，3摄像师，4主持人,5摄影师）
     public $pro_type = [
-    	1 => '策划师',
+    	//1 => '策划师',
+    	1 => '婚礼团队',
     	2 => '化妆师',
     	3 => '摄像师',
     	4 => '主持人',
@@ -44,6 +45,7 @@ class Base extends Controller
     	4 => '已生成订单',
     	5 => '未见面',
     ];
+    public $turl = 'www.jianjiehun.com';
 
 	public function _initialize()
     {

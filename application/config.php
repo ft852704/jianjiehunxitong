@@ -145,6 +145,7 @@ return [
         '_LAYDATE_'=>'/laydate/',
         '_RECEPTION_'=>'/reception/',
         '_PINGPP_' => '/pingpp/',
+        '_ASSETS_' => '/assets/',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',

@@ -41,13 +41,19 @@
       <div class="row">
         <div class="col-md-6">
           <section>
+          
             <h1>联系人</h1>
 
             <div class="field-group">
+            {php}
+          		if(isset($_SESSION['think']['user_id'])){
+          	{/php}
               <div class="field">
                 <label for="field-name">姓名</label>
-                <input id="name" type="text" value="{$user.real_name}" name="real_name" class="form-control required" placeholder="您的姓名" />
+                <input id="name" type="text" value="{$user.real_name}" name="real_name" class="form-control" placeholder="您的姓名" />
               </div>
+            {php}}{/php}
+            <!--
               <div class="field field--with-dropdown clearfix">
                 <label for="field-country">身份</label>
                 <select id="field-country" name="sex">
@@ -58,7 +64,7 @@
               <div class="field">
                 <label for="field-phone">手机号码</label>
                 <input id="mobile" value="{$user.mobile}" type="text" name="mobile" class="form-control" placeholder="手机号码" />
-              </div>
+              </div>-->
               <!--
               <div class="field">
                 <label for="field-email">验证码</label>
@@ -69,7 +75,7 @@
               </div>    
               -->         
             </div>
-
+          
             <h2>
               服务信息
             </h2>
@@ -131,7 +137,7 @@
                 <input type="hidden" name="professional_id" value="{$professional.id}" />
                 <input type="hidden" name="service_id" value="{$service.id}" />
                   <span class="name">
-                    {$professional.name}
+                    {$professional.nick}
                   </span>
                   <span class="variant">
                     {$pro_type[$professional.type]}
@@ -172,14 +178,6 @@
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   <script>
     function check(){
-        if(!$("#name").val()){
-        	alert('请输入您的姓名');
-        	return false;
-        }
-        if(!$("#mobile").val()){
-        	alert('请输入您的手机号码');
-        	return false;
-        }
     }
     //日历使用2
 		var time = {

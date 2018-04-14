@@ -27,9 +27,9 @@
 <article class="page-container">
 	<form class="form form-horizontal" id="form-admin-add">
 	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人ID:</label>
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新人手机号:</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" placeholder=""  id="user_id" name="user_id" value="{$order.user_id}">
+			<input type="text" class="input-text" placeholder=""  id="user_phone" name="user_phone" value="{$order.user_phone}">
 			<input type="hidden" name="id" value="{$order.id}" />
 		</div>
 	</div>
@@ -59,9 +59,9 @@
 		</div>
 	</div>
 	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人ID：</label>
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>婚礼人手机号：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" value="{$order.linkman_id}" id="linkman_id" name="linkman_id">
+			<input type="text" class="input-text" autocomplete="off" value="{$order.linkman_phone}" id="linkman_phone" name="linkman_phone">
 		</div>
 	</div>
 	<div class="row cl">
@@ -173,6 +173,7 @@
 <script type="text/javascript">
 $("#linkman_id").change(function(){
 	var professional_id = $(this).val();
+	//获取职业人服务
 	$.ajax({
                 cache: true,
                 type: "POST",
@@ -195,6 +196,41 @@ $("#linkman_id").change(function(){
 						});
                 	}
                     $("#service_id").html(htm);
+                }
+            });
+	//获取职业人基本信息
+	$.ajax({
+                cache: true,
+                type: "POST",
+                url:'{:URL('professional/getProfessional')}?professional_id='+professional_id,
+                data:$('#yourformid').serialize(),// 你的formid
+                async: false,
+                dataType:'json',
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(data) {
+                	$("#linkman_phone").val(data.mobile);
+                	$("#linkman_name").val(data.name);
+                }
+            });
+});
+
+//获取服务对应价格
+$("#service_id").click(function(){
+	var service_id = $(this).val();
+	$.ajax({
+                cache: true,
+                type: "POST",
+                url:'{:URL('service/getServicePrice')}?service_id='+service_id,
+                data:$('#yourformid').serialize(),// 你的formid
+                async: false,
+                dataType:'json',
+                error: function(request) {
+                    alert("Connection error");
+                },
+                success: function(data) {
+                	$("#total").val(data.price);
                 }
             });
 });

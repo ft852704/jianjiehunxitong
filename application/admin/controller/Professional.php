@@ -243,4 +243,14 @@ class Professional extends Base
 
 	    return $response;
 	}
+	//获取职业人信息
+	public function getProfessional(){
+		$data = input();
+		$pro = ProfessionalModel::get($data['professional_id']);
+		$re = [
+			'mobile' => $pro['mobile'],
+			'name' => $pro['name'],
+		];
+		echo json_encode($re);exit;
+	}
 }

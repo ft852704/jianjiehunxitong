@@ -218,17 +218,17 @@ $('.skin-minimal input').iCheck({
 				alert('请上传头图');
 				return false;
 			}
-			var pic = $("[data=pic]").val();
-			if(!pic){
-				alert('请上传婚礼照片');
-				return false;
-			}
+			//var pic = $("[data=pic]").val();
+			//if(!pic){
+			//	alert('请上传婚礼照片');
+			//	return false;
+			//}
 			
 			$.ajax({
 				type: 'POST',
 				dataType : "json",
 				async:true,//是否异步请求
-				url: "{:URL('marry_case/add')}",//请求的action路径页面
+				url: "{:URL('marry_case/edit')}",//请求的action路径页面
 				data: $('form').serialize(),  
 				error: function(){ //请求失败处理函数
 					layer.msg('请求失败',{icon:1,time:1000});
@@ -273,7 +273,7 @@ $(function(){
       fileElementId : 'upload',// 需要上传的文件域的ID，即<input type="file">的ID。
       //dataType : 'json',//服务器返回的数据类型。可以为xml,script,json,html。如果不填写，jQuery会自动判断。如果json返回的带pre,这里修改为json即可解决。
       //data:{name:'logan'},//一同上传的数据
-      success: function (data, status) { 
+      success: function (data, status) {
            //把图片替换
            $("#head").val($(data).find('body').html());
            $("#headimg").attr('src',$(data).find('body').html());

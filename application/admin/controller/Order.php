@@ -11,10 +11,12 @@ use app\admin\model\User;
 use app\admin\model\Professional;
 use app\admin\model\Service;
 use app\admin\model\ServiceTemplate;
+use app\admin\model\TrackUser as TrackUserModel;
 
 class Order extends Base
 {
-	public $tax = 0.05;//平台佣金比例
+	public $tax = 0;//平台佣金比例 人员费
+	public $pepole_tax = 0.05;//布置费比例
 	public function _initialize()
     {
         
@@ -58,23 +60,28 @@ class Order extends Base
     	//登录名，密码，姓名，所属门店，角色
     	if(Request::instance()->post()){
 	    	$data = input();
-	    	$user = User::get($data['user_id']);
-	    	$pro = Professional::get($data['linkman_id']);
+	    	$user = User::where(['mobile'=>$data['user_phone']])->find();
+	    	$pro = Professional::where(['mobile'=>$data['linkman_phone']])->find();
 	    	if(empty($user)){
-	    		$this->error('新人不存在，请查询新人id');
+	    		$this->error('新人不存在，请查询新人手机号');
 	    	}
 	    	if(empty($pro)){
-	    		$this->error('职业人不存在，请查询职业人id');
+	    		$this->error('职业人不存在，请查询职业人手机号');
 	    	}
+	    	$data['user_id'] = $user['id'];
 	    	$data['user_name'] = $user['name'];
-	    	$data['user_phone'] = $user['mobile'];
 	    	$data['linkman_name'] = $pro['name'];
+	    	$data['user_phone'] = $user['mobile'];
+	    	$data['linkman_id'] = $pro['id'];
 	    	$data['linkman_phone'] = $pro['mobile'];
 	    	$data['time'] = time();
+	    	$data['service_id']=15;
 	    	$data['service_time'] = strtotime($data['service_time']);
 	    	$data['order_no'] = $this->getOrderNo();
 	    	$data['type'] = 2;
 	    	$data['state'] = 0;
+	    	$data['commission'] = $this->pepole_tax*$data['price'];
+	    	$data['total'] = $data['commission']+$data['price'];
 	    	/*$head = $this->files_upload('head');
     		if($head['status']){
     			$data['head'] = $head['path'][0];
@@ -96,20 +103,22 @@ class Order extends Base
     	$order = OrderModel::get($id);
     	if(Request::instance()->post()){
     		$data = input();
-    		$user = User::get($data['user_id']);
-	    	$pro = Professional::get($data['linkman_id']);
-	    	if(empty($user)){
-	    		$this->error('新人不存在，请查询新人id');
-	    	}
-	    	if(empty($pro)){
-	    		$this->error('职业人不存在，请查询职业人id');
-	    	}
-	    	$data['user_name'] = $user['name'];
-	    	$data['user_phone'] = $user['mobile'];
-	    	$data['linkman_name'] = $pro['name'];
-	    	$data['linkman_phone'] = $pro['mobile'];
+    		//$user = User::get($data['user_phone']);
+	    	//$pro = Professional::get($data['linkman_phone']);
+	    	//if(empty($user)){
+	    	//	$this->error('新人不存在，请查询新人手机号');
+	    	//}
+	    	//if(empty($pro)){
+	    	//	$this->error('职业人不存在，请查询职业人手机号');
+	    	//}
+	    	//$data['user_name'] = $user['name'];
+	    	//$data['user_phone'] = $user['mobile'];
+	    	//$data['linkman_name'] = $pro['name'];
+	    	//$data['linkman_phone'] = $pro['mobile'];
 	    	$data['time'] = time();
 	    	$data['service_time'] = strtotime($data['service_time']);
+	    	$data['commission'] = $this->pepole_tax*$data['price'];
+	    	$data['total'] = $data['commission']+$data['price'];
 	    	$order = OrderModel::get($id);
     		if($order->save($data)){
 				echo json_encode(['sta'=>1,'msg'=>'修改成功']);
@@ -148,8 +157,9 @@ class Order extends Base
     public function professional_order_edit($id=0){
     	if(Request::instance()->post()){
 	    	$data = input('post.');
-	    	$user = User::get($data['user_id']);
-	    	$pro = Professional::get($data['linkman_id']);
+	    	$user = User::where(['user_phone'=>$data['user_phone']])->find();
+			$pro = Professional::where(['linkman_phone'=>$data['professional_phone']])->find();
+			
 	    	$service = Service::get($data['service_id']);
 	    	if(empty($user)){
 	    		$this->error('新人不存在，请查询新人id');
@@ -258,6 +268,8 @@ class Order extends Base
     	}else{
 			$bespeak = Bespeak::get($data['id']);
 			$commission = round($data['price']*$this->tax,2);
+			$user = User::get($bespeak['user_id']);
+			$data['marry_date'] = $data['marry_date']?$data['marry_date']:date('Y-m-d',$user['marray_date']);
 			$orderdata = [
 				'order_no' => $this->getOrderNo(),
 				'type' => 1,
@@ -268,6 +280,7 @@ class Order extends Base
 				'user_name' => $data['user_name'],
 				'user_phone' => $data['user_mobile'],
 				'service_time' => strtotime($data['marry_date']),
+				'marry_date' => strtotime($data['marry_date']),
 				'hotel' => $data['hotel'],
 				'banquet_type' => $data['banquet_type'],
 				'address' => $data['address'],
@@ -285,6 +298,10 @@ class Order extends Base
 			];
 			$order = new OrderModel;
 			if($order->save($orderdata)){
+				//更改用户状态为已下单
+				$user = new TrackUserModel;
+				$user->where(['mobile'=>$data['user_mobile']])->updata(['state'=>5]);
+
 				$bespeak->state = 4;
 				$bespeak->save();
 				echo json_encode(['sta'=>1,'msg'=>'生成成功']);
@@ -304,14 +321,14 @@ class Order extends Base
     		return $this->fetch();	
     	}else{
     		$data = input();
-			$user = User::get($data['user_id']);
-			$professional = Professional::get($data['professional_id']);
-			$service = Professional::get($data['service_id']);
+			$user = User::where(['user_phone'=>$data['user_phone']])->find();
+			$professional = Professional::where(['linkman_phone'=>$data['professional_phone']])->find();
+			$service = Service::get($data['service_id']);
 	    	if(empty($user)){
-	    		$this->error('新人不存在，请查询新人id');
+	    		$this->error('新人不存在，请查询新人手机号');
 	    	}
 	    	if(empty($pro)){
-	    		$this->error('职业人不存在，请查询职业人id');
+	    		$this->error('职业人不存在，请查询职业人手机号');
 	    	}
 	    	if(empty($service)){
 	    		$this->error('服务不存在，请查询服务id');

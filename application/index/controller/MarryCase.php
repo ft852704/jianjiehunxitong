@@ -24,7 +24,7 @@ class MarryCase extends Base
     {
     	$data = input();
     	//案例
-    	$marry_case = MarryCaseModel::where(['status'=>1])->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
+    	$marry_case = MarryCaseModel::where(['status'=>1])->order('sort DESC,status DESC,id DESC')->paginate(15,false,array('query'=>$data));
     	foreach ($marry_case as $k => $v) {
     		$substr = mb_substr($v['description'],0,50,'utf-8');
     		if($substr!=$v['description']){

@@ -8,6 +8,16 @@ use app\admin\model\User as UserModel;
 
 class User extends Base
 {
+	public $state = [
+		'未知',
+		'有效',
+		'无效',
+		'未联系上',
+		'潜在',
+		'已下单',
+		'all' => '全部',
+	];
+	public $DS = '{/}';//备注中的分隔符
 	public function _initialize()
     {
         
@@ -19,20 +29,79 @@ class User extends Base
     	$where = [];
     	if(isset($data['name'])&&$data['name']){
     		//$where = ['name'=>['like'=>'%'.$data['name'].'%']];
-    		$where =  array('name'=>array('like','%'.$data['name'].'%'));
+    		if($data['stype']==1){//手机号
+    			$where =  array('mobile'=>array('like','%'.$data['name'].'%'));
+    		}
+    		if($data['stype']==2){//微信
+    			$where =  array('email'=>array('like','%'.$data['name'].'%'));
+    		}
+    	}else{
+    		$data['name'] = '';
+    		$data['stype'] = 1;
+    	}
+    	if(isset($data['from'])&&$data['from']){
+    		if($data['from']!='all')
+    			$where['from'] = $data['from'];
+    	}else{
+    		$data['from'] = 0;
+    	}
+    	if(isset($data['state'])&&$data['state']){
+    		if($data['state']!='all')
+    			$where['state'] = $data['state'];
+    	}else{
+    		$data['state'] = 0;
+    		$where['state'] = $data['state'];
+    	}
+    	$where1 = '';//录入时间
+    	$data['time1'] = isset($data['time1'])?strtotime($data['time1']):0;
+    	$data['time2'] = isset($data['time2'])?strtotime($data['time2']):0;
+    	if(isset($data['time1'])&&$data['time1']){
+    		if(isset($data['time2'])&&$data['time2']){
+    			$where1 = 'time>='.$data['time1'].' and time<='.$data['time2'];
+    		}else{
+    			$where1 = 'time>='.$data['time1'];
+    		}
+    	}elseif(isset($data['time2'])&&$data['time2']){
+    		$where1 = 'time<='.$data['time2'];
     	}
     	
+    	//婚期
+    	$data['marry_date1'] = isset($data['marry_date1'])?strtotime($data['marry_date1']):0;
+    	$data['marry_date2'] = isset($data['marry_date2'])?strtotime($data['marry_date2']):0;
+    	if(isset($data['marry_date1'])&&$data['marry_date1']){
+    		if(isset($data['marry_date2'])&&$data['marry_date2']){
+    			$where1 = $where1?$where1.' and ':'';
+    			$where1 .= 'marry_date>='.$data['marry_date1'].' and marry_date<='.$data['marry_date2'];
+    		}else{
+    			$where1 = $where1?$where1.' and ':'';
+    			$where1 .= 'marry_date>='.$data['marry_date1'];
+    		}
+    	}elseif(isset($data['marry_date2'])&&$data['marry_date2']){
+    		$where1 = $where1?$where1.' and ':'';
+    		$where1 .= 'marry_date<='.$data['marry_date2'];
+    	}
+
     	//检查账号权限
 		/*if(!$this->is_power()){
 			$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
-    	$list = UserModel::where($where)->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
-
+    	$count = UserModel::where($where)->count();
+    	$this->assign('count',$count);
+    	$list = UserModel::where($where)->where($where1)->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
+    	foreach ($list as $k => $v) {
+    		$list[$k]['remark'] = explode($this->DS, $v['remark']);
+    	}
     	$this->assign('list',$list);
-    	$data['start_time'] = '';
-    	$data['end_time'] = '';
+
+    	$data['time1'] = $data['time1']?date('Y-m-d',$data['time1']):'';
+    	$data['time2'] = $data['time2']?date('Y-m-d',$data['time2']):'';
+    	$data['marry_date1'] = $data['marry_date1']?date('Y-m-d',$data['marry_date1']):'';
+    	$data['marry_date2'] = $data['marry_date2']?date('Y-m-d',$data['marry_date2']):'';
     	$this->assign('data',$data);
+
+    	$this->assign('from',$this->from);
+    	$this->assign('state',$this->state);
     	return $this->fetch();
     }
     //欢迎页
@@ -48,9 +117,32 @@ class User extends Base
     	//登录名，密码，姓名，所属门店，角色
     	if(Request::instance()->post()){
 	    	$data = input();
+	    	if(!($data['mobile']||$data['email'])){
+	    		echo json_encode(['sta'=>0,'msg'=>'手机号和微信号必须填写一个']);
+	    		exit;
+	    	}
+	    	$re1 = model('user')->where(['name'=>$data['name']])->find();
+	    	if(!empty($re1)){
+	    		echo json_encode(['sta'=>0,'msg'=>'登录名已存在，请重新输入']);
+	    		exit;
+	    	}
+	    	$re2 = model('user')->where(['mobile'=>$data['mobile']])->find();
+	    	if(!empty($re2)&&$data['mobile']){
+	    		echo json_encode(['sta'=>0,'msg'=>'手机号已存在，请重新输入']);
+	    		exit;
+	    	}
+	    	if($data['email']){
+	    		$re3 = model('user')->where(['email'=>$data['email']])->find();
+		    	if(!empty($re3)){
+		    		echo json_encode(['sta'=>0,'msg'=>'微信号已存在，请重新输入']);
+		    		exit;
+		    	}
+	    	}
+
 	    	$data['password'] = md5($data['password']);
 	    	$data['time'] = time();
 	    	$data['marry_date'] = strtotime($data['marry_date']);
+	    	$data['remark'] = $data['remark']?date('Y-m-d').' '.$data['remark'].$this->DS:'';
 	    	$user = new UserModel;
 	    	if($user->save($data)){
 	    		echo json_encode(['sta'=>1,'msg'=>'添加成功']);
@@ -60,6 +152,7 @@ class User extends Base
 	    		exit;
 	    	}
 	    }
+    	$this->assign('state',$this->state);
 	    $this->assign('from',$this->from);
 
     	return $this->fetch();	
@@ -75,6 +168,35 @@ class User extends Base
 	    	$data = input('post.');
 	    	$data['marry_date'] = strtotime($data['marry_date']);
 	    	$admin = UserModel::get($data['id']);
+
+	    	if(!($data['mobile']||$data['email'])){
+	    		echo json_encode(['sta'=>0,'msg'=>'手机号和微信号必须填写一个']);
+	    		exit;
+	    	}
+
+	    	$re1 = model('user')->where(['name'=>$data['name'],'id'=>['NEQ',$data['id']]])->find();
+	    	if(!empty($re1)){
+	    		echo json_encode(['sta'=>0,'msg'=>'登录名已存在，请重新输入']);
+	    		exit;
+	    	}
+	    	$re2 = model('user')->where(['mobile'=>$data['mobile'],'id'=>['NEQ',$data['id']]])->find();
+	    	if(!empty($re2)&&$data['mobile']){
+	    		echo json_encode(['sta'=>0,'msg'=>'手机号已存在，请重新输入']);
+	    		exit;
+	    	}
+	    	if($data['email']){
+	    		$re3 = model('user')->where(['email'=>$data['email'],'id'=>['NEQ',$data['id']]])->find();
+		    	if(!empty($re3)){
+		    		echo json_encode(['sta'=>0,'msg'=>'微信号已存在，请重新输入']);
+		    		exit;
+		    	}
+	    	}
+
+	    	if($data['remark']){
+	    		$data['remark'] = $admin['remark'].date('Y-m-d').' '.$data['remark'].$this->DS;
+	    	}else{
+	    		unset($data['remark']);
+	    	}
 	    	if($data['password']){
 	    		$data['password'] = md5($data['password']);
 	    	}else{
@@ -93,8 +215,10 @@ class User extends Base
 
 		//登录账号
 		$user = UserModel::get($id);
+		$user['remark'] = explode($this->DS, $user['remark']);
 		$this->assign('user',$user);
 	    $this->assign('from',$this->from);
+    	$this->assign('state',$this->state);
 
     	return $this->fetch();	
     }

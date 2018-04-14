@@ -125,16 +125,27 @@ class Service extends Base
 	    	exit;
     	}
     }
+    //获取职业人服务
     public function getService(){
     	$data = input();
     	$service = ServiceModel::alias('s')->field('s.id,st.name')->join('service_template st','s.template_id=st.id','left')->where(['s.professional_id'=>$data['professional_id']])->select();
-    	$list = [];
+    	$list = [
+    		0 => '无'
+    	];
     	foreach ($service as $k => $v) {
     		$list[$v['id']] = $v['name'];
     	}
     	echo json_encode($list);
     	exit;
     }
+    //获取服务价格
+    public function getServicePrice(){
+    	$data = input();
+    	$service = ServiceModel::get($data['service_id']);
+    	echo json_encode(['status'=>1,'price'=>$service['price']]);
+    	exit;
+    }
+
     //图片上传  职业人头像处理
     /**
 	 * [file_upload 文件上传函数，支持单文件，多文件]

@@ -165,7 +165,7 @@ class Picture extends Base
 	    // 获取表单上传文件 例如上传了001.jpg
 	    $file = request()->file('file');
 	    // 移动到框架应用根目录/public/uploads/ 目录下
-	    $info = $file->validate(['size'=>1024*1024*20,'ext'=>'jpg,png,gif'])->move($url,true,false);
+	    $info = $file->validate(['size'=>1024*1024*20,'ext'=>'jpg,png,gif,jgeg'])->move($url,true,false);
 	    if($info){
 	        // 成功上传后 获取上传信息
 	        // 输出 jpg
@@ -200,7 +200,7 @@ class Picture extends Base
 	    // 获取表单上传文件 例如上传了001.jpg
 	    $file = request()->file('file');
 	    // 移动到框架应用根目录/public/uploads/ 目录下
-	    $info = $file->validate(['size'=>1024*1024*20,'ext'=>'jpg,png,gif'])->move($url,true,false);
+	    $info = $file->validate(['size'=>1024*1024*20,'ext'=>'jpg,png,gif,jgeg'])->move($url,true,false);
 	    if($info){
 	        // 成功上传后 获取上传信息
 	        // 输出 jpg
@@ -217,5 +217,9 @@ class Picture extends Base
 	        echo json_encode(['status'=>0,'msg'=>$file->getError()]);
 	        exit;
 	    }
+	}
+	//删除文件
+	public function delimg(){
+		$data = input();
 	}
 }

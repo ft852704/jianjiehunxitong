@@ -68,9 +68,23 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>原备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="{$user.email}" placeholder="@" name="email" id="email">
+					{foreach name="user.remark" item='v' key='k'}
+					<input type="text" class="input-text" value="{$v}" placeholder="" readonly />
+					{/foreach}
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="remark" id="remark" cols="" rows="" class="textarea valid" placeholder="请输入备注内容" aria-invalid="false"></textarea>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">微信号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$user.email}" name="email" id="email">
 			</div>
 		</div>
 		<div class="row cl">
@@ -106,6 +120,23 @@
 	            {/foreach}
 			</select>
 			</span> </div>
+		</div>
+		<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">价值：</label>
+		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="state" size="1">
+				{foreach name="state" item='v' key='k'}
+	            <option value="{$k}"{if condition="$k eq $user.state"}selected{/if}>{$v}</option>
+	            {/foreach}
+			</select>
+			</span> 
+		</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">顾问：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$user.adviser}" placeholder="" id="adviser" name="adviser">
+			</div>
 		</div>
 		<!--
 		<div class="row cl">
@@ -168,17 +199,8 @@ $(function(){
 				required:true,
 			},
 			mobile:{
-				required:true,
-				isMobile:true,
-			},
-			address:{
-				required:true,
-			},
-			hotel:{
-				required:true,
-			},
-			marry_date:{
-				required:true,
+				//required:true,
+				//isMobile:true,
 			},
 		},
 		onkeyup:false,
@@ -196,11 +218,13 @@ $(function(){
 				},
 				success:function(data){ //请求成功后处理函数。
 					layer.msg(data.msg,{icon:1,time:1000});
+					if(data.sta==1){
+						var index = parent.layer.getFrameIndex(window.name);
+						parent.$('.btn-refresh').click();
+						setTimeout(function(){parent.layer.close(index);},2000);
+					}
 				}  
 			});
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.$('.btn-refresh').click();
-			setTimeout(function(){parent.layer.close(index);},2000);
 		}
 	});
 });

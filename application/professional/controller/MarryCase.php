@@ -31,7 +31,7 @@ class MarryCase extends Base
 			$this->error('没有操作权限，请联系管理员给予对应权限后在操作。');
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
-    	$list = MarryCaseModel::where($where)->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
+    	$list = MarryCaseModel::where($where)->order('sort DESC,status DESC,id DESC')->paginate(15,false,array('query'=>$data));
 
     	$this->assign('list',$list);
     	$data['start_time'] = '';
@@ -79,24 +79,24 @@ class MarryCase extends Base
 		}*/
     	//登录名，密码，姓名，所属门店，角色
     	if(Request::instance()->post()){
-	    	$data = input();
+	    	$data = input('post.');
+	    	$data['time'] = time();
+	    	$data['marry_date'] = strtotime($data['marry_date']);
 	    	$pic = isset($data['pic'])?$data['pic']:[];
 	    	unset($data['pic']);
-	    	$data['professional_id'] = Session::get('professional_id');
-	    	$data['marry_date'] = strtotime($data['marry_date']);
-
 	    	$marry_case = MarryCaseModel::get($data['id']);
+	    	unset($data['id']);
 	    	if($marry_case->save($data)){
 	    		if(!empty($pic)){
-	    			MarryCasePic::destroy(['marry_id'=>$data['id']]);
+	    			MarryCasePic::destroy(['marry_id'=>$marry_case['id']]);
 	    			foreach ($pic as $k => $v) {
-	    				$re = MarryCasePic::insert(['marry_id'=>$marry_case['id'],'url'=>$v,'time'=>time(),'sort'=>$k]);
+	    				MarryCasePic::insert(['marry_id'=>$marry_case['id'],'url'=>$v,'time'=>time(),'sort'=>$k]);
 	    			}
 	    		}
-	    		echo json_encode(['sta'=>1,'msg'=>'添加成功']);
+	    		echo json_encode(['sta'=>1,'msg'=>'修改成功']);
 	    		exit;
 	    	}else{
-	    		echo json_encode(['sta'=>0,'msg'=>'添加失败']);
+	    		echo json_encode(['sta'=>0,'msg'=>'修改失败']);
 	    		exit;
 	    	}
 	    }
@@ -121,7 +121,7 @@ class MarryCase extends Base
 		$data = input();
 		$id = $data['id'];
     	if($id&&is_numeric($id)){
-    		$user = ProfessionalModel::get($id);
+    		$user = MarryCaseModel::get($id);
     		if($user->status==1)$user->status=0;
     		elseif($user->status===0)$user->status=1;
 

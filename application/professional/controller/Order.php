@@ -34,7 +34,10 @@ class Order extends Base
 		}*/
     	//$list = LoginFamily::->order('status DESC,parent_id ASC')->paginate(15,false,array('query'=>$data));
     	$list = OrderModel::where($where)->order('status DESC,id DESC')->paginate(15,false,array('query'=>$data));
-
+    	foreach ($list as $k => $v) {
+    		$user = User::get($v['user_id']);
+    		$list[$k]['client_ip'] = $user['real_name'];
+    	}
     	$this->assign('list',$list);
     	$data['start_time'] = '';
     	$data['end_time'] = '';
@@ -53,15 +56,21 @@ class Order extends Base
     	//登录名，密码，姓名，所属门店，角色
     	if(Request::instance()->post()){
 	    	$data = input();
+	    	$user = User::where(['mobile'=>$data['user_phone']])->find();
 	    	$data['time'] = time();
 	    	$data['order_no'] = $this->getOrderNo();
 	    	$data['type'] = 2;
+	    	$data['user_id'] = $user['id'];
 	    	$data['linkman_id'] = Session::get('professional_id');
 	    	$data['linkman_name'] = Session::get('professional_name');
 	    	//获取职业人信息
 	    	$professional = Professional::get(Session::get('professional_id'));
 	    	$data['linkman_phone'] = $professional['mobile'];
 	    	$data['state'] = 0;
+	    	$data['service_id'] = 15;//布置费订单默认服务项目
+	    	$data['service_time'] = strtotime($data['service_time']);
+	    	$data['commission'] = $this->pepole_tax*$data['price'];
+	    	$data['total'] = $data['commission']+$data['price'];
 
 	    	/*$head = $this->files_upload('head');
     		if($head['status']){

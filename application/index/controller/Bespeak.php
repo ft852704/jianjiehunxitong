@@ -44,6 +44,74 @@ class Bespeak extends Base
     }
     //发起预约
     public function start_bespeak(){
+    	if(!session::get('user_id')){
+    		$this->error('请先登录再预约！','Index/login');
+    	}
+    	$data = input();
+    	if(Request::instance()->post()){
+    		$user = new User;
+    		$user->save(['real_name'=>$data['real_name'],'update_time'=>time(),'marry_date'=>strtotime($data['marry_date']),'address'=>$data['address'],'hotel'=>$data['hotel']],['id'=>session::get('user_id')]);
+    		//User::where(['id'=>session::get('user_id')])->save(['real_name'=>$data['real_name']]);
+    		$user = User::get(session::get('user_id'));
+
+    		$professional = Professional::get($data['professional_id']);
+
+    		$bespeak = new BespeakModel;
+    		$dbespeak = [
+    			'user_id' => $user['id'],
+    			'user_sex' => $user['sex'],
+    			'user_name' => $user['real_name'],
+    			'user_mobile' => $user['mobile'],
+    			'professional_id' => $professional['id'],
+    			'professional_name' => $professional['name'],
+    			'professional_type' => $professional['type'],
+    			'professional_mobile' => $professional['mobile'],
+    			'bespeak_date' => strtotime($data['bespeak_date']),
+    			'user_mark' => $data['user_mark'],
+    			'banquet_type' => $data['banquet_type'],
+    			'address' => $data['address'],
+    			'hotel' => $data['hotel'],
+    			'marry_date' => strtotime($data['marry_date']),
+    			'bespeak_address' => '春熙路时代广场A座806a（UR旁边巷子进来的大厅左侧电梯）',
+    			'service_id' => $data['service_id'],
+    		];
+    		if($re = $bespeak->save($dbespeak)){
+    			//Session::set('user_id',$bespeak['user_id']);
+    			//Session::set('user_nick',$bespeak['user_name']);
+    			//Session::set('real_name',$bespeak['user_name']);
+				//UserLoginLog::insert(['user_id'=>$bespeak['user_id'],'ip'=>$_SERVER["REMOTE_ADDR"],'time'=>time()]);
+
+    			$this->redirect('bespeak/bespeak_success', array('professional_id' => $data['professional_id'],'service_id'=>$data['service_id']));
+    		}else{
+    			$this->error('预约失败');
+    		}
+    	}
+    	//此处可以分两种情况，1已登录，2未登录
+    	//未登录
+    	$professional = Professional::get($data['id']);
+    	$this->assign('professional',$professional);
+    	$service = Service::get($data['sid']);
+    	$this->assign('service',$service);
+    	$this->assign('pro_type',$this->pro_type);
+    	//已登录需要用户基础数据
+    	if(Session::get('user_id')){
+    		$user = User::get(Session::get('user_id'));
+    	}else{
+    		$user = [
+    			'name' => '',
+    			'hotel' => '',
+    			'address' => '',
+    			'marry_date' => time(),
+    			'mobile' => '',
+    			'sex' => 1,
+    			'real_name' => '',
+    		];
+    	}
+    	$this->assign('user',$user);
+    	return $this->fetch();
+    }
+    //发起预约
+    public function start_bespeak_old(){
     	$data = input();
     	if(Request::instance()->post()){
     		$user = User::where(['name'=>$data['mobile']])->find();
